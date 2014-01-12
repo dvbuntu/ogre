@@ -3,17 +3,30 @@
 #include <iostream>
 #include <sstream>
 #include <SFML/Graphics.hpp>
+#include <stdint.h>
+
+// ogre specific includes
+#include "unit.hpp"
+
+using std::cerr;
 
 int main(int argc, char* argv[])
 {
+    uint64_t time_step = 0;
+
+    // Window title
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Ogre Battle");
 
+    // load font
 	sf::Font font;
 	if (!font.loadFromFile("./resources/DejaVuSans.ttf"))
-		return 1;
+    {
+        cerr << "Couldn't find font DejaVuSans.ttf!\n";
+        return 1;
+    }
 
 	// create text to display
-	sf::Text text("SFML!!!", font, 32);
+	sf::Text text("Unit", font, 32);
 	text.setColor(sf::Color::Black);
 	// center text
 	auto bounds = text.getLocalBounds();
@@ -26,9 +39,16 @@ int main(int argc, char* argv[])
 	fps_text.setColor(sf::Color(127, 127, 127));
 	fps_text.setPosition(10, 10);
 
+    // setup time step display
+	std::stringstream time_step_disp;
+	sf::Text time_text("", font, 12);
+	time_text.setColor(sf::Color(127, 127, 127));
+	time_text.setPosition(10, 30);
+
 	sf::Clock timer; // for measuring time per frame
 	sf::Clock clock; // for measuring overall time
 
+    // main program loop
 	while (window.isOpen())
 	{
 		// process all input events that have occured since last frame
@@ -38,10 +58,13 @@ int main(int argc, char* argv[])
 			// clicking the OS's close button or pressing escape
 			if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
 				window.close();
-			// left clicking
+			// left clicking moves the unit
 			else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 			{
+                // this is where we clicked
 				auto position = sf::Mouse::getPosition(window);
+                // move the text
+                // Change this to a 'unit'
 				text.setPosition(position.x, position.y);
 			}
 		}
@@ -59,13 +82,22 @@ int main(int argc, char* argv[])
 		fps_text.setString(fps.str());
 		fps.str("");
 
+        // update time step
+		time_step_disp << "Time Step: " << time_step ;
+		time_text.setString(time_step_disp.str());
+		time_step_disp.str("");
+
 		// draw everything to the window
 		window.clear(sf::Color::White);
 		window.draw(text);
 		window.draw(fps_text);
+		window.draw(time_text);
 
 		// refresh the window
 		window.display();
+
+        // increment the time step
+        time_step++;
 	}
 
 	return 0;
