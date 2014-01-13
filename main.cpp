@@ -13,9 +13,11 @@ using std::cerr;
 int main(int argc, char* argv[])
 {
     uint64_t time_step = 0;
+    int time;
 
-    // Window title
+    // Window with title and our view
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Ogre Battle");
+    sf::View view = window.getDefaultView();
 
     // load font
 	sf::Font font;
@@ -25,13 +27,14 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-	// create text to display
-	sf::Text text("Unit", font, 32);
-	text.setColor(sf::Color::Black);
-	// center text
-	auto bounds = text.getLocalBounds();
-	text.setOrigin(bounds.width / 2, bounds.height / 2);
-	text.setPosition(window.getDefaultView().getCenter());
+    // create a Unit to move around
+    // Future, create a list of units
+    // Don't place them on the screen right away
+    OgreUnit unit = OgreUnit(view.getCenter());
+
+    // How fast is this unit?  Roll into initialization at some point
+    // multiple possible constructors?
+    unit.set_speed(10); //hard-coded for now 
 
 	// create a stringstream for converting fps to string, and text for displaying it
 	std::stringstream fps;
@@ -63,19 +66,29 @@ int main(int argc, char* argv[])
 			{
                 // this is where we clicked
 				auto position = sf::Mouse::getPosition(window);
-                // move the text
-                // Change this to a 'unit'
-				text.setPosition(position.x, position.y);
+                // change unit target
+                // Future, detect what unit we clicked (if any)
+                // So we need a method to determine if clicked within unit radius
+                // And if there's multiple take the closest
+                // Or go to submenu where you pick the unit
+                // do all this while paused, then click to where you want to move
+                // or always go to a unit submenu about what to do
+				unit.set_target_position(position);
 			}
+			else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
+            {
+                // TODO: bring up a menu
+                // For now, just set target as well
+				auto position = sf::Mouse::getPosition(window);
+				unit.set_target_position(position);
+            }
 		}
-
-		// crazy-ass transforms
-		float time = clock.getElapsedTime().asSeconds();
-		text.setRotation(std::sin(time) * 45);
-		text.setScale(std::cos(time / 2), std::cos(time / 3));
 
 		time = timer.getElapsedTime().asSeconds();
 		timer.restart();
+
+        // Move the unit(s)
+        unit.move_speed();
 
 		// update fps text
 		fps << (int)(1 / time) << " FPS";
@@ -89,7 +102,7 @@ int main(int argc, char* argv[])
 
 		// draw everything to the window
 		window.clear(sf::Color::White);
-		window.draw(text);
+        unit.draw_on(window); // maybe roll into the movement
 		window.draw(fps_text);
 		window.draw(time_text);
 

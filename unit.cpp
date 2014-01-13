@@ -1,6 +1,6 @@
 #include "unit.hpp"
 
-Unit::Unit(const sf::Vector2f& p)
+OgreUnit::OgreUnit(const sf::Vector2f& p)
 	: rect(sf::Vector2f(2, 2)) // dimensions of the box
 {
     // Set the initial position
@@ -8,31 +8,20 @@ Unit::Unit(const sf::Vector2f& p)
 	rect.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
 
     // Start not moving, so target is our current position
-    set_target_position(p);
-
+    // Apparently you're not allowed to use a method to do this during init
+    target_position = p;
 
 }
 
-// Get the current position of this unit
-// For now the position of the rectangle
-sf::Vector2f Unit::get_position()
+// Set where we want to end up
+// We set the target with integer coordinates, but we move with float
+void OgreUnit::set_target_position(sf::Vector2i& p)
 {
-    return rect.getPosition();
-}
-
-void Unit::set_target_position(sf::Vector2f& p)
-{
-	target_position = p;
-}
-
-// Get the direction to travel this step
-// This will change when we have shortest path finding
-sf::Vector2f Unit::get_direction() {
-    return target_position - get_position();
+	target_position = sf::Vector2f(p);
 }
 
 // Move this unit one step toward its target
-void Unit::move_one(){
+void OgreUnit::move_one(){
     sf::Vector2f direction;
 
     // How far to go
@@ -45,11 +34,11 @@ void Unit::move_one(){
 }
 
 // Move this unit its speed toward its target
-void Unit::move_speed(){
+void OgreUnit::move_speed(){
     int i;
 
     // step for each level of speed
-    for(i = 0; i < speed, i++) { 
+    for(i = 0; i < speed; i++) {
         move_one();
     }
 }
