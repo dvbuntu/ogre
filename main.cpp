@@ -13,7 +13,9 @@ using std::cerr;
 int main(int argc, char* argv[])
 {
     uint64_t time_step = 0;
-    int time;
+
+    // Time for the FPS calculation
+    float time;
 
     // Window with title and our view
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Ogre Battle");
