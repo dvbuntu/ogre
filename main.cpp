@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 
     // How fast is this unit?  Roll into initialization at some point
     // multiple possible constructors?
-    unit.set_speed(10); //hard-coded for now 
+    unit.set_speed(1); //hard-coded for now 
 
 	// create a stringstream for converting fps to string, and text for displaying it
 	std::stringstream fps;

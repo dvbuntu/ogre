@@ -1,7 +1,7 @@
 #include "unit.hpp"
 
 OgreUnit::OgreUnit(const sf::Vector2f& p)
-	: rect(sf::Vector2f(2, 2)) // dimensions of the box
+	: rect(sf::Vector2f(20, 20)) // dimensions of the box
 {
     // Set the initial position
 	rect.setPosition(p);
