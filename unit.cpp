@@ -1,11 +1,16 @@
 #include "unit.hpp"
 
+#ifndef UNIT_SIZE
+#define UNIT_SIZE 10
+#endif
+
 OgreUnit::OgreUnit(const sf::Vector2f& p)
-	: rect(sf::Vector2f(20, 20)) // dimensions of the box
+	: circ(UNIT_SIZE) // radius of the circle
 {
-    // Set the initial position
-	rect.setPosition(p);
-	rect.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
+    // Fix to center and Set the initial position
+    circ.setOrigin(UNIT_SIZE,UNIT_SIZE);
+	circ.setPosition(p);
+	circ.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
 
     // Start not moving, so target is our current position
     // Apparently you're not allowed to use a method to do this during init
@@ -30,7 +35,7 @@ void OgreUnit::move_one(){
     if (length(direction) > 1 ){
         direction = direction / length(direction);
     }
-    rect.move(direction);
+    circ.move(direction);
 }
 
 // Move this unit its speed toward its target

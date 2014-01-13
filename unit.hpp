@@ -13,7 +13,7 @@
 class OgreUnit{
     // This represents the unit for now
     // Maybe future just for radius collision in future
-    sf::RectangleShape rect;
+    sf::CircleShape circ;
 
     // Where we're headed
     sf::Vector2f target_position;
@@ -28,10 +28,10 @@ public:
     OgreUnit(const sf::Vector2f& p);
 
     // Get the current position of this unit
-    // For now the position of the rectangle
+    // For now the position of the circle
     inline sf::Vector2f get_position() const
     {
-        return rect.getPosition();
+        return circ.getPosition();
     }
 
     // Get the direction to travel this step
@@ -65,7 +65,7 @@ public:
 
     inline void draw_on(sf::RenderWindow& window) const
     {
-        window.draw(rect);
+        window.draw(circ);
     }
 
 private:
