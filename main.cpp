@@ -106,14 +106,17 @@ int main(int argc, char* argv[])
                         paused = true;
                     }
                 }
-
-                // Move the unit(s)
-                unit.move_speed();
-
-                // increment the time step
-                time_step++;
             }
 		}
+
+        if (!paused){
+            // Move the unit(s)
+            unit.move_speed();
+
+            // increment the time step
+            time_step++;
+        }
+
 
 		time = timer.getElapsedTime().asSeconds();
 		timer.restart();
