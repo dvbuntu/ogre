@@ -97,8 +97,13 @@ public:
     // Super simple distance to a point
     // How do I get this to accept any type of 2d Vector?  i,f, etc?
     // stupid c++ templates in methods
-    float distance(sf::Vector2i v);
-    float distance(sf::Vector2f v);
+    template <class T>
+    float distance(T v)
+    {
+        sf::Vector2f temp;
+        temp = sf::Vector2f(v) - get_position();
+        return sqrt(temp.x * temp.x + temp.y * temp.y);
+    }
 
 };
 

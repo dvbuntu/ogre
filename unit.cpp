@@ -35,8 +35,8 @@ void OgreUnit::move_one(){
     // Normalized to 1 unit if we're far
     // A little hacky, we add the position because the 
     // distance method will subtract it.  Stupid
-    if (distance(direction + get_position()) > 1 ){
-        direction = direction / distance(direction + get_position());
+    if (distance<>(direction + get_position()) > 1 ){
+        direction = direction / distance<>(direction + get_position());
     }
     circ.move(direction);
 }
@@ -51,21 +51,3 @@ void OgreUnit::move_speed(){
     }
 }
 
-
-// Super simple distance to a point
-// How do I get this to accept any type of 2d Vector?  i,f, etc?
-float OgreUnit::distance(sf::Vector2i v)
-{
-    sf::Vector2f temp;
-    temp = sf::Vector2f(v) - get_position();
-    return sqrt(temp.x * temp.x + temp.y * temp.y);
-}
-
-// Super simple distance to a point
-// How do I get this to accept any type of 2d Vector?  i,f, etc?
-float OgreUnit::distance(sf::Vector2f v)
-{
-    sf::Vector2f temp;
-    temp = v - get_position();
-    return sqrt(temp.x * temp.x + temp.y * temp.y);
-}
