@@ -19,6 +19,8 @@ int main(int argc, char* argv[])
 
     // Window with title and our view
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Ogre Battle");
+    window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(120);
     sf::View view = window.getDefaultView();
 
     // load font
