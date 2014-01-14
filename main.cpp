@@ -14,6 +14,9 @@ int main(int argc, char* argv[])
 {
     uint64_t time_step = 0;
 
+    // Do we step at all
+    bool paused = false;
+
     // Time for the FPS calculation
     float time;
 
@@ -35,6 +38,12 @@ int main(int argc, char* argv[])
     // Future, create a list of units
     // Don't place them on the screen right away
     OgreUnit unit = OgreUnit(view.getCenter());
+
+    // The unit selected
+    OgreUnit *target_unit = NULL;
+
+    // size of the circle should be UNIT_SIZE but it can't seem to understand that...
+    float unit_size = unit.get_size();
 
     // How fast is this unit?  Roll into initialization at some point
     // multiple possible constructors?
@@ -65,34 +74,49 @@ int main(int argc, char* argv[])
 			// clicking the OS's close button or pressing escape
 			if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
 				window.close();
-			// left clicking moves the unit
-			else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
-			{
-                // this is where we clicked
-				auto position = sf::Mouse::getPosition(window);
-                // change unit target
-                // Future, detect what unit we clicked (if any)
-                // So we need a method to determine if clicked within unit radius
-                // And if there's multiple take the closest
-                // Or go to submenu where you pick the unit
-                // do all this while paused, then click to where you want to move
-                // or always go to a unit submenu about what to do
-				unit.set_target_position(position);
-			}
-			else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
+
+            if (paused)
             {
-                // TODO: bring up a menu
-                // For now, just set target as well
-				auto position = sf::Mouse::getPosition(window);
-				unit.set_target_position(position);
+
+                // left clicking moves the unit or selects it and pauses game
+                // see max's tron2
+                if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+                {
+                    // ugh, move this code to another function or something
+                    // this is where we clicked
+                    sf::Vector2f position = sf::Vector2f(sf::Mouse::getPosition(window));
+                    // give target unit new move order
+                    (*target_unit).set_target_position(position);
+                    (*target_unit).set_select_state(false);
+                    paused = false;
+                }
+			}
+            else
+            {
+                if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+                {
+                    // this is where we clicked
+                    sf::Vector2f position = sf::Vector2f(sf::Mouse::getPosition(window));
+                    // change target unit
+                    // check if we clicked near a unit
+                    // This clicks on the circle itself
+                    if (unit.distance(position) < unit_size) {
+                        target_unit = &unit;
+                        (*target_unit).set_select_state(true);
+                        paused = true;
+                    }
+                }
+
+                // Move the unit(s)
+                unit.move_speed();
+
+                // increment the time step
+                time_step++;
             }
 		}
 
 		time = timer.getElapsedTime().asSeconds();
 		timer.restart();
-
-        // Move the unit(s)
-        unit.move_speed();
 
 		// update fps text
 		fps << (int)(1 / time) << " FPS";
@@ -112,9 +136,6 @@ int main(int argc, char* argv[])
 
 		// refresh the window
 		window.display();
-
-        // increment the time step
-        time_step++;
 	}
 
 	return 0;

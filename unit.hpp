@@ -10,6 +10,10 @@
 #define MAX_NAME_LENGTH 100
 #endif
 
+#ifndef UNIT_SIZE
+#define UNIT_SIZE 10
+#endif
+
 class OgreUnit{
     // This represents the unit for now
     // Maybe future just for radius collision in future
@@ -47,6 +51,26 @@ public:
         return name;
     }
 
+    // How big am I?
+    inline float get_size() const
+    {
+        return circ.getRadius();
+    }
+
+    // Draw a ring around the unit to show it's selected
+    inline void set_select_state(bool select)
+    {
+        if (select)
+        {
+            circ.setOutlineColor(sf::Color::Green);
+            circ.setOutlineThickness(UNIT_SIZE/5);
+        }
+        else
+        {
+            circ.setOutlineThickness(0);
+        }
+    }
+
     // Set the speed in units/time step
     void set_speed(int s)
     {
@@ -55,7 +79,9 @@ public:
 
     // Set where we want to end up
     // We set the target with integer coordinates, but we move with float
+    // Because templates don't work
     void set_target_position(sf::Vector2i& p);
+    void set_target_position(sf::Vector2f& p);
 
     // Move this unit one step toward its target
     void move_one();
@@ -68,13 +94,11 @@ public:
         window.draw(circ);
     }
 
-private:
-    // Super simple magnitude of a 2d vector
+    // Super simple distance to a point
     // How do I get this to accept any type of 2d Vector?  i,f, etc?
-    float length(sf::Vector2f v)
-    {
-        return sqrt(v.x * v.x + v.y * v.y);
-    }
+    // stupid c++ templates in methods
+    float distance(sf::Vector2i v);
+    float distance(sf::Vector2f v);
 
 };
 

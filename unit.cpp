@@ -1,9 +1,5 @@
 #include "unit.hpp"
 
-#ifndef UNIT_SIZE
-#define UNIT_SIZE 10
-#endif
-
 OgreUnit::OgreUnit(const sf::Vector2f& p)
 	: circ(UNIT_SIZE) // radius of the circle
 {
@@ -25,6 +21,11 @@ void OgreUnit::set_target_position(sf::Vector2i& p)
 	target_position = sf::Vector2f(p);
 }
 
+void OgreUnit::set_target_position(sf::Vector2f& p)
+{
+	target_position = p;
+}
+
 // Move this unit one step toward its target
 void OgreUnit::move_one(){
     sf::Vector2f direction;
@@ -32,8 +33,10 @@ void OgreUnit::move_one(){
     // How far to go
     direction = get_direction();
     // Normalized to 1 unit if we're far
-    if (length(direction) > 1 ){
-        direction = direction / length(direction);
+    // A little hacky, we add the position because the 
+    // distance method will subtract it.  Stupid
+    if (distance(direction + get_position()) > 1 ){
+        direction = direction / distance(direction + get_position());
     }
     circ.move(direction);
 }
@@ -48,3 +51,21 @@ void OgreUnit::move_speed(){
     }
 }
 
+
+// Super simple distance to a point
+// How do I get this to accept any type of 2d Vector?  i,f, etc?
+float OgreUnit::distance(sf::Vector2i v)
+{
+    sf::Vector2f temp;
+    temp = sf::Vector2f(v) - get_position();
+    return sqrt(temp.x * temp.x + temp.y * temp.y);
+}
+
+// Super simple distance to a point
+// How do I get this to accept any type of 2d Vector?  i,f, etc?
+float OgreUnit::distance(sf::Vector2f v)
+{
+    sf::Vector2f temp;
+    temp = v - get_position();
+    return sqrt(temp.x * temp.x + temp.y * temp.y);
+}
