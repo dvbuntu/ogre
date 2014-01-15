@@ -1,6 +1,8 @@
 // g++ -std=c++11 main.cpp -lsfml-graphics -lsfml-window -lsfml-system
 #include <cmath>
+#include <cstdlib>
 #include <iostream>
+#include <list>
 #include <sstream>
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
@@ -8,11 +10,15 @@
 // ogre specific includes
 #include "unit.hpp"
 
+#define NUM_UNITS 5
+
 using std::cerr;
 
 int main(int argc, char* argv[])
 {
     uint64_t time_step = 0;
+
+    int i;
 
     // Do we step at all
     bool paused = false;
@@ -34,20 +40,19 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    // create a Unit to move around
-    // Future, create a list of units
-    // Don't place them on the screen right away
-    OgreUnit unit = OgreUnit(view.getCenter());
+    // create units to move around
+    std::list<OgreUnit*> units;
+    for (i = 0; i < NUM_UNITS; i++)
+    {
+        units.push_front(new OgreUnit(view.getCenter() + sf::Vector2f(rand()%100,rand()%100)));
+        units.front()->set_speed(rand()%5);
+    }
 
     // The unit selected
-    OgreUnit *target_unit = NULL;
+    OgreUnit *target_unit = units.back();
 
     // size of the circle should be UNIT_SIZE but it can't seem to understand that...
-    float unit_size = unit.get_size();
-
-    // How fast is this unit?  Roll into initialization at some point
-    // multiple possible constructors?
-    unit.set_speed(1); //hard-coded for now 
+    float unit_size = target_unit->get_size();
 
 	// create a stringstream for converting fps to string, and text for displaying it
 	std::stringstream fps;
@@ -100,10 +105,16 @@ int main(int argc, char* argv[])
                     // change target unit
                     // check if we clicked near a unit
                     // This clicks on the circle itself
-                    if (unit.distance(position) < unit_size) {
-                        target_unit = &unit;
-                        (*target_unit).set_select_state(true);
-                        paused = true;
+                    for(auto unit : units)
+                    {
+                        // just check each circle
+                        // for now, go with the first one
+                        if (unit->distance<>(position) < unit_size) {
+                            target_unit = unit;
+                            target_unit->set_select_state(true);
+                            paused = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -111,7 +122,7 @@ int main(int argc, char* argv[])
 
         if (!paused){
             // Move the unit(s)
-            unit.move_speed();
+            target_unit->move_speed();
 
             // increment the time step
             time_step++;
@@ -133,7 +144,10 @@ int main(int argc, char* argv[])
 
 		// draw everything to the window
 		window.clear(sf::Color::White);
-        unit.draw_on(window); // maybe roll into the movement
+        for(auto unit : units)
+        {
+            unit->draw_on(window); // maybe roll into the movement
+        }
 		window.draw(fps_text);
 		window.draw(time_text);
 
