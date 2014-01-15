@@ -23,6 +23,9 @@ int main(int argc, char* argv[])
     // Do we step at all
     bool paused = false;
 
+    // Did I click on a unit?
+    bool select_unit;
+
     // Time for the FPS calculation
     float time;
 
@@ -87,12 +90,40 @@ int main(int argc, char* argv[])
                 // see max's tron2
                 if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
                 {
-                    // ugh, move this code to another function or something
+                    // reset unit selection bool
+                    select_unit = false;
+
                     // this is where we clicked
                     sf::Vector2f position = sf::Vector2f(sf::Mouse::getPosition(window));
-                    // give target unit new move order
-                    (*target_unit).set_target_position(position);
-                    (*target_unit).set_select_state(false);
+
+                    // check if we clicked a unit
+                    // TODO put this in a function!
+                    for(auto unit : units)
+                    {
+                        // just check each circle
+                        // for now, go with the first one
+                        if (unit->distance<>(position) < unit_size) {
+                            // unselect old unit
+                            target_unit->set_select_state(false);
+
+                            // select the new unit
+                            target_unit = unit;
+                            target_unit->set_select_state(true);
+                            paused = true;
+                            select_unit = true;
+                            break;
+                        }
+                    }
+                    if (!select_unit)
+                    {
+                        // give target unit new move order
+                        (*target_unit).set_target_position(position);
+                        (*target_unit).set_select_state(false);
+                        paused = false;
+                    }
+                }
+                else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
+                {
                     paused = false;
                 }
 			}
@@ -116,6 +147,10 @@ int main(int argc, char* argv[])
                             break;
                         }
                     }
+                }
+                else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
+                {
+                    paused = true;
                 }
             }
 		}
