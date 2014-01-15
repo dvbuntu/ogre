@@ -38,6 +38,11 @@ public:
         return circ.getPosition();
     }
 
+    inline sf::Vector2f get_target_position() const
+    {
+        return target_position;
+    }
+
     // Get the direction to travel this step
     // This will change when we have shortest path finding
     inline sf::Vector2f get_direction() const

@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     for (i = 0; i < NUM_UNITS; i++)
     {
         units.push_front(new OgreUnit(view.getCenter() + sf::Vector2f(rand()%100,rand()%100)));
-        units.front()->set_speed(rand()%5);
+        units.front()->set_speed(rand()%5 + 1);
     }
 
     // The unit selected
@@ -122,7 +122,11 @@ int main(int argc, char* argv[])
 
         if (!paused){
             // Move the unit(s)
-            target_unit->move_speed();
+            for(auto unit : units)
+            {
+                if (unit->get_position() != unit->get_target_position())
+                    unit->move_speed();
+            }
 
             // increment the time step
             time_step++;
