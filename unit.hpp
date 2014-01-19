@@ -82,11 +82,6 @@ public:
         speed = s;
     }
 
-    // Set where we want to end up
-    // We set the target with integer coordinates, but we move with float
-    // Because templates don't work
-    void set_target_position(sf::Vector2i& p);
-    void set_target_position(sf::Vector2f& p);
 
     // Move this unit one step toward its target
     void move_one();
@@ -108,6 +103,14 @@ public:
         sf::Vector2f temp;
         temp = sf::Vector2f(v) - get_position();
         return sqrt(temp.x * temp.x + temp.y * temp.y);
+    }
+
+    // Set where we want to end up
+    // We set the target with integer coordinates, but we move with float
+    template <class T>
+    void set_target_position(T p)
+    {
+        target_position = sf::Vector2f(p);
     }
 
 };

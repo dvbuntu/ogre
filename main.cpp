@@ -117,8 +117,8 @@ int main(int argc, char* argv[])
                     if (!select_unit)
                     {
                         // give target unit new move order
-                        (*target_unit).set_target_position(position);
-                        (*target_unit).set_select_state(false);
+                        target_unit->set_target_position(position);
+                        target_unit->set_select_state(false);
                         paused = false;
                     }
                 }

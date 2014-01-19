@@ -14,18 +14,6 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 
 }
 
-// Set where we want to end up
-// We set the target with integer coordinates, but we move with float
-void OgreUnit::set_target_position(sf::Vector2i& p)
-{
-	target_position = sf::Vector2f(p);
-}
-
-void OgreUnit::set_target_position(sf::Vector2f& p)
-{
-	target_position = p;
-}
-
 // Move this unit one step toward its target
 void OgreUnit::move_one(){
     sf::Vector2f direction;
