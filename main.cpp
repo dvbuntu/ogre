@@ -32,6 +32,9 @@ int main(int argc, char* argv[])
     // Time for the FPS calculation
     float time;
 
+    // where we click
+    sf::Vector2f position;
+
     // Window with title and our view
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Ogre Battle");
     window.setVerticalSyncEnabled(true);
@@ -97,7 +100,7 @@ int main(int argc, char* argv[])
                     select_unit = false;
 
                     // this is where we clicked
-                    sf::Vector2f position = sf::Vector2f(sf::Mouse::getPosition(window));
+                    position = sf::Vector2f(sf::Mouse::getPosition(window));
 
                     select_unit = check_distances(units,&target_unit,&paused, position, unit_size);
                     if (!select_unit)
@@ -118,21 +121,9 @@ int main(int argc, char* argv[])
                 if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
                 {
                     // this is where we clicked
-                    sf::Vector2f position = sf::Vector2f(sf::Mouse::getPosition(window));
+                    position = sf::Vector2f(sf::Mouse::getPosition(window));
                     // change target unit
-                    // check if we clicked near a unit
-                    // This clicks on the circle itself
-                    for(auto unit : units)
-                    {
-                        // just check each circle
-                        // for now, go with the first one
-                        if (unit->distance<>(position) < unit_size) {
-                            target_unit = unit;
-                            target_unit->set_select_state(true);
-                            paused = true;
-                            break;
-                        }
-                    }
+                    select_unit = check_distances(units,&target_unit,&paused, position, unit_size);
                 }
                 else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
                 {
