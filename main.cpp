@@ -14,6 +14,9 @@
 
 using std::cerr;
 
+// maybe make a 'helper' cpp file
+bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size);
+
 int main(int argc, char* argv[])
 {
     uint64_t time_step = 0;
@@ -96,24 +99,7 @@ int main(int argc, char* argv[])
                     // this is where we clicked
                     sf::Vector2f position = sf::Vector2f(sf::Mouse::getPosition(window));
 
-                    // check if we clicked a unit
-                    // TODO put this in a function!
-                    for(auto unit : units)
-                    {
-                        // just check each circle
-                        // for now, go with the first one
-                        if (unit->distance<>(position) < unit_size) {
-                            // unselect old unit
-                            target_unit->set_select_state(false);
-
-                            // select the new unit
-                            target_unit = unit;
-                            target_unit->set_select_state(true);
-                            paused = true;
-                            select_unit = true;
-                            break;
-                        }
-                    }
+                    select_unit = check_distances(units,&target_unit,&paused, position, unit_size);
                     if (!select_unit)
                     {
                         // give target unit new move order
@@ -196,3 +182,28 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+
+
+bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size)
+{
+    bool select_unit = false;
+    // check if we clicked a unit
+    for(auto unit : units)
+    {
+        // just check each circle
+        // for now, go with the first one
+        if (unit->distance<>(position) < unit_size) {
+            // unselect old unit
+            (*target_unit)->set_select_state(false);
+
+            // select the new unit
+            (*target_unit) = unit;
+            (*target_unit)->set_select_state(true);
+            (*paused) = true;
+            select_unit = true;
+            break;
+        }
+    }
+    return select_unit;
+}
+
