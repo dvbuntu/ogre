@@ -89,6 +89,13 @@ int main(int argc, char* argv[])
 			if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
 				window.close();
 
+			// toggle pause with spacebar
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+            {
+                paused = !paused;
+                continue;
+            }
+
             if (paused)
             {
 
