@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-std=c++11 -Wall -Wextra -ggdb
+CXXFLAGS=-std=c++11 -Wall -Wextra -ggdb -fpermissive
 LIBS=-lsfml-graphics -lsfml-window -lsfml-system
 
 #link step
