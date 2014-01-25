@@ -7,7 +7,7 @@
 #include <math.h>
 
 #ifndef PLAYER_HPP
-#define PLAYER_HPP
+#include "player.hpp"
 #endif
 
 #ifndef MAX_NAME_LENGTH
@@ -27,30 +27,28 @@ class OgreUnit{
     sf::Vector2f target_position;
 
     // What's my name (or the leader's name)
-    std::string name[MAX_NAME_LENGTH];
+    std::string name;
 
     // Speed class, how many steps in a round
     int speed;
 
     // Who owns this unit
-    OgrePlayer owner;
+    OgrePlayer *owner;
 
 public:
     OgreUnit(const sf::Vector2f& p);
 
     // Who is my general?
-    // TODO: actual player object
-    inline int get_owner() const
+    inline OgrePlayer *get_owner()
     {
         return owner;
     }
 
     // Set my general, Maybe roll this into constructor
-    // TODO: actual player object
-    inline void set_owner(int player) const
+    inline void set_owner(OgrePlayer *player)
     {
         owner = player;
-        circl.setFillColor(owner.get_color());
+        circ.setFillColor(owner->get_color());
     }
 
 
@@ -124,7 +122,6 @@ public:
     }
 
     // Super simple distance to a point
-    // How do I get this to accept any type of 2d Vector?  i,f, etc?
     // stupid c++ templates in methods
     template <class T>
     float distance(T v)

@@ -1,6 +1,6 @@
 #include "town.hpp"
 
-OgreTown::OgreTown(const sf::Vector2f& p, const OgrePlayer player)
+OgreTown::OgreTown(const sf::Vector2f& p)
 	: circ(TOWN_SIZE) // radius of the circle
 {
     // Fix to center and Set the initial position
@@ -11,19 +11,17 @@ OgreTown::OgreTown(const sf::Vector2f& p, const OgrePlayer player)
 	circ.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
 
     // Give the town some gray walls
-    circ.setOutlineColor(sf::Color::Color(127, 127, 127);
+    circ.setOutlineColor(sf::Color(127, 127, 127));
     circ.setOutlineThickness(TOWN_SIZE/5);
-
-    owner = player;
 }
 
 // Check if town has been captured and set new owner
-void OgreTown::check_conquest(list<OgreUnit*> units){
+// Maybe change to unit checks when it stops moving
+void OgreTown::check_conquest(std::list<OgreUnit*> units){
     sf::Vector2f town_position = get_position();
 
-    // TODO: actual player object
-    OgrePlayer possible_owner = NO_PLAYER;
-    OgrePlayer unit_owner;
+    OgrePlayer *possible_owner = nullptr;
+    OgrePlayer *unit_owner;
     bool contested = false;
 
     // step for each level of speed
@@ -32,15 +30,16 @@ void OgreTown::check_conquest(list<OgreUnit*> units){
         if (unit->distance<>(town_position) < TOWN_SIZE)
         {
             // Set new possible owner
-            if (possible_owner == NO_PLAYER)
+            if (possible_owner != nullptr)
                 possible_owner = unit_owner;
             // Multiple units, don't change owner
-            else if (possible_owner.get_id() != unit_owner.get_id())
+            // just comparing pointers, not actual ids...
+            else if (possible_owner == unit_owner)
                 contested = true;
                 break;
         }
     }
-    if (!contested)
+    if (!contested && possible_owner != nullptr)
         set_owner(possible_owner);
 }
 

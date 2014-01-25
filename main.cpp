@@ -8,6 +8,10 @@
 #include <stdint.h>
 
 // ogre specific includes
+#ifndef PLAYER_HPP
+#include "player.hpp"
+#endif
+
 #ifndef UNIT_HPP
 #include "unit.hpp"
 #endif
@@ -57,8 +61,8 @@ int main(int argc, char* argv[])
     }
 
     // Create two players
-    OgrePlayer player = PLAYER;
-    OgrePlayer enemy = ENEMY;
+    OgrePlayer player = OgrePlayer(PLAYER);
+    OgrePlayer enemy = OgrePlayer(ENEMY);
 
     // create units to move around
     std::list<OgreUnit*> units;
@@ -69,11 +73,11 @@ int main(int argc, char* argv[])
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
         {
-            units.front()->set_owner(PLAYER);
+            units.front()->set_owner(&player);
         }
         else
         {
-            units.front()->set_owner(ENEMY);
+            units.front()->set_owner(&enemy);
         }
     }
 
@@ -87,15 +91,15 @@ int main(int argc, char* argv[])
     std::list<OgreTown*> towns;
     for (i = 0; i < NUM_TOWNS; i++)
     {
-        towns.push_front(new OgreUnit(view.getCenter() + sf::Vector2f(rand()%100,rand()%100)));
+        towns.push_front(new OgreTown(view.getCenter() + sf::Vector2f(rand()%100,rand()%100)));
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
         {
-            towns.front()->set_owner(PLAYER);
+            towns.front()->set_owner(&player);
         }
         else
         {
-            towns.front()->set_owner(ENEMY);
+            towns.front()->set_owner(&enemy);
         }
     }
 

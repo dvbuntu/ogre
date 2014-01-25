@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <cfloat>
+#include <list>
 #include <SFML/Graphics.hpp>
 #include <math.h>
 
@@ -28,25 +29,25 @@ class OgreTown{
     sf::CircleShape circ;
 
     // What's my name (or the leader's name)
-    std::string name[MAX_NAME_LENGTH];
+    std::string name;
 
     // Who owns the town;
-    OgrePlayer owner;
+    OgrePlayer *owner;
 
 public:
     OgreTown(const sf::Vector2f& p);
 
     // Who run barter town?
-    inline int get_owner() const
+    inline OgrePlayer *get_owner()
     {
         return owner;
     }
 
     // change owner, as well as color
-    inline void set_owner(int player) const
+    inline void set_owner(OgrePlayer *player)
     {
         owner = player;
-        circ.setFillColor(owner.get_color());
+        circ.setFillColor(owner->get_color());
     }
 
     // Get the current position of this town
@@ -74,7 +75,7 @@ public:
     }
 
     // Check if town has been captured and set new owner
-    void check_conquest(list<OgreUnit*> units);
+    void check_conquest(std::list<OgreUnit*> units);
 
 };
 

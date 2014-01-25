@@ -5,15 +5,15 @@
 #include <SFML/Graphics.hpp>
 
 #ifndef NO_PLAYER
-#define NO_PLAYER OgrePlayer(0)
+#define NO_PLAYER 0
 #endif
 
 #ifndef PLAYER
-#define PLAYER OgrePlayer(1)
+#define PLAYER 1
 #endif
 
 #ifndef ENEMY
-#define ENEMY OgrePlayer(2)
+#define ENEMY 2
 #endif
 
 class OgrePlayer{
@@ -30,15 +30,15 @@ public:
     }
 
     // What do I wear?
-    inline int get_color() const
+    sf::Color get_color() const
     {
         return color;
     }
 
-    bool operator == (const OgrePlayer A) const
+    bool operator == (OgrePlayer* A) const
     {
-        return id == A.get_id(); // feels a little dirty just grabbing the id
+        return this->id == A->get_id();
     }
-}
+};
 
 #endif
