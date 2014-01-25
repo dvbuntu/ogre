@@ -6,6 +6,10 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
+#endif
+
 #ifndef MAX_NAME_LENGTH
 #define MAX_NAME_LENGTH 100
 #endif
@@ -23,13 +27,32 @@ class OgreUnit{
     sf::Vector2f target_position;
 
     // What's my name (or the leader's name)
-    char name[MAX_NAME_LENGTH];
+    std::string name[MAX_NAME_LENGTH];
 
     // Speed class, how many steps in a round
     int speed;
 
+    // Who owns this unit
+    OgrePlayer owner;
+
 public:
     OgreUnit(const sf::Vector2f& p);
+
+    // Who is my general?
+    // TODO: actual player object
+    inline int get_owner() const
+    {
+        return owner;
+    }
+
+    // Set my general, Maybe roll this into constructor
+    // TODO: actual player object
+    inline void set_owner(int player) const
+    {
+        owner = player;
+        circl.setFillColor(owner.get_color());
+    }
+
 
     // Get the current position of this unit
     // For now the position of the circle
@@ -51,9 +74,15 @@ public:
     }
 
     // Shout my name!
-    inline char* get_name()
+    inline std::string get_name()
     {
         return name;
+    }
+
+    // What's my name?
+    inline void set_name(std::string unit_name)
+    {
+        name = unit_name;
     }
 
     // How big am I?

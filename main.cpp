@@ -8,9 +8,16 @@
 #include <stdint.h>
 
 // ogre specific includes
+#ifndef UNIT_HPP
 #include "unit.hpp"
+#endif
+
+#ifndef TOWN_HPP
+#include "town.hpp"
+#endif
 
 #define NUM_UNITS 5
+#define NUM_TOWNS 10
 
 using std::cerr;
 
@@ -49,12 +56,25 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    // Create two players
+    OgrePlayer player = PLAYER;
+    OgrePlayer enemy = ENEMY;
+
     // create units to move around
     std::list<OgreUnit*> units;
     for (i = 0; i < NUM_UNITS; i++)
     {
         units.push_front(new OgreUnit(view.getCenter() + sf::Vector2f(rand()%100,rand()%100)));
         units.front()->set_speed(rand()%5 + 1);
+        // Dirty hack for now, TODO
+        if (rand()%100 > 50)
+        {
+            units.front()->set_owner(PLAYER);
+        }
+        else
+        {
+            units.front()->set_owner(ENEMY);
+        }
     }
 
     // The unit selected
@@ -62,6 +82,22 @@ int main(int argc, char* argv[])
 
     // size of the circle should be UNIT_SIZE but it can't seem to understand that...
     float unit_size = target_unit->get_size();
+
+    // create some towns to catpure
+    std::list<OgreTown*> towns;
+    for (i = 0; i < NUM_TOWNS; i++)
+    {
+        towns.push_front(new OgreUnit(view.getCenter() + sf::Vector2f(rand()%100,rand()%100)));
+        // Dirty hack for now, TODO
+        if (rand()%100 > 50)
+        {
+            towns.front()->set_owner(PLAYER);
+        }
+        else
+        {
+            towns.front()->set_owner(ENEMY);
+        }
+    }
 
 	// create a stringstream for converting fps to string, and text for displaying it
 	std::stringstream fps;
@@ -147,6 +183,12 @@ int main(int argc, char* argv[])
                     unit->move_speed();
             }
 
+            // Check town ownership
+            for(auto town : towns)
+            {
+                town->check_conquest(units);
+            }
+
             // increment the time step
             time_step++;
         }
@@ -170,6 +212,10 @@ int main(int argc, char* argv[])
         for(auto unit : units)
         {
             unit->draw_on(window); // maybe roll into the movement
+        }
+        for(auto town : towns)
+        {
+            town->draw_on(window); // maybe roll into the movement
         }
 		window.draw(fps_text);
 		window.draw(time_text);
