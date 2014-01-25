@@ -23,6 +23,10 @@
 #define TOWN_SIZE 20
 #endif
 
+#ifndef TOWN_TRANS
+#define TOWN_TRANS 160
+#endif
+
 class OgreTown{
     // This represents the town for now
     // Maybe future just for radius collision in future
@@ -47,7 +51,9 @@ public:
     inline void set_owner(OgrePlayer *player)
     {
         owner = player;
-        circ.setFillColor(owner->get_color());
+        sf::Color temp_color = owner->get_color();
+        temp_color.a = TOWN_TRANS;
+        circ.setFillColor(temp_color);
     }
 
     // Get the current position of this town
