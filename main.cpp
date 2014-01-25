@@ -21,7 +21,7 @@
 #endif
 
 #define NUM_UNITS 5
-#define NUM_TOWNS 10
+#define NUM_TOWNS 3
 
 using std::cerr;
 
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
     std::list<OgreTown*> towns;
     for (i = 0; i < NUM_TOWNS; i++)
     {
-        towns.push_front(new OgreTown(view.getCenter() + sf::Vector2f(rand()%100,rand()%100)));
+        towns.push_front(new OgreTown(view.getCenter() + sf::Vector2f(rand()%300,rand()%300)));
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
         {
@@ -213,13 +213,15 @@ int main(int argc, char* argv[])
 
 		// draw everything to the window
 		window.clear(sf::Color::White);
-        for(auto unit : units)
-        {
-            unit->draw_on(window); // maybe roll into the movement
-        }
+        //order of drawing is important, put background first
+        // then features like towns and finally units
         for(auto town : towns)
         {
             town->draw_on(window); // maybe roll into the movement
+        }
+        for(auto unit : units)
+        {
+            unit->draw_on(window); // maybe roll into the movement
         }
 		window.draw(fps_text);
 		window.draw(time_text);

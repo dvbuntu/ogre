@@ -30,7 +30,7 @@ void OgreTown::check_conquest(std::list<OgreUnit*> units){
         if (unit->distance<>(town_position) < TOWN_SIZE)
         {
             // Set new possible owner
-            if (possible_owner != nullptr)
+            if (possible_owner == nullptr)
                 possible_owner = unit_owner;
             // Multiple units, don't change owner
             // just comparing pointers, not actual ids...
