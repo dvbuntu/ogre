@@ -197,6 +197,15 @@ int main(int argc, char* argv[])
             {
                 if (unit->get_position() != unit->get_target_position())
                     unit->move_speed();
+                // give enemy units a new target
+                // But they'll pause for at least one round
+                // TODO: actual AI like moving to player towns
+                // TODO: AI controlled by unit itself with helper AI fcns
+                else if (unit->get_owner() == &enemy)
+                {
+                    unit->set_target_position(
+                    (*random_element(towns.begin(),towns.end()))->get_position());
+                }
             }
 
             // Check town ownership
