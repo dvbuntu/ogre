@@ -21,7 +21,7 @@
 #endif
 
 #define NUM_UNITS 5
-#define NUM_TOWNS 3
+#define NUM_TOWNS 6
 
 using std::cerr;
 
@@ -68,7 +68,8 @@ int main(int argc, char* argv[])
     std::list<OgreUnit*> units;
     for (i = 0; i < NUM_UNITS; i++)
     {
-        units.push_front(new OgreUnit(view.getCenter() + sf::Vector2f(rand()%100,rand()%100)));
+        units.push_front(new OgreUnit(view.getCenter()
+                    + sf::Vector2f(rand()%200 - 100,rand()%200 - 100)));
         units.front()->set_speed(rand()%5 + 1);
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
@@ -91,7 +92,8 @@ int main(int argc, char* argv[])
     std::list<OgreTown*> towns;
     for (i = 0; i < NUM_TOWNS; i++)
     {
-        towns.push_front(new OgreTown(view.getCenter() + sf::Vector2f(rand()%300,rand()%300)));
+        towns.push_front(new OgreTown(view.getCenter()
+                    + sf::Vector2f(rand()%400 - 200,rand()%400 - 200)));
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
         {
@@ -241,8 +243,10 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
     for(auto unit : units)
     {
         // just check each circle
-        // for now, go with the first one
-        if (unit->distance<>(position) < unit_size) {
+        // Player not allowed to move enemy units
+        if (unit->distance<>(position) < unit_size
+                && unit->get_owner()->get_id() != ENEMY)
+        {
             // unselect old unit
             (*target_unit)->set_select_state(false);
 
