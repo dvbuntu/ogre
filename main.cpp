@@ -6,6 +6,7 @@
 #include <sstream>
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
+#include <time.h>
 
 // ogre specific includes
 #ifndef PLAYER_HPP
@@ -27,6 +28,9 @@ using std::cerr;
 
 // maybe make a 'helper' cpp file
 bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size);
+
+template <typename I>
+I random_element(I begin, I end);
 
 int main(int argc, char* argv[])
 {
@@ -64,30 +68,6 @@ int main(int argc, char* argv[])
     OgrePlayer player = OgrePlayer(PLAYER);
     OgrePlayer enemy = OgrePlayer(ENEMY);
 
-    // create units to move around
-    std::list<OgreUnit*> units;
-    for (i = 0; i < NUM_UNITS; i++)
-    {
-        units.push_front(new OgreUnit(view.getCenter()
-                    + sf::Vector2f(rand()%200 - 100,rand()%200 - 100)));
-        units.front()->set_speed(rand()%5 + 1);
-        // Dirty hack for now, TODO
-        if (rand()%100 > 50)
-        {
-            units.front()->set_owner(&player);
-        }
-        else
-        {
-            units.front()->set_owner(&enemy);
-        }
-    }
-
-    // The unit selected
-    OgreUnit *target_unit = units.back();
-
-    // size of the circle should be UNIT_SIZE but it can't seem to understand that...
-    float unit_size = target_unit->get_size();
-
     // create some towns to catpure
     std::list<OgreTown*> towns;
     for (i = 0; i < NUM_TOWNS; i++)
@@ -104,6 +84,36 @@ int main(int argc, char* argv[])
             towns.front()->set_owner(&enemy);
         }
     }
+
+
+    // create units to move around
+    std::list<OgreUnit*> units;
+    for (i = 0; i < NUM_UNITS; i++)
+    {
+        units.push_front(new OgreUnit(view.getCenter()
+                    + sf::Vector2f(rand()%200 - 100,rand()%200 - 100)));
+        units.front()->set_speed(rand()%5 + 1);
+        // Dirty hack for now, TODO
+        if (rand()%100 > 50)
+        {
+            units.front()->set_owner(&player);
+        }
+        else
+        {
+            units.front()->set_owner(&enemy);
+            // send it to a random town...
+            // They all seem to be walking to the same town...
+            // TODO: True AI, walk toward player towns
+            units.front()->set_target_position(
+                    (*random_element(towns.begin(),towns.end()))->get_position());
+        }
+    }
+
+    // The unit selected
+    OgreUnit *target_unit = units.back();
+
+    // size of the circle should be UNIT_SIZE but it can't seem to understand that...
+    float unit_size = target_unit->get_size();
 
 	// create a stringstream for converting fps to string, and text for displaying it
 	std::stringstream fps;
@@ -261,3 +271,17 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
     return select_unit;
 }
 
+// TODO: put this in a helper .cpp file (or even just a header file
+template <typename I>
+I random_element(I begin, I end)
+{
+    unsigned long n = std::distance(begin, end);
+    // We have to store this in a variable or it makes divisor huge
+    unsigned long temp = RAND_MAX;
+    unsigned long divisor = (temp + 1) / n;
+
+    unsigned long k;
+    do { k = std::rand() / divisor; } while (k >= n);
+
+    return std::next(begin, k);
+}
