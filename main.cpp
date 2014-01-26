@@ -28,6 +28,7 @@ using std::cerr;
 
 // maybe make a 'helper' cpp file
 bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size);
+OgrePlayer *check_win(std::list<OgreTown*> towns);
 
 template <typename I>
 I random_element(I begin, I end);
@@ -64,7 +65,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    // Create two players
+    // Create two players 
     OgrePlayer player = OgrePlayer(PLAYER);
     OgrePlayer enemy = OgrePlayer(ENEMY);
 
@@ -214,6 +215,13 @@ int main(int argc, char* argv[])
                 town->check_conquest(units);
             }
 
+            // Check win condition
+            if (check_win(towns) != nullptr)
+            {
+                // TODO: splash 'winner is: ...' and pause game
+                break;
+            }
+
             // increment the time step
             time_step++;
         }
@@ -278,6 +286,27 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
         }
     }
     return select_unit;
+}
+
+OgrePlayer *check_win(std::list<OgreTown*> towns)
+{
+    OgrePlayer *winner = nullptr;
+
+    // Check to see if same player owns all towns
+    for (auto town : towns)
+    {
+        // First town
+        if (winner == nullptr)
+            winner = town->get_owner();
+        // Multiple players still have towns
+        else if (winner != town->get_owner())
+        {
+            winner = nullptr;
+            break;
+        }
+    }
+
+    return winner;
 }
 
 // TODO: put this in a helper .cpp file (or even just a header file
