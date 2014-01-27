@@ -23,7 +23,7 @@
 
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
-#define FIGHT_THRESH (2*UNIT_SIZE)
+#define FIGHT_THRESH (3*UNIT_SIZE)
 
 using std::cerr;
 

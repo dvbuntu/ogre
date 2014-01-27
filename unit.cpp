@@ -55,6 +55,7 @@ void OgreUnit::fight(OgreUnit *enemy)
 
     // Get the retreat 
     retreat = get_direction<>(enemy->get_position());
+    retreat += retreat; // a little more distance between
 
     if (result > 0)// I win
     {
