@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <cfloat>
+#include <sstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <math.h>
@@ -31,8 +32,7 @@ class OgreUnit{
     std::string name;
 
     // Info about the unit
-    std::string info_str;
-    sf::Text info;
+    std::stringstream info_str;
 
     // Speed class, how many steps in a round
     int speed;
@@ -87,16 +87,16 @@ public:
         return position - get_position();
     }
 
+    inline std::string get_info()
+    {
+        return info_str.str();
+    }
+
     // Set some information about the unit
     // have to remember to update this after a battle
     inline void set_info(int str, sf::Font font, int size)
     {
-        info_str = std::to_string(str);
-        info.setString(info_str);
-        info.setCharacterSize(size);
-        info.setFont(font);
-        info.setColor(sf::Color::Black);
-        info.setStyle(sf::Text::Bold);
+        info_str << str;
     }
 
     // Shout my name!
@@ -164,10 +164,6 @@ public:
     inline void draw_on(sf::RenderWindow& window)
     {
         window.draw(circ);
-        // still won't show text...
-        std::string foo = info.getString();
-        info.setPosition(get_position());
-        window.draw(info);
     }
 
     // Super simple distance to a point

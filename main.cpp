@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
         units.front()->set_speed(rand()%5 + 1);
 
         //Set the info
-        units.front()->set_info(units.front()->get_str(), font, 12);
+        units.front()->set_info(units.front()->get_str(), font, 100);
 
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
@@ -134,6 +134,10 @@ int main(int argc, char* argv[])
 	sf::Text time_text("", font, 12);
 	time_text.setColor(sf::Color(127, 127, 127));
 	time_text.setPosition(10, 30);
+
+    // unit display text
+	sf::Text unit_text("", font, 12);
+	unit_text.setColor(sf::Color::Black);
 
 	sf::Clock timer; // for measuring time per frame
 	sf::Clock clock; // for measuring overall time
@@ -247,12 +251,18 @@ int main(int argc, char* argv[])
 		fps.str("");
 
         // update time step
+		//unit_step_disp << "Unit Step: " << time_step ;
+		unit_text.setString(time_step_disp.str());
+		//unit_step_disp.str("");
+
+        // update time step
 		time_step_disp << "Time Step: " << time_step ;
 		time_text.setString(time_step_disp.str());
 		time_step_disp.str("");
 
 		// draw everything to the window
 		window.clear(sf::Color::White);
+
         //order of drawing is important, put background first
         // then features like towns and finally units
         for(auto town : towns)
@@ -262,10 +272,18 @@ int main(int argc, char* argv[])
         for(auto unit : units)
         {
             unit->draw_on(window); // maybe roll into the movement
+            //unit->draw_info(window); // b/c text doesn't display???
+            //fps_text = unit->get_info();// now it won't display fps text
+            // something about this Text object that's fucked up..
+            // Still no go, must be something funky about max's stringstream method...
+            unit_text.setString(unit->get_info());
+            unit_text.setPosition(unit->get_position());
+            window.draw(unit_text);
         }
+
 		window.draw(fps_text);
 		window.draw(time_text);
-
+        //
 		// refresh the window
 		window.display();
 	}
