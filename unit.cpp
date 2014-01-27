@@ -12,6 +12,8 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     // Apparently you're not allowed to use a method to do this during init
     target_position = p;
 
+    // Starting strength...I'll make it random
+    str = 50 + rand() % 50;
 }
 
 // Move this unit one step toward its target
@@ -49,21 +51,24 @@ void OgreUnit::fight(OgreUnit *enemy)
     sf::Vector2f retreat;
 
     // Some fight randomness
-    int winner = rand() % 3;
+    int result = get_str() - enemy->get_str() + (rand() % 20) - 10;
+
+    // Get the retreat 
     retreat = get_direction<>(enemy->get_position());
 
-    switch (winner)
+    if (result > 0)// I win
     {
-    case 1: // I win
         enemy->move_by(retreat);
         enemy->set_target_position(enemy->get_position());
-        break;
-    case 2: // I lose
+    }
+    else if (result < 0) // I lose
+    {
         move_by(-retreat);
         set_target_position(get_position());
-        break;
-    default: // case 0: // Draw, both retreat
-        // Get the retreat move both of us
+    }
+    else// Draw, both retreat
+    {
+        // move both of us
         enemy->move_by(retreat);
         enemy->set_target_position(enemy->get_position());
         move_by(-retreat);

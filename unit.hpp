@@ -32,6 +32,9 @@ class OgreUnit{
     // Speed class, how many steps in a round
     int speed;
 
+    // Simple Fight Strength parameter
+    int str;
+
     // Who owns this unit
     OgrePlayer *owner;
 
@@ -94,6 +97,17 @@ public:
     inline float get_size() const
     {
         return circ.getRadius();
+    }
+
+    // How strong am I?
+    inline int get_str() const
+    {
+        return str;
+    }
+
+    inline void set_str(int new_str)
+    {
+        str = new_str;
     }
 
     // Draw a ring around the unit to show it's selected
