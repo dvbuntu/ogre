@@ -23,12 +23,14 @@
 
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
+#define FIGHT_THRESH (2*UNIT_SIZE)
 
 using std::cerr;
 
 // maybe make a 'helper' cpp file
 bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size);
 OgrePlayer *check_win(std::list<OgreTown*> towns);
+void resolve_fights(std::list<OgreUnit*> units);
 
 template <typename I>
 I random_element(I begin, I end);
@@ -209,6 +211,9 @@ int main(int argc, char* argv[])
                 }
             }
 
+            // Fight it Out!
+            resolve_fights(units);
+
             // Check town ownership
             for(auto town : towns)
             {
@@ -219,6 +224,7 @@ int main(int argc, char* argv[])
             if (check_win(towns) != nullptr)
             {
                 // TODO: splash 'winner is: ...' and pause game
+                std::cout << "Game Over!" << std::endl;
                 break;
             }
 
@@ -263,6 +269,7 @@ int main(int argc, char* argv[])
 }
 
 
+// Check if we click any units
 bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size)
 {
     bool select_unit = false;
@@ -288,6 +295,7 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
     return select_unit;
 }
 
+// Check for a winner, someone who has all the towns.
 OgrePlayer *check_win(std::list<OgreTown*> towns)
 {
     OgrePlayer *winner = nullptr;
@@ -309,6 +317,37 @@ OgrePlayer *check_win(std::list<OgreTown*> towns)
     return winner;
 }
 
+// Check for and resolve any conflict between opposing units that are too close
+void resolve_fights(std::list<OgreUnit*> units)
+{
+    // Maybe check each direction instead, and just skip if not move
+    // Could be dangerous, I fiddle with the contents of units within the loop...
+    for (auto unit1 : units)
+    {
+        // Skip if we're not moving
+        // Maybe don't do if we got knocked back by a previous battle..
+        if (unit1->get_position() == unit1->get_target_position())
+            continue;
+        for (auto unit2 : units)
+        {
+            // Stop hitting yourself!
+            if (unit1->get_owner() == unit2->get_owner())
+                continue;
+            if (unit1->distance<>(unit2->get_position()) < FIGHT_THRESH)
+            {
+                unit1->fight(unit2);
+            }
+        }
+    }
+    // Check all pairs of units
+/*    for (auto i = foo.begin(); i != foo.end(); ++i) {
+        for (auto j = i; ++j != foo.end(); ) {
+            std::cout << *i << *j << std::endl;
+        }
+    }*/
+}
+
+
 // TODO: put this in a helper .cpp file (or even just a header file
 template <typename I>
 I random_element(I begin, I end)
@@ -323,3 +362,14 @@ I random_element(I begin, I end)
 
     return std::next(begin, k);
 }
+
+/* // Not sure I want this function
+template<typename It>
+void for_each_pair(It begin, It end) {
+    for (It  i = begin; i != end; ++i) {
+        for (It j = i; ++j != end;) {
+             std::cout << *i << *j << std::endl;
+        }
+    }
+}
+*/

@@ -71,6 +71,13 @@ public:
         return target_position - get_position();
     }
 
+    // Different sense, give me the offset to a given position
+    template <class T>
+    inline sf::Vector2f get_direction(T position) const
+    {
+        return position - get_position();
+    }
+
     // Shout my name!
     inline std::string get_name()
     {
@@ -116,6 +123,9 @@ public:
     // Move this unit its speed toward its target
     void move_speed();
 
+    // Fight it out!
+    void fight(OgreUnit *enemy);
+
     inline void draw_on(sf::RenderWindow& window) const
     {
         window.draw(circ);
@@ -139,6 +149,12 @@ public:
         target_position = sf::Vector2f(p);
     }
 
+    // Magic move after combat or other necessary things
+    template <class T>
+    void move_by(T p)
+    {
+        circ.move(p);
+    }
 };
 
 #endif
