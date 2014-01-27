@@ -75,4 +75,8 @@ void OgreUnit::fight(OgreUnit *enemy)
         move_by(-retreat);
         set_target_position(get_position());
     }
+
+    // Both of us take a beating
+    enemy->set_str(enemy->get_str() - (rand() % 10));
+    set_str(get_str() - (rand() % 10));
 }
