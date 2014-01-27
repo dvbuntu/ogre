@@ -14,6 +14,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 
     // Starting strength...I'll make it random
     str = 50 + rand() % 50;
+
 }
 
 // Move this unit one step toward its target

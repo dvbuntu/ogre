@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cfloat>
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include <math.h>
 
 #ifndef PLAYER_HPP
@@ -29,6 +30,10 @@ class OgreUnit{
     // What's my name (or the leader's name)
     std::string name;
 
+    // Info about the unit
+    std::string info_str;
+    sf::Text info;
+
     // Speed class, how many steps in a round
     int speed;
 
@@ -52,6 +57,7 @@ public:
     {
         owner = player;
         circ.setFillColor(owner->get_color());
+        //info.SetColor(owner->get_color());
     }
 
 
@@ -81,6 +87,18 @@ public:
         return position - get_position();
     }
 
+    // Set some information about the unit
+    // have to remember to update this after a battle
+    inline void set_info(int str, sf::Font font, int size)
+    {
+        info_str = std::to_string(str);
+        info.setString(info_str);
+        info.setCharacterSize(size);
+        info.setFont(font);
+        info.setColor(sf::Color::Black);
+        info.setStyle(sf::Text::Bold);
+    }
+
     // Shout my name!
     inline std::string get_name()
     {
@@ -107,7 +125,10 @@ public:
 
     inline void set_str(int new_str)
     {
-        str = new_str;
+        if (new_str > 0)
+            str = new_str;
+        else
+            str = 0;
     }
 
     // Draw a ring around the unit to show it's selected
@@ -140,9 +161,13 @@ public:
     // Fight it out!
     void fight(OgreUnit *enemy);
 
-    inline void draw_on(sf::RenderWindow& window) const
+    inline void draw_on(sf::RenderWindow& window)
     {
         window.draw(circ);
+        // still won't show text...
+        std::string foo = info.getString();
+        info.setPosition(get_position());
+        window.draw(info);
     }
 
     // Super simple distance to a point

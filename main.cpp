@@ -95,7 +95,12 @@ int main(int argc, char* argv[])
     {
         units.push_front(new OgreUnit(view.getCenter()
                     + sf::Vector2f(rand()%200 - 100,rand()%200 - 100)));
+        // random speed
         units.front()->set_speed(rand()%5 + 1);
+
+        //Set the info
+        units.front()->set_info(units.front()->get_str(), font, 12);
+
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
         {
@@ -346,6 +351,8 @@ void resolve_fights(std::list<OgreUnit*> units)
         }
     }*/
 }
+
+// TODO: check for dead units...don't do this in the battle checking!
 
 
 // TODO: put this in a helper .cpp file (or even just a header file
