@@ -32,6 +32,7 @@ using std::cerr;
 bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size);
 OgrePlayer *check_win(std::list<OgreTown*> towns);
 void resolve_fights(std::list<OgreUnit*> units);
+void reap_units(std::list<OgreUnit*> *units);
 
 template <typename I>
 I random_element(I begin, I end);
@@ -228,6 +229,9 @@ int main(int argc, char* argv[])
             // Fight it Out!
             resolve_fights(units);
 
+            // Reap the dead!
+            reap_units(&units);
+
             // Check town ownership
             for(auto town : towns)
             {
@@ -364,7 +368,21 @@ void resolve_fights(std::list<OgreUnit*> units)
 }
 
 // TODO: check for dead units...don't do this in the battle checking!
-
+void reap_units(std::list<OgreUnit*> *units)
+{
+    std::list<OgreUnit*>::iterator unit = units->begin();
+    while(unit != units->end())
+    {
+        if ((*unit)->get_str() == 0)
+        {
+            unit = units->erase(unit); // erase the current guy and move to the next
+        }
+        else
+        {
+            ++unit;
+        }
+    }
+}
 
 // TODO: put this in a helper .cpp file (or even just a header file
 template <typename I>
