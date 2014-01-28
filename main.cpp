@@ -135,10 +135,6 @@ int main(int argc, char* argv[])
 	time_text.setColor(sf::Color(127, 127, 127));
 	time_text.setPosition(10, 30);
 
-    // unit display text
-	sf::Text unit_text("", font, 12);
-	unit_text.setColor(sf::Color::Black);
-
 	sf::Clock timer; // for measuring time per frame
 	sf::Clock clock; // for measuring overall time
 
@@ -251,11 +247,6 @@ int main(int argc, char* argv[])
 		fps.str("");
 
         // update time step
-		//unit_step_disp << "Unit Step: " << time_step ;
-		unit_text.setString(time_step_disp.str());
-		//unit_step_disp.str("");
-
-        // update time step
 		time_step_disp << "Time Step: " << time_step ;
 		time_text.setString(time_step_disp.str());
 		time_step_disp.str("");
@@ -272,9 +263,6 @@ int main(int argc, char* argv[])
         for(auto unit : units)
         {
             unit->draw_on(window); // maybe roll into the movement
-            //unit_text.setString(unit->get_info());
-            unit_text.setPosition(unit->get_position());
-            //window.draw(unit_text);
         }
 
 		window.draw(fps_text);

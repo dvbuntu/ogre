@@ -79,5 +79,7 @@ void OgreUnit::fight(OgreUnit *enemy)
 
     // Both of us take a beating
     enemy->set_str(enemy->get_str() - (rand() % 10));
+    enemy->set_info(enemy->get_str());
     set_str(get_str() - (rand() % 10));
+    set_info(get_str());
 }
