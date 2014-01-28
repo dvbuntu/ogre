@@ -24,6 +24,7 @@
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
 #define FIGHT_THRESH (3*UNIT_SIZE)
+#define HEAL_PERCENT 1
 
 using std::cerr;
 
@@ -203,6 +204,7 @@ int main(int argc, char* argv[])
             // Move the unit(s)
             for(auto unit : units)
             {
+                // Control unit movement
                 if (unit->get_position() != unit->get_target_position())
                     unit->move_speed();
                 // give enemy units a new target
@@ -214,6 +216,13 @@ int main(int argc, char* argv[])
                     unit->set_target_position(
                     (*random_element(towns.begin(),towns.end()))->get_position());
                 }
+
+                // Potentially heal if not moving
+                // maybe move into header file
+                if (unit->get_position() == unit->get_target_position() &&
+                        rand() % 100 > HEAL_PERCENT)
+                    unit->set_str(unit->get_str() + 1);
+                    unit->set_info(unit->get_str());
             }
 
             // Fight it Out!

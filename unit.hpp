@@ -135,9 +135,12 @@ public:
 
     inline void set_str(int new_str)
     {
-        if (new_str > 0)
+        if (new_str > 100)
+            str = 100; // TODO: replace with a MAX_STR like 255 or something
+        else if (new_str > 0)
             str = new_str;
         else
+            // TODO: remove the unit...will happen after battles in main though
             str = 0;
     }
 
