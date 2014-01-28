@@ -24,7 +24,7 @@
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
 #define FIGHT_THRESH (3*UNIT_SIZE)
-#define HEAL_PERCENT 1
+#define HEAL_PERCENT 3
 
 using std::cerr;
 
