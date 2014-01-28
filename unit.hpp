@@ -32,7 +32,7 @@ class OgreUnit{
     std::string name;
 
     // Info about the unit
-    std::stringstream info_str;
+    sf::Text info_str;
 
     // Speed class, how many steps in a round
     int speed;
@@ -87,18 +87,28 @@ public:
         return position - get_position();
     }
 
+    /*
     inline std::string get_info()
     {
         return info_str.str();
     }
+    */
 
     // Set some information about the unit
     // have to remember to update this after a battle
-    inline void set_info(int str, sf::Font font, int size)
+    inline void set_info(int str, sf::Font *font, int size)
     {
-        info_str << str;
+        info_str.setString(std::to_string(str));
+        info_str.setFont(*font);
+        info_str.setCharacterSize(size);
+        info_str.setColor(sf::Color::Black);
     }
 
+    // Post battle update
+    inline void set_info(int str)
+    {
+        info_str.setString(std::to_string(str));
+    }
     // Shout my name!
     inline std::string get_name()
     {
@@ -164,6 +174,8 @@ public:
     inline void draw_on(sf::RenderWindow& window)
     {
         window.draw(circ);
+        info_str.setPosition(get_position());
+        window.draw(info_str);
     }
 
     // Super simple distance to a point
