@@ -220,7 +220,7 @@ int main(int argc, char* argv[])
                 // Potentially heal if not moving
                 // maybe move into header file
                 if (unit->get_position() == unit->get_target_position() &&
-                        rand() % 100 > HEAL_PERCENT)
+                        rand() % 100 < HEAL_PERCENT)
                     unit->set_str(unit->get_str() + 1);
                     unit->set_info(unit->get_str());
             }
