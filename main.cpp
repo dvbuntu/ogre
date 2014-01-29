@@ -25,6 +25,7 @@
 #define NUM_TOWNS 6
 #define FIGHT_THRESH (3*UNIT_SIZE)
 #define HEAL_PERCENT 3
+#define DAY_LENGTH 100 // length of a 'game day' in time steps
 
 using std::cerr;
 
@@ -69,9 +70,13 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    // Create two players 
+    // Create two players, and a pointer to whoever
     OgrePlayer player = OgrePlayer(PLAYER);
     OgrePlayer enemy = OgrePlayer(ENEMY);
+    OgrePlayer *owner;
+
+    // change in town ownership, +1 if player liberates, -1 if enemy, 0 no change
+    int town_shift;
 
     // create some towns to catpure
     std::list<OgreTown*> towns;
@@ -83,12 +88,16 @@ int main(int argc, char* argv[])
         if (rand()%100 > 50)
         {
             towns.front()->set_owner(&player);
+            player.set_num_towns(player.get_num_towns() + 1);
         }
         else
         {
             towns.front()->set_owner(&enemy);
+            enemy.set_num_towns(enemy.get_num_towns() + 1);
         }
     }
+    //temp
+    town_shift = player.get_num_towns();
 
 
     // create units to move around
@@ -107,6 +116,7 @@ int main(int argc, char* argv[])
         if (rand()%100 > 50)
         {
             units.front()->set_owner(&player);
+            player.set_num_units(player.get_num_units() + 1);
         }
         else
         {
@@ -114,6 +124,7 @@ int main(int argc, char* argv[])
             // send it to a random town...
             // They all seem to be walking to the same town...
             // TODO: True AI, walk toward player towns
+            enemy.set_num_units(enemy.get_num_units() + 1);
             units.front()->set_target_position(
                     (*random_element(towns.begin(),towns.end()))->get_position());
         }
@@ -136,6 +147,12 @@ int main(int argc, char* argv[])
 	sf::Text time_text("", font, 12);
 	time_text.setColor(sf::Color(127, 127, 127));
 	time_text.setPosition(10, 30);
+
+    // setup player gold display
+	std::stringstream player_gold_disp;
+	sf::Text player_gold_text("", font, 12);
+	player_gold_text.setColor(player.get_color());
+	player_gold_text.setPosition(10, 50);
 
 	sf::Clock timer; // for measuring time per frame
 	sf::Clock clock; // for measuring overall time
@@ -235,7 +252,32 @@ int main(int argc, char* argv[])
             // Check town ownership
             for(auto town : towns)
             {
-                town->check_conquest(units);
+                owner = town->check_conquest(units);
+                if (owner == &player)
+                    town_shift = 1;
+                else if (owner == &enemy)
+                    town_shift = -1;
+                else
+                    town_shift = 0;
+                std::cout << std::to_string(player.get_num_towns()) << " foo " << std::endl;
+                player.set_num_towns(player.get_num_towns()+town_shift);
+                enemy.set_num_towns(enemy.get_num_towns()-town_shift);
+                //temp
+                town_shift = player.get_num_towns();
+                std::cout << std::to_string(player.get_num_towns()) << std::endl;
+            }
+
+            // Collect taxes and pay troops if it's a new day
+            // For now, pay troops first
+            if (time_step % DAY_LENGTH == 0)
+            {
+                //player.pay_troops();
+                //enemy.pay_troops();
+                player.collect_taxes();
+                enemy.collect_taxes();
+                //temp
+                town_shift = player.get_gold();
+                std::cout << std::to_string(player.get_gold()) << " gold" << std::endl;
             }
 
             // Check win condition
@@ -264,6 +306,11 @@ int main(int argc, char* argv[])
 		time_text.setString(time_step_disp.str());
 		time_step_disp.str("");
 
+        // update gold
+		player_gold_disp << "Player: " << player.get_gold() ;
+		player_gold_text.setString(player_gold_disp.str());
+		player_gold_disp.str("");
+
 		// draw everything to the window
 		window.clear(sf::Color::White);
 
@@ -280,6 +327,7 @@ int main(int argc, char* argv[])
 
 		window.draw(fps_text);
 		window.draw(time_text);
+		window.draw(player_gold_text);
         //
 		// refresh the window
 		window.display();
@@ -367,15 +415,20 @@ void resolve_fights(std::list<OgreUnit*> units)
     }*/
 }
 
-// TODO: check for dead units...don't do this in the battle checking!
+// check for dead units, change the player unit counts
 void reap_units(std::list<OgreUnit*> *units)
 {
+    OgrePlayer *owner;
     std::list<OgreUnit*>::iterator unit = units->begin();
     while(unit != units->end())
     {
         if ((*unit)->get_str() == 0)
         {
-            unit = units->erase(unit); // erase the current guy and move to the next
+            // Remove this unit from the player's rolls
+            owner = (*unit)->get_owner();
+            owner->set_num_units(owner->get_num_units() - 1);
+            // erase the current guy and move to the next
+            unit = units->erase(unit);
         }
         else
         {

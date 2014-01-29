@@ -81,7 +81,7 @@ public:
     }
 
     // Check if town has been captured and set new owner
-    void check_conquest(std::list<OgreUnit*> units);
+    OgrePlayer * check_conquest(std::list<OgreUnit*> units);
 
 };
 

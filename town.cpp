@@ -16,8 +16,9 @@ OgreTown::OgreTown(const sf::Vector2f& p)
 }
 
 // Check if town has been captured and set new owner
+// Only report if there's a change of ownership
 // Maybe change to unit checks when it stops moving
-void OgreTown::check_conquest(std::list<OgreUnit*> units){
+OgrePlayer *OgreTown::check_conquest(std::list<OgreUnit*> units){
     sf::Vector2f town_position = get_position();
 
     OgrePlayer *possible_owner = nullptr;
@@ -39,7 +40,12 @@ void OgreTown::check_conquest(std::list<OgreUnit*> units){
                 break;
         }
     }
-    if (!contested && possible_owner != nullptr)
+    if (!contested && possible_owner != nullptr && possible_owner != get_owner())
+    {
         set_owner(possible_owner);
+        return possible_owner;
+    }
+    else
+        return nullptr;
 }
 
