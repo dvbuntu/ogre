@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
     OgrePlayer *owner;
 
     // change in town ownership, +1 if player liberates, -1 if enemy, 0 no change
-    int town_shift;
+    int town_shift = 0;
 
     // create some towns to catpure
     std::list<OgreTown*> towns;
@@ -96,8 +96,6 @@ int main(int argc, char* argv[])
             enemy.set_num_towns(enemy.get_num_towns() + 1);
         }
     }
-    //temp
-    town_shift = player.get_num_towns();
 
 
     // create units to move around
@@ -259,25 +257,18 @@ int main(int argc, char* argv[])
                     town_shift = -1;
                 else
                     town_shift = 0;
-                std::cout << std::to_string(player.get_num_towns()) << " foo " << std::endl;
                 player.set_num_towns(player.get_num_towns()+town_shift);
                 enemy.set_num_towns(enemy.get_num_towns()-town_shift);
-                //temp
-                town_shift = player.get_num_towns();
-                std::cout << std::to_string(player.get_num_towns()) << std::endl;
             }
 
             // Collect taxes and pay troops if it's a new day
             // For now, pay troops first
-            if (time_step % DAY_LENGTH == 0)
+            if ((time_step % DAY_LENGTH) == 0)
             {
-                //player.pay_troops();
-                //enemy.pay_troops();
+                player.pay_troops();
+                enemy.pay_troops();
                 player.collect_taxes();
                 enemy.collect_taxes();
-                //temp
-                town_shift = player.get_gold();
-                std::cout << std::to_string(player.get_gold()) << " gold" << std::endl;
             }
 
             // Check win condition
