@@ -156,6 +156,12 @@ int main(int argc, char* argv[])
 	player_gold_text.setColor(player.get_color());
 	player_gold_text.setPosition(10, 50);
 
+    // setup player gold display
+	std::stringstream enemy_gold_disp;
+	sf::Text enemy_gold_text("", font, 12);
+	enemy_gold_text.setColor(enemy.get_color());
+	enemy_gold_text.setPosition(10, 70);
+
 	sf::Clock timer; // for measuring time per frame
 	sf::Clock clock; // for measuring overall time
 
@@ -319,6 +325,9 @@ int main(int argc, char* argv[])
 		player_gold_disp << "Player: " << player.get_gold() ;
 		player_gold_text.setString(player_gold_disp.str());
 		player_gold_disp.str("");
+		enemy_gold_disp << "Enemy: " << enemy.get_gold() ;
+		enemy_gold_text.setString(enemy_gold_disp.str());
+		enemy_gold_disp.str("");
 
 		// draw everything to the window
 		window.clear(sf::Color::White);
@@ -337,7 +346,7 @@ int main(int argc, char* argv[])
 		window.draw(fps_text);
 		window.draw(time_text);
 		window.draw(player_gold_text);
-        //
+		window.draw(enemy_gold_text);
 		// refresh the window
 		window.display();
 	}
