@@ -31,7 +31,7 @@ using std::cerr;
 
 // maybe make a 'helper' cpp file
 bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size);
-OgrePlayer *check_win(std::list<OgreTown*> towns);
+OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer *enemy);
 void resolve_fights(std::list<OgreUnit*> units);
 void reap_units(std::list<OgreUnit*> *units);
 
@@ -262,17 +262,17 @@ int main(int argc, char* argv[])
             }
 
             // Collect taxes and pay troops if it's a new day
-            // For now, pay troops first
+            // Pay after, but you might be left with no money...
             if ((time_step % DAY_LENGTH) == 0)
             {
-                player.pay_troops();
-                enemy.pay_troops();
                 player.collect_taxes();
                 enemy.collect_taxes();
+                player.pay_troops();
+                enemy.pay_troops();
             }
 
             // Check win condition
-            if (check_win(towns) != nullptr)
+            if (check_win(towns,&player,&enemy) != nullptr)
             {
                 // TODO: splash 'winner is: ...' and pause game
                 std::cout << "Game Over!" << std::endl;
@@ -354,8 +354,9 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
     return select_unit;
 }
 
-// Check for a winner, someone who has all the towns.
-OgrePlayer *check_win(std::list<OgreTown*> towns)
+// Check for a winner, someone who has all the towns,
+// or only player with money
+OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer *enemy)
 {
     OgrePlayer *winner = nullptr;
 
@@ -371,6 +372,15 @@ OgrePlayer *check_win(std::list<OgreTown*> towns)
             winner = nullptr;
             break;
         }
+    }
+
+    // Check if one player ran out of money
+    if (winner == nullptr)
+    {
+        if (player->get_gold() == 0)
+            winner = enemy;
+        else if (enemy->get_gold() == 0)
+            winner = player;
     }
 
     return winner;
