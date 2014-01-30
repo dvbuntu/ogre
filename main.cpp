@@ -26,6 +26,7 @@
 #define FIGHT_THRESH (3*UNIT_SIZE)
 #define HEAL_PERCENT 3
 #define DAY_LENGTH 1000 // length of a 'game day' in time steps
+#define ENEMY_DEPLOY_CHANCE 1
 
 using std::cerr;
 
@@ -34,6 +35,7 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
 OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer *enemy);
 void resolve_fights(std::list<OgreUnit*> units);
 void reap_units(std::list<OgreUnit*> *units);
+void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f position, sf::Font *font);
 
 template <typename I>
 I random_element(I begin, I end);
@@ -199,7 +201,8 @@ int main(int argc, char* argv[])
                 }
                 else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
                 {
-                    paused = false;
+                    position = sf::Vector2f(sf::Mouse::getPosition(window));
+                    deploy_unit(&units,&player,position,&font);
                 }
 			}
             else
@@ -253,6 +256,7 @@ int main(int argc, char* argv[])
             for(auto town : towns)
             {
                 owner = town->check_conquest(units);
+                /*
                 if (owner == &player)
                     town_shift = 1;
                 else if (owner == &enemy)
@@ -262,6 +266,7 @@ int main(int argc, char* argv[])
                 // Don't need this once each town pays its own taxes
                 player.set_num_towns(player.get_num_towns()+town_shift);
                 enemy.set_num_towns(enemy.get_num_towns()-town_shift);
+                */
             }
 
             // Collect taxes and pay troops if it's a new day
@@ -278,6 +283,12 @@ int main(int argc, char* argv[])
                 }
             }
 
+            // Enemy chance to deploy
+            if ((rand() % 100) < ENEMY_DEPLOY_CHANCE ) // more than max req
+            {
+                deploy_unit(&units, &enemy, view.getCenter()
+                    + sf::Vector2f(rand()%200 - 100,rand()%200 - 100), &font);
+            }
             // Check win condition
             if (check_win(towns,&player,&enemy) != nullptr)
             {
@@ -446,8 +457,32 @@ void reap_units(std::list<OgreUnit*> *units)
 }
 
 // Add a unit for the given player
-void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f position)
+void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f position, sf::Font *font)
 {
+    // Cost is some function of current units?  
+    // Really depends on the unit we're planning to deploy
+    if (player->get_gold() >=
+            ((*random_element(units->begin(),units->end()))->get_cost()) * 2)
+    {
+        units->push_front(new OgreUnit(position));
+
+        // TODO: store units->front() in a pointer to clean this up
+
+        // random speed
+        units->front()->set_speed(rand()%5 + 1);
+
+        //Set the info
+        units->front()->set_info(units->front()->get_str(), font, 12);
+
+        // Update the labor costs for weakened unit
+        units->front()->update_cost();
+
+        units->front()->set_owner(player);
+
+        units->front()->set_target_position(units->front()->get_target_position());
+
+        player->set_gold(player->get_gold() - units->front()->get_cost() * 2);
+    }
 }
 
 // TODO: put this in a helper .cpp file (or even just a header file

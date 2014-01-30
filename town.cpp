@@ -15,7 +15,7 @@ OgreTown::OgreTown(const sf::Vector2f& p)
     circ.setOutlineThickness(TOWN_SIZE/5);
 
     // Get a tax_base
-    payout = std::rand() % 5;
+    payout = std::rand() % 10;
 }
 
 // Check if town has been captured and set new owner
