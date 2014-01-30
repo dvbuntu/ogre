@@ -25,7 +25,7 @@
 #define NUM_TOWNS 6
 #define FIGHT_THRESH (3*UNIT_SIZE)
 #define HEAL_PERCENT 3
-#define DAY_LENGTH 100 // length of a 'game day' in time steps
+#define DAY_LENGTH 1000 // length of a 'game day' in time steps
 
 using std::cerr;
 
@@ -109,6 +109,8 @@ int main(int argc, char* argv[])
 
         //Set the info
         units.front()->set_info(units.front()->get_str(), &font, 12);
+
+        units.front()->update_cost();
 
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
@@ -257,6 +259,7 @@ int main(int argc, char* argv[])
                     town_shift = -1;
                 else
                     town_shift = 0;
+                // Don't need this once each town pays its own taxes
                 player.set_num_towns(player.get_num_towns()+town_shift);
                 enemy.set_num_towns(enemy.get_num_towns()-town_shift);
             }
@@ -265,10 +268,14 @@ int main(int argc, char* argv[])
             // Pay after, but you might be left with no money...
             if ((time_step % DAY_LENGTH) == 0)
             {
-                player.collect_taxes();
-                enemy.collect_taxes();
-                player.pay_troops();
-                enemy.pay_troops();
+                for (auto town: towns)
+                {
+                    town->pay_taxes();
+                }
+                for (auto unit: units)
+                {
+                    unit->collect_pay();
+                }
             }
 
             // Check win condition
@@ -377,9 +384,9 @@ OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer
     // Check if one player ran out of money
     if (winner == nullptr)
     {
-        if (player->get_gold() == 0)
+        if ((player->get_gold()) == 0)
             winner = enemy;
-        else if (enemy->get_gold() == 0)
+        else if ((enemy->get_gold()) == 0)
             winner = player;
     }
 
@@ -436,6 +443,11 @@ void reap_units(std::list<OgreUnit*> *units)
             ++unit;
         }
     }
+}
+
+// Add a unit for the given player
+void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f position)
+{
 }
 
 // TODO: put this in a helper .cpp file (or even just a header file

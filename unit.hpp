@@ -40,6 +40,9 @@ class OgreUnit{
     // Simple Fight Strength parameter
     int str;
 
+    // Unit cost
+    int cost;
+
     // Who owns this unit
     OgrePlayer *owner;
 
@@ -142,6 +145,25 @@ public:
         else
             // TODO: remove the unit...will happen after battles in main though
             str = 0;
+    }
+
+    // What's my field pay?
+    inline int get_cost() const
+    {
+        return cost;
+    }
+
+    inline void update_cost()
+    {
+        // TODO: formalize this, wait until individual heroes in units
+        cost = get_str() / 10;
+    }
+
+    inline void collect_pay()
+    {
+        OgrePlayer *player;
+        player = get_owner();
+        player->set_gold(player->get_gold() - get_cost());
     }
 
     // Draw a ring around the unit to show it's selected

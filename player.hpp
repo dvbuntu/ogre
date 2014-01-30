@@ -89,11 +89,11 @@ public:
         num_units = new_num_units;
     }
 
-    // Pay the soldier
-    inline void pay_troops()
-    {
-        set_gold(get_gold() - get_num_units()*PAY_RATE);
-    }
+    // Pay the soldier - now happens in unit.hpp: collect_pay()
+    //inline void pay_troops()
+    //{
+    //    set_gold(get_gold() - get_num_units()*PAY_RATE);
+    //}
 
     // What do I wear?
     sf::Color get_color() const

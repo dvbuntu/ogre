@@ -13,6 +13,9 @@ OgreTown::OgreTown(const sf::Vector2f& p)
     // Give the town some gray walls
     circ.setOutlineColor(sf::Color(127, 127, 127));
     circ.setOutlineThickness(TOWN_SIZE/5);
+
+    // Get a tax_base
+    payout = std::rand() % 5;
 }
 
 // Check if town has been captured and set new owner

@@ -38,6 +38,9 @@ class OgreTown{
     // Who owns the town;
     OgrePlayer *owner;
 
+    // How much does this town pay out?
+    int payout;
+
 public:
     OgreTown(const sf::Vector2f& p);
 
@@ -73,6 +76,19 @@ public:
     inline float get_size() const
     {
         return circ.getRadius();
+    }
+
+    inline int get_payout() const
+    {
+        return payout;
+    }
+
+    // Pay Caesar what is due to him
+    inline void pay_taxes()
+    {
+        OgrePlayer *player;
+        player = get_owner();
+        player->set_gold(player->get_gold() + get_payout());
     }
 
     inline void draw_on(sf::RenderWindow& window) const
