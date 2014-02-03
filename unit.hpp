@@ -12,6 +12,12 @@
 #include "player.hpp"
 #endif
 
+#ifndef HERO_HPP
+#include "hero.hpp"
+#endif
+
+#include "helper.hpp"
+
 #ifndef MAX_NAME_LENGTH
 #define MAX_NAME_LENGTH 100
 #endif
@@ -37,14 +43,11 @@ class OgreUnit{
     // Speed class, how many steps in a round
     int speed;
 
-    // Simple Fight Strength parameter
-    int str;
-
-    // Unit cost
-    int cost;
-
     // Who owns this unit
     OgrePlayer *owner;
+
+    // Who's in this unit?
+    std::list<OgreHero*> heroes;
 
 public:
     OgreUnit(const sf::Vector2f& p);
@@ -112,6 +115,7 @@ public:
     {
         info_str.setString(std::to_string(str));
     }
+
     // Shout my name!
     inline std::string get_name()
     {
@@ -130,40 +134,42 @@ public:
         return circ.getRadius();
     }
 
-    // How strong am I?
-    inline int get_str() const
+    // How lively am I?
+    inline int get_hp() const
     {
-        return str;
-    }
-
-    inline void set_str(int new_str)
-    {
-        if (new_str > 100)
-            str = 100; // TODO: replace with a MAX_STR like 255 or something
-        else if (new_str > 0)
-            str = new_str;
-        else
-            // TODO: remove the unit...will happen after battles in main though
-            str = 0;
+        int total_hp = 0;
+        for (auto hero: heroes)
+        {
+            total_hp += hero->get_hp();
+        }
+        return total_hp;
     }
 
     // What's my field pay?
     inline int get_cost() const
     {
-        return cost;
-    }
-
-    inline void update_cost()
-    {
-        // TODO: formalize this, wait until individual heroes in units
-        cost = get_str() / 10;
+        int total_cost = 0;
+        for (auto hero: heroes)
+        {
+            total_cost += hero->get_cost();
+        }
+        return total_cost;
     }
 
     inline void collect_pay()
     {
-        OgrePlayer *player;
-        player = get_owner();
-        player->set_gold(player->get_gold() - get_cost());
+        for (auto hero: heroes)
+        {
+            hero->collect_pay();
+        }
+    }
+
+    inline void heal()
+    {
+        for (auto hero: heroes)
+        {
+            hero->set_hp(hero->get_hp() + 1);
+        }
     }
 
     // Draw a ring around the unit to show it's selected

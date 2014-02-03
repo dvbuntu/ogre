@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
         units.front()->set_speed(rand()%5 + 1);
 
         //Set the info
-        units.front()->set_info(units.front()->get_str(), &font, 12);
+        units.front()->set_info(units.front()->get_hp(), &font, 12);
 
         units.front()->update_cost();
 
@@ -251,8 +251,9 @@ int main(int argc, char* argv[])
                 // maybe move into header file
                 if (unit->get_position() == unit->get_target_position() &&
                         rand() % 100 < HEAL_PERCENT)
-                    unit->set_str(unit->get_str() + 1);
-                    unit->set_info(unit->get_str());
+                    // TODO: heal heroes by calling a method of units
+                    unit->heal();
+                    unit->set_info(unit->get_hp());
             }
 
             // Fight it Out!
@@ -453,7 +454,7 @@ void reap_units(std::list<OgreUnit*> *units)
     std::list<OgreUnit*>::iterator unit = units->begin();
     while(unit != units->end())
     {
-        if ((*unit)->get_str() == 0)
+        if ((*unit)->get_hp() == 0)
         {
             // Remove this unit from the player's rolls
             owner = (*unit)->get_owner();
@@ -484,7 +485,7 @@ void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f p
         units->front()->set_speed(rand()%5 + 1);
 
         //Set the info
-        units->front()->set_info(units->front()->get_str(), font, 12);
+        units->front()->set_info(units->front()->get_hp(), font, 12);
 
         // Update the labor costs for weakened unit
         units->front()->update_cost();

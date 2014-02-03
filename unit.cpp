@@ -51,6 +51,38 @@ void OgreUnit::fight(OgreUnit *enemy)
     // new retreated position
     sf::Vector2f retreat;
 
+    int player_attacks = 0;
+    int enemy_attacks = 0;
+
+    OgreHero *attacker;
+    OgreUnit *defenders;
+
+    // compute how many total attacks we'll be doing
+    for (auto hero:heroes)
+    {
+        player_attacks += hero->get_total_attacks();
+    }
+
+    for (auto hero:(enemy->heroes))
+    {
+        enemy_attacks += hero->get_total_attacks();
+    }
+
+    // Fight until we can't fight no more
+    while( player_attacks + enemy_attacks > 0)
+    {
+
+        if (rand() % 2 + 1 == PLAYER)
+        {
+            attacker = *random_element(heroes.begin(), heroes.end());
+            defenders = enemy;
+        }
+        else
+        {
+            attacker = *random_element(enemy->heroes.begin(), enemy->heroes.end());
+            defenders = player;
+        }
+
     // Some fight randomness
     int result = get_str() - enemy->get_str() + (rand() % 20) - 10;
 
