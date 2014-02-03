@@ -8,6 +8,9 @@
 #include <stdint.h>
 #include <time.h>
 
+// General helpful functions
+#include "helper.hpp"
+
 // ogre specific includes
 #ifndef PLAYER_HPP
 #include "player.hpp"
@@ -495,6 +498,7 @@ void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f p
 }
 
 // TODO: put this in a helper .cpp file (or even just a header file
+/*
 template <typename I>
 I random_element(I begin, I end)
 {
@@ -508,6 +512,7 @@ I random_element(I begin, I end)
 
     return std::next(begin, k);
 }
+*/
 
 /* // Not sure I want this function
 template<typename It>
