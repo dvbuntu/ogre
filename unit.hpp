@@ -27,7 +27,7 @@
 #endif
 
 #ifndef HEROES_IN_UNIT
-#define HEROES_IN_UNIT 1
+#define HEROES_IN_UNIT 4
 #endif
 
 class OgreUnit{

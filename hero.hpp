@@ -21,6 +21,10 @@
 #define MAX_NAME_LENGTH 100
 #endif
 
+#ifndef BASE_STR
+#define BASE_STR 10
+#endif
+
 class OgreHero{
     // This represents the hero, an individual within a unit
 

@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
         units.push_front(new OgreUnit(view.getCenter()
                     + sf::Vector2f(rand()%200 - 100,rand()%200 - 100)));
         // random speed
-        units.front()->set_speed(rand()%5 + 1);
+        units.front()->set_speed(rand()%3 + 1);
 
         //Set the info
         units.front()->set_info(units.front()->get_hp(), &font, 12);

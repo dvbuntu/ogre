@@ -6,10 +6,10 @@ OgreHero::OgreHero(const int start_level)
     level = start_level;
 
     // Some stats
-    max_hp = 50 + rand() % 50 + level;
-    str = 50 + rand() % 50 + level;
-    def = 50 + rand() % 50 + level;
-    speed = 50 + rand() % 50 + level;
+    max_hp = BASE_STR*5 + rand() % BASE_STR + level;
+    str = BASE_STR + rand() % BASE_STR + level;
+    def = BASE_STR + rand() % BASE_STR + level;
+    speed = BASE_STR + rand() % BASE_STR + level;
     hp = max_hp;
 
     // 1 or 2 hits
