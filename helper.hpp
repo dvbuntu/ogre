@@ -1,7 +1,8 @@
 #include <cstdlib>
+#include <iterator>
 
 #ifndef HELPER_HPP
-#def HELPER_HPP
+#define HELPER_HPP
 
 template <typename I>
 I random_element(I begin, I end)

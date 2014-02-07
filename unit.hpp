@@ -26,6 +26,10 @@
 #define UNIT_SIZE 10
 #endif
 
+#ifndef HEROES_IN_UNIT
+#define HEROES_IN_UNIT 1
+#endif
+
 class OgreUnit{
     // This represents the unit for now
     // Maybe future just for radius collision in future
@@ -51,6 +55,12 @@ class OgreUnit{
 
 public:
     OgreUnit(const sf::Vector2f& p);
+
+    // Who are my heroes?
+    inline std::list<OgreHero*> *get_heroes()
+    {
+        return &heroes;
+    }
 
     // Who is my general?
     inline OgrePlayer *get_owner()
@@ -156,11 +166,20 @@ public:
         return total_cost;
     }
 
+    // How much fighting left?
+    inline int get_remaining_attacks() const
+    {
+        int remaining_attacks = 0;
+        for (auto hero:heroes)
+            remaining_attacks += hero->get_attacks_left();
+        return remaining_attacks;
+    }
+
     inline void collect_pay()
     {
         for (auto hero: heroes)
         {
-            hero->collect_pay();
+            hero->collect_pay(get_owner());
         }
     }
 

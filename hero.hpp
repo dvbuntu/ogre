@@ -2,11 +2,16 @@
 #define HERO_HPP
 
 #include <cstdlib>
+#include <list>
 #include <cfloat>
 #include <sstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <math.h>
+
+#ifndef HELPER_HPP
+#include "helper.hpp"
+#endif
 
 #ifndef PLAYER_HPP
 #include "player.hpp"
@@ -59,7 +64,7 @@ class OgreHero{
     OgrePlayer *owner;
 
 public:
-    OgreHero(int &start_level);
+    OgreHero(const int start_level);
 
     // Who is my general?
     inline OgrePlayer *get_owner()
@@ -138,9 +143,7 @@ public:
 
     inline void set_max_hp(int new_max_hp)
     {
-        if (new_max_hp > 100)
-            max_hp = 100;
-        else if (new_max_hp > 0)
+        if (new_max_hp > 0)
             max_hp = new_max_hp;
         else
             max_hp = 0;
@@ -154,8 +157,8 @@ public:
 
     inline void set_hp(int new_hp)
     {
-        if (new_hp > 100)
-            hp = 100;
+        if (new_hp > get_max_hp())
+            hp = get_max_hp();
         else if (new_hp > 0)
             hp = new_hp;
         else
@@ -180,9 +183,18 @@ public:
     }
 
     // How many hits can I do?
+    inline int get_total_attacks() const
+    {
+        return total_attacks;
+    }
+
+    // How many hits left in this fight
     inline int get_attacks_left() const
     {
-        return attacks_left;
+        if (get_hp() == 0)
+            return 0;
+        else
+            return attacks_left;
     }
 
     inline void set_attacks_left(int new_attacks_left)
@@ -214,24 +226,17 @@ public:
     // What's my field pay?
     inline int get_cost() const
     {
-        return cost;
-    }
-
-    inline void update_cost()
-    {
-        cost = (get_max_hp() + get_def() + get_str() * total_attacks) / 10;
+        return (get_max_hp() + get_def() + get_str() * total_attacks) / 50;
     }
 
     // Maybe only do this in OgreUnit, iterating through heros
-    inline void collect_pay()
+    inline void collect_pay(OgrePlayer *player)
     {
-        OgrePlayer *player;
-        player = get_owner();
         player->set_gold(player->get_gold() - get_cost());
     }
 
     // Fight it out!
-    void attack(std::list<OgreHero*> *enemies);
+    int attack(std::list<OgreHero*> *enemies);
 
     /*
     inline void draw_on(sf::RenderWindow& window)

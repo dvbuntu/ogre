@@ -16,6 +16,10 @@
 #include "player.hpp"
 #endif
 
+#ifndef HERO_HPP
+#include "hero.hpp"
+#endif
+
 #ifndef UNIT_HPP
 #include "unit.hpp"
 #endif
@@ -27,7 +31,7 @@
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
 #define FIGHT_THRESH (3*UNIT_SIZE)
-#define HEAL_PERCENT 3
+#define HEAL_PERCENT 1
 #define DAY_LENGTH 1000 // length of a 'game day' in time steps
 #define ENEMY_DEPLOY_CHANCE 1
 
@@ -39,9 +43,6 @@ OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer
 void resolve_fights(std::list<OgreUnit*> units);
 void reap_units(std::list<OgreUnit*> *units);
 void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f position, sf::Font *font);
-
-template <typename I>
-I random_element(I begin, I end);
 
 int main(int argc, char* argv[])
 {
@@ -115,7 +116,7 @@ int main(int argc, char* argv[])
         //Set the info
         units.front()->set_info(units.front()->get_hp(), &font, 12);
 
-        units.front()->update_cost();
+        //units.front()->update_cost();
 
         // Dirty hack for now, TODO
         if (rand()%100 > 50)
@@ -266,7 +267,7 @@ int main(int argc, char* argv[])
             for(auto town : towns)
             {
                 owner = town->check_conquest(units);
-                /*
+
                 if (owner == &player)
                     town_shift = 1;
                 else if (owner == &enemy)
@@ -276,7 +277,7 @@ int main(int argc, char* argv[])
                 // Don't need this once each town pays its own taxes
                 player.set_num_towns(player.get_num_towns()+town_shift);
                 enemy.set_num_towns(enemy.get_num_towns()-town_shift);
-                */
+
             }
 
             // Collect taxes and pay troops if it's a new day
@@ -461,7 +462,7 @@ void reap_units(std::list<OgreUnit*> *units)
             owner->set_num_units(owner->get_num_units() - 1);
             // erase the current guy and move to the next
             unit = units->erase(unit);
-        }
+        } // TODO: reap the dead heroes within units as well
         else
         {
             ++unit;
@@ -488,7 +489,7 @@ void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f p
         units->front()->set_info(units->front()->get_hp(), font, 12);
 
         // Update the labor costs for weakened unit
-        units->front()->update_cost();
+        //units->front()->update_cost();
 
         units->front()->set_owner(player);
 

@@ -20,29 +20,49 @@ OgreHero::OgreHero(const int start_level)
 // Fight it out!
 int OgreHero::attack(std::list<OgreHero*> *enemies)
 {
-    OgreHero *enemy;
-    int damage;
+    OgreHero *enemy = nullptr;
+
+    // If there's no enemies to fight, return zero damage
+    int damage = 0;
+    //int iter = 0; // TODO only cycle through all units once...
 
     // TODO: pick someone to fight, but now, just do random
     // should pick someone who still has hit points...
     // Can we even hit this unit?
+    /*
     do
     {
         enemy = *random_element(enemies->begin(), enemies->end());
     }
-    while ( enemy->get_hp() == 0)
+    while ( enemy->get_hp() == 0);
+    */
+
+    // For now, just fight whoever's in front
+    for (auto poss_enemy:*enemies)
+    {
+        if (poss_enemy->get_hp()) //fight someone who's alive
+        {
+            enemy=poss_enemy;
+            break;
+        }
+    }
+
+    // TODO: if a unit is dead, end the fight
 
     // How hard do I hit?
     // TODO: Miss chance based on speed comparison
     // Lots of conditionals for front vs back row
     // damage type vs damage defense
-    damage = get_str()/2 - enemy->get_def() + (rand() % get_str());
-    if (damage < 0)
-        damage = 0;
+    if (enemy != nullptr)
+    {
+        damage = get_str()/2 - enemy->get_def() + (rand() % get_str());
+        if (damage < 0)
+            damage = 0;
 
-    // Dish it out
-    enemy->set_hp(enemy->get_hp() - damage);
-    set_attacks_left(get_attacks_left() - 1);
+        // Dish it out
+        enemy->set_hp(enemy->get_hp() - damage);
+        set_attacks_left(get_attacks_left() - 1);
+    }
 
     return damage;
 }

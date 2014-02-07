@@ -17,7 +17,7 @@
 #endif
 
 #ifndef MIN_START_GOLD
-#define MIN_START_GOLD 50
+#define MIN_START_GOLD 100
 #endif
 
 #ifndef TAX_RATE

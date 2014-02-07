@@ -13,7 +13,13 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     target_position = p;
 
     // Starting strength...I'll make it random
-    str = 50 + rand() % 50;
+    //str = 50 + rand() % 50;
+
+    // Recruit some fighters
+    for (int i = 0; i < HEROES_IN_UNIT; i++)
+    {
+        heroes.push_front(new OgreHero(rand() % 10));
+    }
 
 }
 
@@ -51,51 +57,53 @@ void OgreUnit::fight(OgreUnit *enemy)
     // new retreated position
     sf::Vector2f retreat;
 
-    int player_attacks = 0;
-    int enemy_attacks = 0;
+    int iter = 0;
+    int damage = 0;
 
     OgreHero *attacker;
     OgreUnit *defenders;
 
-    // compute how many total attacks we'll be doing
-    for (auto hero:heroes)
-    {
-        player_attacks += hero->get_total_attacks();
-    }
-
-    for (auto hero:(enemy->heroes))
-    {
-        enemy_attacks += hero->get_total_attacks();
-    }
-
     // Fight until we can't fight no more
-    while( player_attacks + enemy_attacks > 0)
+    // Need to check for units that die that still have attacks left
+    // Have a failsafe max_iter for now
+    while( get_remaining_attacks() + enemy->get_remaining_attacks() > 0 && iter < 100 )
     {
-
+        iter++;
         if (rand() % 2 + 1 == PLAYER)
         {
             attacker = *random_element(heroes.begin(), heroes.end());
             defenders = enemy;
+
+            // Can we even attack?
+            if (attacker->get_attacks_left() == 0 || attacker->get_hp() == 0)
+                continue;
+
+            damage += attacker->attack(defenders->get_heroes());
         }
         else
         {
             attacker = *random_element(enemy->heroes.begin(), enemy->heroes.end());
-            defenders = player;
-        }
 
-    // Some fight randomness
-    int result = get_str() - enemy->get_str() + (rand() % 20) - 10;
+            // Can we even attack?
+            if (attacker->get_attacks_left() == 0 || attacker->get_hp() == 0)
+                continue;
+
+            damage -= attacker->attack(get_heroes());
+        }
+    }
+
 
     // Get the retreat 
+    // TODO: fix this so it won't send me in wacky direction when use shortest path
     retreat = get_direction<>(enemy->get_position());
     retreat += retreat; // a little more distance between
 
-    if (result > 0)// I win
+    if (damage > 0)// I win
     {
         enemy->move_by(retreat);
         enemy->set_target_position(enemy->get_position());
     }
-    else if (result < 0) // I lose
+    else if (damage < 0) // I lose
     {
         move_by(-retreat);
         set_target_position(get_position());
@@ -109,11 +117,7 @@ void OgreUnit::fight(OgreUnit *enemy)
         set_target_position(get_position());
     }
 
-    // Both of us take a beating
-    enemy->set_str(enemy->get_str() - (rand() % 10));
-    enemy->set_info(enemy->get_str());
-    enemy->update_cost();
-    set_str(get_str() - (rand() % 10));
-    set_info(get_str());
-    update_cost();
+    // Update the health displays
+    enemy->set_info(enemy->get_hp());
+    set_info(get_hp());
 }
