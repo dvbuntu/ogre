@@ -295,7 +295,7 @@ int main(int argc, char* argv[])
             }
 
             // Enemy chance to deploy
-            if ((rand() % 100) < ENEMY_DEPLOY_CHANCE ) // more than max req
+            if ((rand() % 500) < ENEMY_DEPLOY_CHANCE ) // more than max req
             {
                 deploy_unit(&units, &enemy, view.getCenter()
                     + sf::Vector2f(rand()%200 - 100,rand()%200 - 100), &font);
