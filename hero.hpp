@@ -26,8 +26,15 @@
 #define BASE_STR 10
 #endif
 
+#ifndef HERO_SIZE
+#define HERO_SIZE 10
+#endif
+
 class OgreHero{
     // This represents the hero, an individual within a unit
+
+    // my combat representation
+    sf::CircleShape circ;
 
     // What's my name
     std::string name;
@@ -88,6 +95,7 @@ public:
     inline void set_owner(OgrePlayer *player)
     {
         owner = player;
+        circ.setFillColor(owner->get_color());
     }
 
     // Get the current position of this hero within the unit
@@ -244,6 +252,15 @@ public:
     inline void set_attacking(int new_attacking)
     {
         attacking = new_attacking;
+        if (attacking)
+        {
+            circ.setOutlineColor(sf::Color::Green);
+            circ.setOutlineThickness(HERO_SIZE/5);
+        }
+        else
+        {
+            circ.setOutlineThickness(0);
+        }
     }
 
     // Did I defend myself?
@@ -255,6 +272,15 @@ public:
     inline void set_defending(int new_defending)
     {
         defending = new_defending;
+        if (defending)
+        {
+            circ.setOutlineColor(sf::Color::Red);
+            circ.setOutlineThickness(HERO_SIZE/5);
+        }
+        else
+        {
+            circ.setOutlineThickness(0);
+        }
     }
 
     // How bad did I just get stabbed?
@@ -283,14 +309,15 @@ public:
     // Fight it out!
     OgreHero * attack(std::list<OgreHero*> *enemies);
 
-    /*
-    inline void draw_on(sf::RenderWindow& window)
+    inline void draw_at(sf::RenderWindow& window, int x, int y)
     {
+        circ.setPosition(x,y);
         window.draw(circ);
+        /*
         info_str.setPosition(get_position());
         window.draw(info_str);
+        */
     }
-    */
 
 };
 

@@ -29,11 +29,11 @@
 #endif
 
 #ifndef HEROES_IN_UNIT
-#define HEROES_IN_UNIT 2
+#define HEROES_IN_UNIT 3
 #endif
 
 #ifndef BATTLE_DELAY
-#define BATTLE_DELAY 0
+#define BATTLE_DELAY 1
 #endif
 
 class OgreUnit{
@@ -79,6 +79,10 @@ public:
     {
         owner = player;
         circ.setFillColor(owner->get_color());
+        for (auto hero:heroes)
+        {
+            hero->set_owner(owner);
+        }
         //info.SetColor(owner->get_color());
     }
 
@@ -226,6 +230,9 @@ public:
 
     // Fight it out!
     void fight(OgreUnit *enemy);
+
+    // Picture a battle
+    void fight_draw_on(sf::RenderWindow& window);
 
     inline void draw_on(sf::RenderWindow& window)
     {

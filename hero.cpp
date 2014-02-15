@@ -1,6 +1,7 @@
 #include "hero.hpp"
 
 OgreHero::OgreHero(const int start_level)
+    : circ(HERO_SIZE)
 {
     // initialize dummy level
     level = start_level;

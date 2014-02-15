@@ -491,6 +491,7 @@ void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f p
         // Update the labor costs for weakened unit
         //units->front()->update_cost();
 
+        // taken care of when we make the unit
         units->front()->set_owner(player);
 
         units->front()->set_target_position(units->front()->get_target_position());

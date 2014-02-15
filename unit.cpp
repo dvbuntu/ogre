@@ -19,6 +19,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     for (int i = 0; i < HEROES_IN_UNIT; i++)
     {
         heroes.push_front(new OgreHero(rand() % 10));
+        heroes.front()->set_position(i);
     }
 
 }
@@ -132,10 +133,8 @@ void OgreUnit::fight(OgreUnit *enemy)
 
             // Draw everything
             window.clear(sf::Color::White);
-            /*
             enemy->fight_draw_on(window);
             fight_draw_on(window);
-            */
             window.display();
 
             // unset status for attacker and defender
@@ -176,4 +175,21 @@ void OgreUnit::fight(OgreUnit *enemy)
     // Update the health displays
     enemy->set_info(enemy->get_hp());
     set_info(get_hp());
+}
+
+void OgreUnit::fight_draw_on(sf::RenderWindow& window)
+{
+    int offset = 100; // TODO: scale to size of window
+
+    if (get_owner()->get_id() == PLAYER)
+    {
+        offset += 200; // TODO: scale
+    }
+
+    for (auto hero: *(get_heroes()))
+    {
+        // only show up if we're actually there
+        if (hero->get_hp() != 0)
+            hero->draw_at(window, offset, hero->get_position()*5*HERO_SIZE + 5*HERO_SIZE);
+    }
 }
