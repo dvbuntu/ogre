@@ -84,16 +84,20 @@ void OgreUnit::fight(OgreUnit *enemy)
     for (auto hero:*(get_heroes()))
     {
         hero->set_attacks_left(hero->get_total_attacks());
+        hero->set_attacking(false);
+        hero->set_defending(false);
     }
     for (auto hero:*(enemy->get_heroes()))
     {
         hero->set_attacks_left(hero->get_total_attacks());
+        hero->set_attacking(false);
+        hero->set_defending(false);
     }
 
     // Fight until we can't fight no more
     // Need to check for units that die that still have attacks left
     // Have a failsafe max_iter for now
-    while( get_remaining_attacks() + enemy->get_remaining_attacks() > 0 && iter < 100 )
+    while( get_remaining_attacks() + enemy->get_remaining_attacks() > 0 && iter < 1000 )
     {
         iter++;
         if (rand() % 2 + 1 == PLAYER)
@@ -121,30 +125,26 @@ void OgreUnit::fight(OgreUnit *enemy)
         {
             damage += defender->get_damage_taken() * damage_coefficient;
             defender->set_damage_taken(0);
+
+            // Set the status to be picked up in the drawing
+            attacker->set_attacking(true);
+            defender->set_defending(true);
+
+            // Draw everything
+            window.clear(sf::Color::White);
+            /*
+            enemy->fight_draw_on(window);
+            fight_draw_on(window);
+            */
+            window.display();
+
+            // unset status for attacker and defender
+            attacker->set_attacking(false);
+            defender->set_defending(false);
+
+            // Sleep for a second?
+            sleep(BATTLE_DELAY);
         }
-
-        /*
-        // Set the status to be picked up in the drawing
-        attacker->set_attacking();
-        defender->set_defending();
-        */
-
-        // Draw everything
-        window.clear(sf::Color::White);
-        /*
-        enemy->fight_draw_on(window);
-        fight_draw_on(window);
-        */
-        window.display();
-
-        // unset status for attacker and defender
-        /*
-        attacker->unset_attacking();
-        defender->unset_defending();
-        */
-
-        // Sleep for a second?
-        sleep(BATTLE_DELAY);
     }
 
     window.close();

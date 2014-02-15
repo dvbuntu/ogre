@@ -68,6 +68,10 @@ class OgreHero{
     // How hard did we just get hit?
     int damage_taken;
 
+    // Are we the current attacker or defender?
+    bool attacking;
+    bool defending;
+
     // Who owns this hero
     OgrePlayer *owner;
 
@@ -229,6 +233,28 @@ public:
             speed = new_speed;
         else
             speed = 0;
+    }
+
+    // Did I hit someone?
+    inline bool get_attacking() const
+    {
+        return attacking;
+    }
+
+    inline void set_attacking(int new_attacking)
+    {
+        attacking = new_attacking;
+    }
+
+    // Did I defend myself?
+    inline bool get_defending() const
+    {
+        return defending;
+    }
+
+    inline void set_defending(int new_defending)
+    {
+        defending = new_defending;
     }
 
     // How bad did I just get stabbed?
