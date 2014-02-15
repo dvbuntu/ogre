@@ -136,7 +136,7 @@ public:
         damage_str.setString(std::to_string(str));
         damage_str.setFont(*font);
         damage_str.setCharacterSize(size);
-        damage_str.setColor(sf::Color::Black);
+        damage_str.setColor(sf::Color::Red);
     }
 
     // Post battle update
@@ -333,7 +333,7 @@ public:
         circ.setPosition(x,y);
         window.draw(circ);
         if (get_damage_taken())
-            draw_damage(window, get_damage_taken(), x, y);
+            draw_damage(window, get_damage_taken(), x + HERO_SIZE*3, y);
         info_str.setPosition(x - HERO_SIZE*3, y);
         set_info(get_hp());
         window.draw(info_str);

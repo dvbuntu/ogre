@@ -88,6 +88,7 @@ void OgreUnit::fight(OgreUnit *enemy)
         hero->set_attacking(false);
         hero->set_defending(false);
         hero->set_info(hero->get_hp(), &font, 12);
+        hero->set_damage_str(0, &font, 12);
     }
     for (auto hero:*(enemy->get_heroes()))
     {
@@ -95,6 +96,7 @@ void OgreUnit::fight(OgreUnit *enemy)
         hero->set_attacking(false);
         hero->set_defending(false);
         hero->set_info(hero->get_hp(), &font, 12);
+        hero->set_damage_str(0, &font, 12);
     }
 
     // Fight until we can't fight no more
