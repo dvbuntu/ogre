@@ -59,9 +59,36 @@ void OgreUnit::fight(OgreUnit *enemy)
 
     int iter = 0;
     int damage = 0;
+    int damage_coefficient = 0;
 
     OgreHero *attacker;
-    OgreUnit *defenders;
+    OgreHero *defender;
+    OgreUnit *defending_unit;
+
+    //make a new window for our battle
+    // I think I can just advance this section without messing with main window
+    sf::RenderWindow window(sf::VideoMode(400, 300), "Fight It Out!");
+    window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(120);
+    sf::View view = window.getDefaultView();
+
+    // load font
+    sf::Font font;
+    if (!font.loadFromFile("./resources/DejaVuSans.ttf"))
+    {
+        std::cerr << "Couldn't find font DejaVuSans.ttf!\n";
+        return;
+    }
+
+    // set everyone's attacks to max
+    for (auto hero:*(get_heroes()))
+    {
+        hero->set_attacks_left(hero->get_total_attacks());
+    }
+    for (auto hero:*(enemy->get_heroes()))
+    {
+        hero->set_attacks_left(hero->get_total_attacks());
+    }
 
     // Fight until we can't fight no more
     // Need to check for units that die that still have attacks left
@@ -72,26 +99,55 @@ void OgreUnit::fight(OgreUnit *enemy)
         if (rand() % 2 + 1 == PLAYER)
         {
             attacker = *random_element(heroes.begin(), heroes.end());
-            defenders = enemy;
-
-            // Can we even attack?
-            if (attacker->get_attacks_left() == 0 || attacker->get_hp() == 0)
-                continue;
-
-            damage += attacker->attack(defenders->get_heroes());
+            defending_unit = enemy;
+            damage_coefficient = 1;
         }
         else
         {
             attacker = *random_element(enemy->heroes.begin(), enemy->heroes.end());
-
-            // Can we even attack?
-            if (attacker->get_attacks_left() == 0 || attacker->get_hp() == 0)
-                continue;
-
-            damage -= attacker->attack(get_heroes());
+            defending_unit = this;
+            damage_coefficient = -1;
         }
+
+        // Can we even attack?
+        if (attacker->get_attacks_left() == 0 || attacker->get_hp() == 0)
+            continue;
+
+        // Need to return who we attacked...
+        // return that instead, and attach the damage taken to them
+        // reset after this
+        defender = attacker->attack(defending_unit->get_heroes());
+        if (defender != nullptr)
+        {
+            damage += defender->get_damage_taken() * damage_coefficient;
+            defender->set_damage_taken(0);
+        }
+
+        /*
+        // Set the status to be picked up in the drawing
+        attacker->set_attacking();
+        defender->set_defending();
+        */
+
+        // Draw everything
+        window.clear(sf::Color::White);
+        /*
+        enemy->fight_draw_on(window);
+        fight_draw_on(window);
+        */
+        window.display();
+
+        // unset status for attacker and defender
+        /*
+        attacker->unset_attacking();
+        defender->unset_defending();
+        */
+
+        // Sleep for a second?
+        sleep(BATTLE_DELAY);
     }
 
+    window.close();
 
     // Get the retreat 
     // TODO: fix this so it won't send me in wacky direction when use shortest path

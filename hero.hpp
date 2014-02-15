@@ -7,6 +7,7 @@
 #include <sstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <algorithm>
 #include <math.h>
 
 #ifndef HELPER_HPP
@@ -63,6 +64,9 @@ class OgreHero{
 
     // Position within the unit (TODO: make this affect damage and num attacks)
     int position;
+
+    // How hard did we just get hit?
+    int damage_taken;
 
     // Who owns this hero
     OgrePlayer *owner;
@@ -203,8 +207,8 @@ public:
 
     inline void set_attacks_left(int new_attacks_left)
     {
-        if (new_attacks_left > 100)
-            attacks_left = 100; // TODO: replace with a MAX_STR like 255 or something
+        if (new_attacks_left > 10)
+            attacks_left = 10; // TODO: replace with a MAX_STR like 255 or something
         else if (new_attacks_left > 0)
             attacks_left = new_attacks_left;
         else
@@ -227,6 +231,17 @@ public:
             speed = 0;
     }
 
+    // How bad did I just get stabbed?
+    inline int get_damage_taken() const
+    {
+        return damage_taken;
+    }
+
+    inline void set_damage_taken(int new_damage_taken)
+    {
+        damage_taken = new_damage_taken;
+    }
+
     // What's my field pay?
     inline int get_cost() const
     {
@@ -240,7 +255,7 @@ public:
     }
 
     // Fight it out!
-    int attack(std::list<OgreHero*> *enemies);
+    OgreHero * attack(std::list<OgreHero*> *enemies);
 
     /*
     inline void draw_on(sf::RenderWindow& window)

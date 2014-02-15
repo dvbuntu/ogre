@@ -13,12 +13,14 @@ OgreHero::OgreHero(const int start_level)
     hp = max_hp;
 
     // 1 or 2 hits
-    total_attacks = 1 + rand() % 2;
+    total_attacks = 1 + (rand() % 2);
+
+    damage_taken = -1;
 
 }
 
 // Fight it out!
-int OgreHero::attack(std::list<OgreHero*> *enemies)
+OgreHero * OgreHero::attack(std::list<OgreHero*> *enemies)
 {
     OgreHero *enemy = nullptr;
 
@@ -59,10 +61,15 @@ int OgreHero::attack(std::list<OgreHero*> *enemies)
         if (damage < 0)
             damage = 0;
 
+        // can't hurt them for more than they have
+        damage = std::min(damage, enemy->get_hp());
+
         // Dish it out
         enemy->set_hp(enemy->get_hp() - damage);
         set_attacks_left(get_attacks_left() - 1);
+
+        enemy->set_damage_taken(damage);
     }
 
-    return damage;
+    return enemy;
 }

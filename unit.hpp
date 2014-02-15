@@ -3,10 +3,12 @@
 
 #include <cstdlib>
 #include <cfloat>
+#include <iostream>
 #include <sstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <math.h>
+#include <unistd.h> // for sleep
 
 #ifndef PLAYER_HPP
 #include "player.hpp"
@@ -27,7 +29,11 @@
 #endif
 
 #ifndef HEROES_IN_UNIT
-#define HEROES_IN_UNIT 4
+#define HEROES_IN_UNIT 2
+#endif
+
+#ifndef BATTLE_DELAY
+#define BATTLE_DELAY 0
 #endif
 
 class OgreUnit{
