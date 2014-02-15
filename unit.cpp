@@ -81,18 +81,20 @@ void OgreUnit::fight(OgreUnit *enemy)
         return;
     }
 
-    // set everyone's attacks to max
+    // hero setup
     for (auto hero:*(get_heroes()))
     {
         hero->set_attacks_left(hero->get_total_attacks());
         hero->set_attacking(false);
         hero->set_defending(false);
+        hero->set_info(hero->get_hp(), &font, 12);
     }
     for (auto hero:*(enemy->get_heroes()))
     {
         hero->set_attacks_left(hero->get_total_attacks());
         hero->set_attacking(false);
         hero->set_defending(false);
+        hero->set_info(hero->get_hp(), &font, 12);
     }
 
     // Fight until we can't fight no more
@@ -125,7 +127,6 @@ void OgreUnit::fight(OgreUnit *enemy)
         if (defender != nullptr)
         {
             damage += defender->get_damage_taken() * damage_coefficient;
-            defender->set_damage_taken(0);
 
             // Set the status to be picked up in the drawing
             attacker->set_attacking(true);
@@ -137,9 +138,10 @@ void OgreUnit::fight(OgreUnit *enemy)
             fight_draw_on(window);
             window.display();
 
-            // unset status for attacker and defender
+            // clean up status
             attacker->set_attacking(false);
             defender->set_defending(false);
+            defender->set_damage_taken(0);
 
             // Sleep for a second?
             sleep(BATTLE_DELAY);

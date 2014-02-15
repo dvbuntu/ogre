@@ -30,6 +30,10 @@
 #define HERO_SIZE 10
 #endif
 
+#ifndef NO_DAMAGE_DISPLAY
+#define NO_DAMAGE_DISPLAY -1
+#endif
+
 class OgreHero{
     // This represents the hero, an individual within a unit
 
@@ -41,6 +45,7 @@ class OgreHero{
 
     // Info about the hero
     sf::Text info_str;
+    sf::Text damage_str;
 
     // Speed class, how many steps in a round
     int speed;
@@ -124,6 +129,20 @@ public:
     inline void set_info(int str)
     {
         info_str.setString(std::to_string(str));
+    }
+
+    inline void set_damage_str(int str, sf::Font *font, int size)
+    {
+        damage_str.setString(std::to_string(str));
+        damage_str.setFont(*font);
+        damage_str.setCharacterSize(size);
+        damage_str.setColor(sf::Color::Black);
+    }
+
+    // Post battle update
+    inline void set_damage_str(int str)
+    {
+        damage_str.setString(std::to_string(str));
     }
 
     // Shout my name!
@@ -313,11 +332,21 @@ public:
     {
         circ.setPosition(x,y);
         window.draw(circ);
-        /*
-        info_str.setPosition(get_position());
+        if (get_damage_taken())
+            draw_damage(window, get_damage_taken(), x, y);
+        info_str.setPosition(x - HERO_SIZE*3, y);
+        set_info(get_hp());
         window.draw(info_str);
-        */
     }
+
+    inline void draw_damage(sf::RenderWindow& window, int damage, int x, int y)
+    {
+        damage_str.setPosition(x, y);
+        set_damage_str(damage);
+        if (damage != NO_DAMAGE_DISPLAY)
+            window.draw(damage_str);
+    }
+
 
 };
 
