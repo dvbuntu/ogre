@@ -37,15 +37,14 @@ OgreHero * OgreHero::attack(std::list<OgreHero*> *enemies)
     // TODO: pick someone to fight, but now, just do random
     // should pick someone who still has hit points...
     // Can we even hit this unit?
-    /*
     do
     {
         enemy = *random_element(enemies->begin(), enemies->end());
     }
     while ( enemy->get_hp() == 0);
-    */
 
     // For now, just fight whoever's in front
+    /*
     for (auto poss_enemy:*enemies)
     {
         if (poss_enemy->get_hp()) //fight someone who's alive
@@ -54,6 +53,7 @@ OgreHero * OgreHero::attack(std::list<OgreHero*> *enemies)
             break;
         }
     }
+    */
 
     // TODO: if a unit is dead, end the fight
 

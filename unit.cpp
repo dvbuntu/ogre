@@ -143,7 +143,7 @@ void OgreUnit::fight(OgreUnit *enemy)
             // clean up status
             attacker->set_attacking(false);
             defender->set_defending(false);
-            defender->set_damage_taken(0);
+            defender->set_damage_taken(NO_DAMAGE_DISPLAY);
 
             // Sleep for a second?
             sleep(BATTLE_DELAY);
