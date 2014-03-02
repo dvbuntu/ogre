@@ -17,7 +17,7 @@ OgreHero::OgreHero(const int start_level)
     total_attacks = 1 + (rand() % 2);
 
     // A null value of sorts
-    damage_taken = -1;
+    damage_taken = NO_DAMAGE_DISPLAY;
 
     // We don't do anything yet
     attacking = false;
