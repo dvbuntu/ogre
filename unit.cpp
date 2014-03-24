@@ -102,7 +102,7 @@ void OgreUnit::fight(OgreUnit *enemy)
     // Fight until we can't fight no more
     // Need to check for units that die that still have attacks left
     // Have a failsafe max_iter for now
-    while( get_remaining_attacks() + enemy->get_remaining_attacks() > 0 && iter < 30 )
+    while( get_remaining_attacks() + enemy->get_remaining_attacks() > 0 && iter < 30 && enemy->get_hp() > 0 && get_hp())
     {
         iter++;
         if (rand() % 2 + 1 == PLAYER)
