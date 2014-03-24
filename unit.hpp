@@ -33,7 +33,7 @@
 #endif
 
 #ifndef BATTLE_DELAY
-#define BATTLE_DELAY 1
+#define BATTLE_DELAY 500000
 #endif
 
 class OgreUnit{
