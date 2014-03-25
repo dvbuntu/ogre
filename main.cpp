@@ -232,6 +232,12 @@ int main(int argc, char* argv[])
 		}
 
         if (!paused){
+            // Fight it Out!
+            resolve_fights(units, window);
+
+            // Reap the dead!
+            reap_units(&units);
+
             // Move the unit(s)
             for(auto unit : units)
             {
@@ -256,12 +262,6 @@ int main(int argc, char* argv[])
                     unit->heal();
                     unit->set_info(unit->get_hp());
             }
-
-            // Fight it Out!
-            resolve_fights(units, window);
-
-            // Reap the dead!
-            reap_units(&units);
 
             // Check town ownership
             for(auto town : towns)
