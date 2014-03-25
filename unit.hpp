@@ -221,6 +221,19 @@ public:
         speed = s;
     }
 
+    // Outline the unit in red so we know it's fighting
+    void show_fighting()
+    {
+        circ.setOutlineColor(sf::Color::Red);
+        circ.setOutlineThickness(UNIT_SIZE/5);
+    }
+
+    // remove fight halo
+    void done_fighting()
+    {
+        circ.setOutlineThickness(0);
+    }
+
 
     // Move this unit one step toward its target
     void move_one();

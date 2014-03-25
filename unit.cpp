@@ -50,8 +50,6 @@ void OgreUnit::move_speed(){
 }
 
 // Fight it out!
-// dummy for now, just push both back...or randomly pick a winner?
-// Or possibly a draw and both go back, I like it
 void OgreUnit::fight(OgreUnit *enemy)
 {
     // Could just give new target pos and move a bunch there, or magic move to

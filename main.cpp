@@ -40,7 +40,7 @@ using std::cerr;
 // maybe make a 'helper' cpp file
 bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *paused, sf::Vector2f position, float unit_size);
 OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer *enemy);
-void resolve_fights(std::list<OgreUnit*> units);
+void resolve_fights(std::list<OgreUnit*> units, sf::RenderWindow& window);
 void reap_units(std::list<OgreUnit*> *units);
 void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f position, sf::Font *font);
 
@@ -258,7 +258,7 @@ int main(int argc, char* argv[])
             }
 
             // Fight it Out!
-            resolve_fights(units);
+            resolve_fights(units, window);
 
             // Reap the dead!
             reap_units(&units);
@@ -419,7 +419,7 @@ OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer
 }
 
 // Check for and resolve any conflict between opposing units that are too close
-void resolve_fights(std::list<OgreUnit*> units)
+void resolve_fights(std::list<OgreUnit*> units, sf::RenderWindow& window)
 {
     // Maybe check each direction instead, and just skip if not move
     // Could be dangerous, I fiddle with the contents of units within the loop...
@@ -436,7 +436,14 @@ void resolve_fights(std::list<OgreUnit*> units)
                 continue;
             if (unit1->distance<>(unit2->get_position()) < FIGHT_THRESH)
             {
+                unit1->show_fighting();
+                unit2->show_fighting();
+                unit1->draw_on(window);
+                unit2->draw_on(window);
+                window.display();
                 unit1->fight(unit2);
+                unit1->done_fighting();
+                unit2->done_fighting();
             }
         }
     }
