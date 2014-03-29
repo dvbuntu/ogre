@@ -198,20 +198,45 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
     }
 }
 
+
 // A* for shortest path to target
 // as I take in a path, maybe can issue multiple set
 // of move orders?  just change the start to the previous
 // target and tack on the new target...hmm
 // start and target are positions...sfml vector2i?
-void OgreUnit::short_path(int **terrain, int **move_cost, PathPt *start, PathPt target, *path)
+void OgreUnit::short_path(int **terrain, int **move_cost, PathPt *start, PathPt target, PathPt *path)
 {
     // roll my own special sauce, basically a vector2i plus G and F
     PathPt *prev_pt, *current;
+
+    // new computed cost
     int newG;
+
+    start->set_G(0);
+    start->set_F(diag_dist(start,target));
+    current = start;
+
     std::list<PathPt*> open_list;
     open_list.push_front(start);
+
     std::list<PathPt*> closed_list;
-    current = start;
+
+    // This will hold the actual adjacent pts, computed from
+    // the current pt and the steps
+    std::list<PathPt*> nearby_pts;
+
+    // These are the directions we will step, all 8 diagonals
+    // Maybe I don't actually want to do diagonals...
+    std::list<PathPt> steps;
+    steps.push_front(new PathPt(0,1));
+    steps.push_front(new PathPt(1,1));
+    steps.push_front(new PathPt(1,0));
+    steps.push_front(new PathPt(1,-1));
+    steps.push_front(new PathPt(0,-1));
+    steps.push_front(new PathPt(-1,-1));
+    steps.push_front(new PathPt(-1,0));
+    steps.push_front(new PathPt(-1,1));
+
     // keep going while there's things in open list and our target isn't in the closed list
     while(!open_list.empty() and
         std::find(closed_list.begin(),
@@ -220,22 +245,32 @@ void OgreUnit::short_path(int **terrain, int **move_cost, PathPt *start, PathPt 
     {
         open_list.erase(current);
         closed_list.push_front(current);
-        foreach(adj near current)
+        nearby_pts.clear();
+        for (auto step : steps)
         {
-            if(adj in closed_list)
+            nearby_pts.push_front(new PathPt( *current + step));
+        }
+
+        for (auto adj : nearby_pts)
+        {
+            if(std::find(closed_list.begin(),
+                  closed_list.end(),
+                  adj) != closed_list.end())
                 continue;
-            newG = current.G + move_cost[unit_type][terrain[adj.X][adj.Y]];
-            if(adj not in open_list)
+            newG = current.G + move_cost[unit_type][terrain[adj->X][adj->Y]];
+            if(std::find(open_list.begin(),
+                  open_list.end(),
+                  adj) == open_list.end())
             {
-                open_list.add(adj)
-                adj.G = newG; // where did I compute G?
+                open_list.push_front(adj)
+                adj->set_G(newG);
             }
-            if(newG <= adj.G)
+            if(newG <= adj->get_G())
             {
-                adj.G = newG;
-                adj.F = adj.G + diag_dist(adj,target);
+                adj->set_G(newG);
+                adj->set_F(adj->get_G() + diag_dist(adj,target));
                 adj.parent = current; //ptr to current
-                open_list.sort(); //sort by F values
+                open_list.sort(compare_F); //sort by F values
             }
         }
         current = open_list.front(); // whichever with the lowest F
@@ -243,7 +278,7 @@ void OgreUnit::short_path(int **terrain, int **move_cost, PathPt *start, PathPt 
     prev_pt = target;
     while(prev_pt != nullptr)
     {
-        path.push_front(prev_pt);
+        path->push_front(prev_pt);
         prev_pt = prev_pt.parent;
     }
 }

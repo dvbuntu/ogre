@@ -55,7 +55,14 @@ public:
         int del_y = abs(Y - target->Y);
         return 4*min(del_x, del_y) + 10*max(del_x, del_y)
     }
+
+    // where did we come from?
+    PathPt *parent;
 }
 
+bool compare_F(PathPt *first, PathPt *second)
+{
+    return first.get_F() < second.get_F();
+}
 
 #endif
