@@ -48,6 +48,13 @@ public:
     {
         F = newF;
     }
+
+    int diag_dist(PathPt *target)
+    {
+        int del_x = abs(X - target->X);
+        int del_y = abs(Y - target->Y);
+        return 4*min(del_x, del_y) + 10*max(del_x, del_y)
+    }
 }
 
 
