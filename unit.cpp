@@ -29,6 +29,8 @@ void OgreUnit::move_one(){
     sf::Vector2f direction;
 
     // How far to go
+    // in future, change to next step of shortest path
+    // compute that when we set the target position
     direction = get_direction();
     // Normalized to 1 unit if we're far
     // A little hacky, we add the position because the 
@@ -195,3 +197,55 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
             hero->draw_at(window, offset, hero->get_position()*5*HERO_SIZE + 5*HERO_SIZE);
     }
 }
+
+// A* for shortest path to target
+// as I take in a path, maybe can issue multiple set
+// of move orders?  just change the start to the previous
+// target and tack on the new target...hmm
+// start and target are positions...sfml vector2i?
+void OgreUnit::short_path(int **terrain, int **move_cost, PathPt *start, PathPt target, *path)
+{
+    // roll my own special sauce, basically a vector2i plus G and F
+    PathPt *prev_pt, *current;
+    int newG;
+    std::list<PathPt*> open_list;
+    open_list.push_front(start);
+    std::list<PathPt*> closed_list;
+    current = start;
+    // keep going while there's things in open list and our target isn't in the closed list
+    while(!open_list.empty() and
+        std::find(closed_list.begin(),
+                  closed_list.end(),
+                  target) == closed_list.end())
+    {
+        open_list.erase(current);
+        closed_list.push_front(current);
+        foreach(adj near current)
+        {
+            if(adj in closed_list)
+                continue;
+            newG = current.G + move_cost[unit_type][terrain[adj.X][adj.Y]];
+            if(adj not in open_list)
+            {
+                open_list.add(adj)
+                adj.G = newG; // where did I compute G?
+            }
+            if(newG <= adj.G)
+            {
+                adj.G = newG;
+                adj.F = adj.G + diag_dist(adj,target);
+                adj.parent = current; //ptr to current
+                open_list.sort(); //sort by F values
+            }
+        }
+        current = open_list.front(); // whichever with the lowest F
+    }
+    prev_pt = target;
+    while(prev_pt != nullptr)
+    {
+        path.push_front(prev_pt);
+        prev_pt = prev_pt.parent;
+    }
+}
+
+

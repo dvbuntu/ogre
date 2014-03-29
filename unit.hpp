@@ -9,6 +9,7 @@
 #include <SFML/System.hpp>
 #include <math.h>
 #include <unistd.h> // for sleep
+#include <cmath> // for round
 
 #ifndef PLAYER_HPP
 #include "player.hpp"
@@ -269,7 +270,8 @@ public:
     template <class T>
     void set_target_position(T p)
     {
-        target_position = sf::Vector2f(p);
+        // round to nearest ten
+        target_position = sf::Vector2f(round(p.x/10)*10, round(p.y/10)*10);
     }
 
     // Magic move after combat or other necessary things

@@ -1,5 +1,7 @@
 #include <cstdlib>
 #include <iterator>
+#include <SFML/Graphics.hpp>
+#include <SFML/system.hpp>
 
 #ifndef HELPER_HPP
 #define HELPER_HPP
@@ -17,5 +19,36 @@ I random_element(I begin, I end)
 
     return std::next(begin, k);
 }
+
+// Points on the shortest path, maybe change to grid pt
+class PathPt: public sf::Vector2i{
+    // cost to this point
+    int G;
+
+    // estimated cost to end
+    int F;
+
+public:
+    inline int get_G()
+    {
+        return G;
+    }
+
+    inline void set_G(int newG)
+    {
+        G = newG;
+    }
+
+    inline int get_F()
+    {
+        return F;
+    }
+
+    inline void set_F(int newF)
+    {
+        F = newF;
+    }
+}
+
 
 #endif
