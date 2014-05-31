@@ -19,7 +19,9 @@
 #include "hero.hpp"
 #endif
 
+#ifndef HELPER_HPP
 #include "helper.hpp"
+#endif
 
 #ifndef MAX_NAME_LENGTH
 #define MAX_NAME_LENGTH 100
