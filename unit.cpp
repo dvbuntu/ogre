@@ -14,6 +14,8 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 
     // Starting strength...I'll make it random
     //str = 50 + rand() % 50;
+    
+    unit_type = 0;
 
     // Recruit some fighters
     for (int i = 0; i < HEROES_IN_UNIT; i++)
@@ -257,7 +259,7 @@ void OgreUnit::short_path(int **terrain, int **move_cost, PathPt *start, PathPt 
                   closed_list.end(),
                   adj) != closed_list.end())
                 continue;
-            newG = current.G + move_cost[unit_type][terrain[adj->X][adj->Y]];
+            newG = current.G + diag_dist(adj) * move_cost[unit_type][terrain[adj->X][adj->Y]];
             if(std::find(open_list.begin(),
                   open_list.end(),
                   adj) == open_list.end())

@@ -37,6 +37,10 @@
 #define BATTLE_DELAY 500000
 #endif
 
+#ifndef NUM_UNIT_TYPES
+#define NUM_UNIT_TYPES 4
+#endif
+
 class OgreUnit{
     // This represents the unit for now
     // Maybe future just for radius collision in future
@@ -62,6 +66,9 @@ class OgreUnit{
 
 public:
     OgreUnit(const sf::Vector2f& p);
+
+    // Fixed for now, later random or based on heroes?
+    int unit_type;
 
     // Who are my heroes?
     inline std::list<OgreHero*> *get_heroes()
