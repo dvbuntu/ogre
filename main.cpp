@@ -28,12 +28,18 @@
 #include "town.hpp"
 #endif
 
+#ifndef TERRAIN_HPP
+#include "terrain.hpp"
+#endif
+
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
 #define FIGHT_THRESH (3*UNIT_SIZE)
 #define HEAL_PERCENT 1
 #define DAY_LENGTH 1000 // length of a 'game day' in time steps
 #define ENEMY_DEPLOY_CHANCE 1
+#define X_VIDEO_SIZE 800
+#define Y_VIDEO_SIZE 600
 
 using std::cerr;
 
@@ -48,7 +54,7 @@ int main(int argc, char* argv[])
 {
     uint64_t time_step = 0;
 
-    int i;
+    int i, j;
 
     // Do we step at all
     bool paused = false;
@@ -61,6 +67,29 @@ int main(int argc, char* argv[])
 
     // where we click
     sf::Vector2f position;
+
+    // tile that we actually click
+    sf::Vector2i tile_coord;
+
+    // ratio of screen to tiles
+    float x_ratio = X_VIDEO_SIZE / X_MAP_SIZE;
+    float y_ratio = Y_VIDEO_SIZE / Y_MAP_SIZE;
+
+
+    // premade terrain shapes
+    std::vector< std::vector<sf::RectangleShape>> tile_display;
+    i = 0;
+    for (auto row : battle_map) {
+        tile_display.push_back(new std::vector<sf::RectangleShape>);
+        for (auto tile : row) {
+            tile_display.back->push_back(sf::RectangleShape(
+                          x_ratio,
+                          y_ratio));
+            tile_display[i][j].setPosition( i * x_ratio, j * y_ratio);
+            j++;
+        }
+        i++;
+    }
 
     // Window with title and our view
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Ogre Battle");
@@ -337,7 +366,13 @@ int main(int argc, char* argv[])
 		// draw everything to the window
 		window.clear(sf::Color::White);
 
-        //order of drawing is important, put background first
+        //order of drawing is important, put terrain first
+        for(auto row : tile_display){
+            for (auto tile : row) {
+                window.draw(tile_display);
+            }
+        }
+
         // then features like towns and finally units
         for(auto town : towns)
         {

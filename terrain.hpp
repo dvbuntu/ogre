@@ -44,6 +44,4 @@ for (int x = 0; x < X_MAP_SIZE; x++){
     }
 }
 
-
-
 #endif

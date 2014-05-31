@@ -19,6 +19,10 @@
 #include "hero.hpp"
 #endif
 
+#ifndef TERRAIN_HPP
+#include "terrain.hpp"
+#endif
+
 #ifndef HELPER_HPP
 #include "helper.hpp"
 #endif
