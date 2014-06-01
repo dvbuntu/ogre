@@ -51,9 +51,9 @@ public:
 
     int diag_dist(PathPt *target)
     {
-        int del_x = abs(x - target->X);
-        int del_y = abs(y - target->Y);
-        return 4*min(del_x, del_y) + 10*max(del_x, del_y)
+        int del_x = abs(x - target->x);
+        int del_y = abs(y - target->y);
+        return 4*std::min(del_x, del_y) + 10*std::max(del_x, del_y);
     }
 
     // where did we come from?
@@ -62,7 +62,7 @@ public:
 
 bool compare_F(PathPt *first, PathPt *second)
 {
-    return first.get_F() < second.get_F();
+    return first->get_F() < second->get_F();
 }
 
 #endif

@@ -77,6 +77,7 @@ int main(int argc, char* argv[])
 
 
     // premade terrain shapes
+    setup_terrain();
     std::vector< std::vector<sf::RectangleShape>> tile_display;
     i = 0;
     for (auto row : battle_map) {
@@ -92,7 +93,7 @@ int main(int argc, char* argv[])
     }
 
     // Window with title and our view
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Ogre Battle");
+	sf::RenderWindow window(sf::VideoMode(X_VIDEO_SIZE, Y_VIDEO_SIZE), "Ogre Battle");
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(120);
     sf::View view = window.getDefaultView();
