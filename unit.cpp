@@ -243,7 +243,7 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost
     while(!open_list.empty() and
         std::find(closed_list.begin(),
                   closed_list.end(),
-                  target) == closed_list.end())
+                  &target) == closed_list.end())
     {
         open_list.remove(current);
         closed_list.push_front(current);
