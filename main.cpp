@@ -81,11 +81,11 @@ int main(int argc, char* argv[])
     std::vector< std::vector<sf::RectangleShape>> tile_display;
     i = 0;
     for (auto row : battle_map) {
-        tile_display.push_back(new std::vector<sf::RectangleShape>);
+        tile_display.push_back(*(new std::vector<sf::RectangleShape>));
         for (auto tile : row) {
-            tile_display.back->push_back(sf::RectangleShape(
-                          x_ratio,
-                          y_ratio));
+            tile_display.back().push_back(sf::RectangleShape(
+                          sf::Vector2f(x_ratio,
+                          y_ratio)));
             tile_display[i][j].setPosition( i * x_ratio, j * y_ratio);
             j++;
         }
@@ -370,7 +370,7 @@ int main(int argc, char* argv[])
         //order of drawing is important, put terrain first
         for(auto row : tile_display){
             for (auto tile : row) {
-                window.draw(tile_display);
+                window.draw(tile);
             }
         }
 

@@ -215,7 +215,7 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost
     int newG;
 
     start->set_G(0);
-    start->set_F(diag_dist(start,target));
+    start->set_F(start->diag_dist(&target));
     current = start;
 
     std::list<PathPt*> open_list;
@@ -230,14 +230,14 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost
     // These are the directions we will step, all 8 diagonals
     // Maybe I don't actually want to do diagonals...
     std::list<PathPt> steps;
-    steps.push_front(new PathPt(0,1));
-    steps.push_front(new PathPt(1,1));
-    steps.push_front(new PathPt(1,0));
-    steps.push_front(new PathPt(1,-1));
-    steps.push_front(new PathPt(0,-1));
-    steps.push_front(new PathPt(-1,-1));
-    steps.push_front(new PathPt(-1,0));
-    steps.push_front(new PathPt(-1,1));
+    steps.push_front(*(new PathPt(0,1)));
+    steps.push_front(*(new PathPt(1,1)));
+    steps.push_front(*(new PathPt(1,0)));
+    steps.push_front(*(new PathPt(1,-1)));
+    steps.push_front(*(new PathPt(0,-1)));
+    steps.push_front(*(new PathPt(-1,-1)));
+    steps.push_front(*(new PathPt(-1,0)));
+    steps.push_front(*(new PathPt(-1,1)));
 
     // keep going while there's things in open list and our target isn't in the closed list
     while(!open_list.empty() and
@@ -245,7 +245,7 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost
                   closed_list.end(),
                   target) == closed_list.end())
     {
-        open_list.erase(current);
+        open_list.remove(current);
         closed_list.push_front(current);
         nearby_pts.clear();
         for (auto step : steps)
@@ -259,7 +259,7 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost
                   closed_list.end(),
                   adj) != closed_list.end())
                 continue;
-            newG = current.G + diag_dist(adj) * move_cost[unit_type][terrain[adj->X][adj->Y]];
+            newG = current->G + current->diag_dist(adj) * move_cost[unit_type][terrain[adj->X][adj->Y]];
             if(std::find(open_list.begin(),
                   open_list.end(),
                   adj) == open_list.end())
@@ -270,7 +270,7 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost
             if(newG <= adj->get_G())
             {
                 adj->set_G(newG);
-                adj->set_F(adj->get_G() + diag_dist(adj,target));
+                adj->set_F(adj->get_G() + adj->diag_dist(target));
                 adj.parent = current; //ptr to current
                 open_list.sort(compare_F); //sort by F values
             }

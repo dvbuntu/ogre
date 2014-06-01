@@ -293,6 +293,9 @@ public:
     {
         circ.move(p);
     }
+
+    // shortest path computation prototype
+    void short_path(std::vector<std::vector<int>> terrain, int **move_cost, PathPt *start, PathPt target, PathPt *path);
 };
 
 #endif

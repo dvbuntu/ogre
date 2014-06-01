@@ -29,6 +29,12 @@ class PathPt: public sf::Vector2i{
     int F;
 
 public:
+    PathPt (int x, int y);
+    PathPt (const PathPt& old) : sf::Vector2i(old.x, old.y){
+        G = old.G;
+        F = old.F;
+    }
+
     inline int get_G()
     {
         return G;
