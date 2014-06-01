@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <SFML/Graphics.hpp>
-#include <SFML/system.hpp>
+// #include <SFML/system.hpp>
 
 #ifndef HELPER_HPP
 #define HELPER_HPP
