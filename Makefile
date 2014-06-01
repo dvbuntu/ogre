@@ -8,7 +8,7 @@ ogre: main.o player.o hero.o unit.o town.o
 
 #compile main loop
 #main.o: main.cpp car.hpp
-main.o: main.cpp player.hpp hero.hpp unit.hpp town.hpp helper.hpp
+main.o: main.cpp player.hpp hero.hpp unit.hpp town.hpp helper.hpp terrain.hpp
 	$(CXX) $(CXXFLAGS) -c main.cpp
 
 #compile helpers
@@ -18,7 +18,7 @@ player.o: player.cpp player.hpp
 hero.o: hero.cpp hero.hpp player.hpp helper.hpp
 	$(CXX) $(CXXFLAGS) -c hero.cpp
 
-unit.o: unit.cpp unit.hpp player.hpp hero.hpp helper.hpp
+unit.o: unit.cpp unit.hpp player.hpp hero.hpp helper.hpp terrain.hpp
 	$(CXX) $(CXXFLAGS) -c unit.cpp
 
 town.o: town.cpp town.hpp player.hpp unit.hpp
