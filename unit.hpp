@@ -299,4 +299,11 @@ public:
     void short_path(std::vector<std::vector<int>> terrain, int **move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path);
 };
 
+// Need this as a function for sorting and shouldn't be in helper
+bool compare_F(PathPt *first, PathPt *second)
+{
+    return first->get_F() < second->get_F();
+}
+
+
 #endif

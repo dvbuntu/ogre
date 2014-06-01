@@ -67,9 +67,5 @@ public:
     PathPt *parent;
 };
 
-bool compare_F(PathPt *first, PathPt *second)
-{
-    return first->get_F() < second->get_F();
-}
 
 #endif

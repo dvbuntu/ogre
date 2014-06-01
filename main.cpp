@@ -9,7 +9,9 @@
 #include <time.h>
 
 // General helpful functions
+#ifndef HELPER_HPP
 #include "helper.hpp"
+#endif
 
 // ogre specific includes
 #ifndef PLAYER_HPP
@@ -28,9 +30,11 @@
 #include "town.hpp"
 #endif
 
+/*
 #ifndef TERRAIN_HPP
 #include "terrain.hpp"
 #endif
+*/
 
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
