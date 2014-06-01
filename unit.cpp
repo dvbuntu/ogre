@@ -206,7 +206,7 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
 // of move orders?  just change the start to the previous
 // target and tack on the new target...hmm
 // start and target are positions...sfml vector2i?
-void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost, PathPt *start, PathPt target, PathPt *path)
+void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path)
 {
     // roll my own special sauce, basically a vector2i plus G and F
     PathPt *prev_pt, *current;
@@ -259,29 +259,29 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost
                   closed_list.end(),
                   adj) != closed_list.end())
                 continue;
-            newG = current->G + current->diag_dist(adj) * move_cost[unit_type][terrain[adj->X][adj->Y]];
+            newG = current->G + current->diag_dist(adj) * move_cost[unit_type][terrain[adj->x][adj->y]];
             if(std::find(open_list.begin(),
                   open_list.end(),
                   adj) == open_list.end())
             {
-                open_list.push_front(adj)
+                open_list.push_front(adj);
                 adj->set_G(newG);
             }
             if(newG <= adj->get_G())
             {
                 adj->set_G(newG);
-                adj->set_F(adj->get_G() + adj->diag_dist(target));
-                adj.parent = current; //ptr to current
+                adj->set_F(adj->get_G() + adj->diag_dist(&target));
+                adj->parent = current; //ptr to current
                 open_list.sort(compare_F); //sort by F values
             }
         }
         current = open_list.front(); // whichever with the lowest F
     }
-    prev_pt = target;
+    prev_pt = &target;
     while(prev_pt != nullptr)
     {
         path->push_front(prev_pt);
-        prev_pt = prev_pt.parent;
+        prev_pt = prev_pt->parent;
     }
 }
 

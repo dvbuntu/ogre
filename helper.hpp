@@ -22,17 +22,18 @@ I random_element(I begin, I end)
 
 // Points on the shortest path, maybe change to grid pt
 class PathPt: public sf::Vector2i{
+public:
     // cost to this point
     int G;
 
     // estimated cost to end
     int F;
 
-public:
     PathPt (int x, int y);
+    PathPt (sf::Vector2i);
     PathPt (const PathPt& old) : sf::Vector2i(old.x, old.y){
-        G = old.G;
-        F = old.F;
+        set_G(old.G);
+        set_F(old.F);
     }
 
     inline int get_G()

@@ -5,6 +5,7 @@
 #include <cfloat>
 #include <iostream>
 #include <sstream>
+#include <list>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <math.h>
@@ -295,7 +296,7 @@ public:
     }
 
     // shortest path computation prototype
-    void short_path(std::vector<std::vector<int>> terrain, int **move_cost, PathPt *start, PathPt target, PathPt *path);
+    void short_path(std::vector<std::vector<int>> terrain, int **move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path);
 };
 
 #endif
