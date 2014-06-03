@@ -206,7 +206,8 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
 // of move orders?  just change the start to the previous
 // target and tack on the new target...hmm
 // start and target are positions...sfml vector2i?
-void OgreUnit::short_path(std::vector<std::vector<int>> terrain, int **move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path)
+
+void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path)
 {
     // roll my own special sauce, basically a vector2i plus G and F
     PathPt *prev_pt, *current;

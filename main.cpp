@@ -30,11 +30,9 @@
 #include "town.hpp"
 #endif
 
-/*
 #ifndef TERRAIN_HPP
 #include "terrain.hpp"
 #endif
-*/
 
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
@@ -81,7 +79,13 @@ int main(int argc, char* argv[])
 
 
     // premade terrain shapes
-    setup_terrain();
+    std::vector< std::vector<int> > move_cost;
+    setup_move_cost(&move_cost);
+    std::vector<sf::Color> terrain_colors;
+    setup_terrain_colors(&terrain_colors);
+    std::vector<std::vector<int> > battle_map;
+    setup_battle_map(&battle_map);
+
     std::vector< std::vector<sf::RectangleShape>> tile_display;
     i = 0;
     for (auto row : battle_map) {

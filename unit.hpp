@@ -20,10 +20,6 @@
 #include "hero.hpp"
 #endif
 
-#ifndef TERRAIN_HPP
-#include "terrain.hpp"
-#endif
-
 #ifndef HELPER_HPP
 #include "helper.hpp"
 #endif
@@ -296,7 +292,7 @@ public:
     }
 
     // shortest path computation prototype
-    void short_path(std::vector<std::vector<int>> terrain, int **move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path);
+    void short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path);
 };
 
 // Need this as a function for sorting and shouldn't be in helper
