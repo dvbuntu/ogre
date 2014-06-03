@@ -1,7 +1,6 @@
 // g++ -std=c++11 main.cpp -lsfml-graphics -lsfml-window -lsfml-system
 #include <cmath>
-#include <cstdlib>
-#include <iostream>
+#include <cstdlib> #include <iostream>
 #include <list>
 #include <sstream>
 #include <SFML/Graphics.hpp>
@@ -90,10 +89,12 @@ int main(int argc, char* argv[])
     i = 0;
     for (auto row : battle_map) {
         tile_display.push_back(*(new std::vector<sf::RectangleShape>));
+        j = 0;
         for (auto tile : row) {
-            tile_display.back().push_back(sf::RectangleShape(
+            printf("%d %d\n", i, j);
+            tile_display.back().push_back(*(new sf::RectangleShape(
                           sf::Vector2f(x_ratio,
-                          y_ratio)));
+                          y_ratio))));
             tile_display[i][j].setPosition( i * x_ratio, j * y_ratio);
             j++;
         }
