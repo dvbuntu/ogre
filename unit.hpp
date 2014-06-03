@@ -44,6 +44,54 @@
 #define NUM_UNIT_TYPES 4
 #endif
 
+// Points on the shortest path, maybe change to grid pt
+class PathPt: public sf::Vector2i{
+public:
+    // cost to this point
+    int G;
+
+    // estimated cost to end
+    int F;
+
+    PathPt (int x, int y);
+    PathPt (sf::Vector2i);
+    PathPt (const PathPt& old) : sf::Vector2i(old.x, old.y){
+        set_G(old.G);
+        set_F(old.F);
+    }
+
+    inline int get_G()
+    {
+        return G;
+    }
+
+    inline void set_G(int newG)
+    {
+        G = newG;
+    }
+
+    inline int get_F()
+    {
+        return F;
+    }
+
+    inline void set_F(int newF)
+    {
+        F = newF;
+    }
+
+    int diag_dist(PathPt *target)
+    {
+        int del_x = abs(x - target->x);
+        int del_y = abs(y - target->y);
+        return 4*std::min(del_x, del_y) + 10*std::max(del_x, del_y);
+    }
+
+    // where did we come from?
+    PathPt *parent;
+};
+
+
 class OgreUnit{
     // This represents the unit for now
     // Maybe future just for radius collision in future
@@ -294,12 +342,5 @@ public:
     // shortest path computation prototype
     void short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path);
 };
-
-// Need this as a function for sorting and shouldn't be in helper
-bool compare_F(PathPt *first, PathPt *second)
-{
-    return first->get_F() < second->get_F();
-}
-
 
 #endif

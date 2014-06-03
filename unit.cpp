@@ -1,5 +1,11 @@
 #include "unit.hpp"
 
+// Need this as a function for sorting and shouldn't be in helper
+bool compare_F(PathPt *first, PathPt *second)
+{
+    return first->get_F() < second->get_F();
+}
+
 OgreUnit::OgreUnit(const sf::Vector2f& p)
 	: circ(UNIT_SIZE) // radius of the circle
 {
