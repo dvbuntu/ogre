@@ -55,10 +55,7 @@ public:
 
     PathPt (int x, int y);
     PathPt (sf::Vector2i);
-    PathPt (const PathPt& old) : sf::Vector2i(old.x, old.y){
-        set_G(old.G);
-        set_F(old.F);
-    }
+    PathPt (const PathPt& old);
 
     inline int get_G()
     {

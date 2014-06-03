@@ -1,5 +1,12 @@
 #include "unit.hpp"
 
+PathPt::PathPt (int x, int y) : sf::Vector2i(x, y){}
+PathPt::PathPt (sf::Vector2i vec) : sf::Vector2i(vec){}
+PathPt::PathPt (const PathPt& old) : sf::Vector2i(old.x, old.y){
+        set_G(old.G);
+        set_F(old.F);
+}
+
 // Need this as a function for sorting and shouldn't be in helper
 bool compare_F(PathPt *first, PathPt *second)
 {
