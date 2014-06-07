@@ -84,6 +84,11 @@ public:
         return 4*std::min(del_x, del_y) + 10*std::max(del_x, del_y);
     }
 
+    sf::Vector2f get_as_position(sf::Vector2f ratio)
+    {
+        return sf::Vector2f(x * ratio.x, y * ratio.y);
+    }
+
     // where did we come from?
     PathPt *parent;
 };
@@ -297,8 +302,11 @@ public:
     // Move this unit one step toward its target
     void move_one();
 
+    // Get our next position to move to
+    void next_target(sf::Vector2f ratio);
+
     // Move this unit its speed toward its target
-    void move_speed();
+    void move_speed(sf::Vector2f ratio);
 
     // Fight it out!
     void fight(OgreUnit *enemy);
@@ -323,13 +331,23 @@ public:
         return sqrt(temp.x * temp.x + temp.y * temp.y);
     }
 
-    // Set where we want to end up
+    // Set where we want to end up, locally
     // We set the target with integer coordinates, but we move with float
     template <class T>
     void set_target_position(T p)
     {
         // round to nearest ten
         target_position = sf::Vector2f(round(p.x/10)*10, round(p.y/10)*10);
+    }
+
+    template <class T>
+    void set_target_tile(T p, T ratio,
+            std::vector<std::vector<int>> terrain,
+            std::vector< std::vector<int> > move_cost)
+    {
+        PathPt *target = &PathPt(int(p.x/ratio.x), int(p.y/ratio.y));
+        short_path(terrain, move_cost, target, ratio);
+        set_target_position((*(path->front())).get_as_position(ratio));
     }
 
     // Magic move after combat or other necessary things
@@ -340,7 +358,7 @@ public:
     }
 
     // shortest path computation prototype
-    void short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *start, PathPt target);
+    void short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *target, sf::Vector2f ratio);
 };
 
 #endif

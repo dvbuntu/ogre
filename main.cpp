@@ -79,6 +79,7 @@ int main(int argc, char* argv[])
     // ratio of screen to tiles
     float x_ratio = X_VIDEO_SIZE / X_MAP_SIZE;
     float y_ratio = Y_VIDEO_SIZE / Y_MAP_SIZE;
+    sf::Vector2f ratio_vector = sf::Vector2f(x_ratio, y_ratio);
 
 
     // premade terrain shapes
@@ -174,8 +175,11 @@ int main(int argc, char* argv[])
             // They all seem to be walking to the same town...
             // TODO: True AI, walk toward player towns
             enemy.set_num_units(enemy.get_num_units() + 1);
-            units.front()->set_target_position(
-                    (*random_element(towns.begin(),towns.end()))->get_position());
+            units.front()->set_target_tile(
+                    (*random_element(towns.begin(),towns.end()))->get_position(),
+                    ratio_vector,
+                    battle_map,
+                    move_cost);
         }
     }
 
@@ -247,7 +251,10 @@ int main(int argc, char* argv[])
                     if (!select_unit)
                     {
                         // give target unit new move order
-                        target_unit->set_target_position(position);
+                        target_unit->set_target_tile(position,
+                                ratio_vector,
+                                battle_map,
+                                move_cost);
                         target_unit->set_select_state(false);
                         paused = false;
                     }
@@ -286,24 +293,27 @@ int main(int argc, char* argv[])
             {
                 // Control unit movement
                 if (unit->get_position() != unit->get_target_position())
-                    unit->move_speed();
+                    unit->move_speed(ratio_vector);
                 // give enemy units a new target
                 // But they'll pause for at least one round
                 // TODO: actual AI like moving to player towns
                 // TODO: AI controlled by unit itself with helper AI fcns
                 else if (unit->get_owner() == &enemy)
                 {
-                    unit->set_target_position(
-                    (*random_element(towns.begin(),towns.end()))->get_position());
+                    unit->set_target_tile(
+                    (*random_element(towns.begin(),towns.end()))->get_position(),
+                    ratio_vector,
+                    battle_map,
+                    move_cost);
                 }
 
-                // Potentially heal if not moving
-                // maybe move into header file
-                if (unit->get_position() == unit->get_target_position() &&
-                        rand() % 100 < HEAL_PERCENT)
-                    // TODO: heal heroes by calling a method of units
-                    unit->heal();
-                    unit->set_info(unit->get_hp());
+                if (unit->get_position() == unit->get_target_position()) {
+                    // check if we 
+                    // Potentially heal if not moving
+                    if (rand() % 100 < HEAL_PERCENT)
+                        unit->heal();
+                }
+                unit->set_info(unit->get_hp());
             }
 
             // Check town ownership
