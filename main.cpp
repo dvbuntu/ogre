@@ -54,6 +54,9 @@ void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f p
 
 int main(int argc, char* argv[])
 {
+    // generate a random seed
+    srand(time(NULL));
+
     uint64_t time_step = 0;
 
     int i, j;

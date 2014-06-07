@@ -17,6 +17,11 @@
 #define NUM_TERRAIN_TYPES 3
 #endif
 
+// It's not racism...
+#ifndef WHITE_BIAS
+#define WHITE_BIAS 64
+#endif
+
 
 // terrain is [plains, hills, mtn]
 // should probable free/delete this crap at end of game...
@@ -44,11 +49,13 @@ void setup_move_cost(std::vector< std::vector<int> > *move_cost){
 }
 
 // should probable free/delete this crap at end of game...
+// make some colors for the land, and bias toward white
 void setup_terrain_colors(std::vector<sf::Color> *terrain_colors){
     for (int c = 0; c < NUM_TERRAIN_TYPES; c++){
-        terrain_colors->push_back(*(new sf::Color(std::rand() % 256,
-                                              std::rand() % 256,
-                                              std::rand() % 256)));
+        terrain_colors->push_back(*(new sf::Color(
+                    WHITE_BIAS + std::rand() % (256-WHITE_BIAS),
+                    WHITE_BIAS + std::rand() % (256-WHITE_BIAS),
+                    WHITE_BIAS + std::rand() % (256-WHITE_BIAS))));
     }
 }
 
