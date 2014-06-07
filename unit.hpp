@@ -11,6 +11,7 @@
 #include <math.h>
 #include <unistd.h> // for sleep
 #include <cmath> // for round
+#include <assert.h>
 
 #ifndef PLAYER_HPP
 #include "player.hpp"
@@ -345,9 +346,12 @@ public:
             std::vector<std::vector<int>> terrain,
             std::vector< std::vector<int> > move_cost)
     {
-        PathPt *target = &PathPt(int(p.x/ratio.x), int(p.y/ratio.y));
+        PathPt *target = new PathPt(int(p.x/ratio.x), int(p.y/ratio.y));
         short_path(terrain, move_cost, target, ratio);
-        set_target_position((*(path->front())).get_as_position(ratio));
+        delete target;
+        // maybe I will allow this, but not right now
+        assert(!path->empty());
+        set_target_position(path->front()->get_as_position(ratio));
     }
 
     // Magic move after combat or other necessary things

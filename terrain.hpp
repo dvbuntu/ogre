@@ -28,23 +28,23 @@
 void setup_move_cost(std::vector< std::vector<int> > *move_cost){
     std::vector<int> *fighter_move = new std::vector<int>;
     fighter_move->push_back(1);// Nominally, fighter
-    fighter_move->push_back(2);
     fighter_move->push_back(10);
+    fighter_move->push_back(100);
     move_cost->push_back(*fighter_move);
     std::vector<int> *amazon_move = new std::vector<int>;
     amazon_move->push_back(1);// Nominally, amazon
-    amazon_move->push_back(2);
     amazon_move->push_back(10);
+    amazon_move->push_back(100);
     move_cost->push_back(*amazon_move);
     std::vector<int> *wizard_move = new std::vector<int>;
     wizard_move->push_back(1);// Nominally, wizard
-    wizard_move->push_back(2);
     wizard_move->push_back(10);
+    wizard_move->push_back(100);
     move_cost->push_back(*wizard_move);
     std::vector<int> *hawkman_move = new std::vector<int>;
     hawkman_move->push_back(1);// Nominally, hawkman
-    hawkman_move->push_back(2);
     hawkman_move->push_back(10);
+    hawkman_move->push_back(100);
     move_cost->push_back(*hawkman_move);
 }
 

@@ -30,7 +30,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     // Starting strength...I'll make it random
     //str = 50 + rand() % 50;
 
-    unit_type = 0;
+    unit_type = std::rand() % 4;
 
     // Recruit some fighters
     for (int i = 0; i < HEROES_IN_UNIT; i++)
@@ -70,7 +70,7 @@ void OgreUnit::next_target(sf::Vector2f ratio)
         {
             path->pop_front();
             if (!path->empty())
-                set_target_position((*(path->front())).get_as_position(ratio));
+                set_target_position(path->front()->get_as_position(ratio));
         }
     }
     else
@@ -263,7 +263,7 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
     int newG;
 
     std::list<PathPt*> open_list;
-    open_list.push_front(&PathPt(int(pos.x/ratio.x),
+    open_list.push_front( new PathPt(int(pos.x/ratio.x),
                                     int(pos.y/ratio.y)));
     open_list.front()->set_G(0);
     open_list.front()->set_F(open_list.front()->diag_dist(target));
@@ -293,12 +293,14 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
                   closed_list.end(),
                   target) == closed_list.end())
     {
-        open_list.remove(current);
         closed_list.push_front(current);
+        // this is supposed to destroy current...still in closed_list?
+        open_list.remove(current);
+        // If I clear, then I don't have them in adj...
         nearby_pts.clear();
         for (auto step : steps)
         {
-            nearby_pts.push_front(&PathPt( *current + step));
+            nearby_pts.push_front(new PathPt( *current + step));
         }
 
         for (auto adj : nearby_pts)
@@ -325,13 +327,28 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
         }
         current = open_list.front(); // whichever with the lowest F
     }
-    prev_pt = target;
+    // never actually set parent of target, I think
+    // so instead, find point in closed_list that has same coord
+    // as the target
+    prev_pt = nullptr;
+    for(auto point: closed_list)
+    {
+        if(point->x == target->x and point->y == target->y)
+        {
+            prev_pt = point;
+            break;
+        }
+    }
     // save off the path, really want pathpts, not pointers to
     while(prev_pt != nullptr)
     {
         path->push_front(new PathPt(prev_pt->x, prev_pt->y));
         prev_pt = prev_pt->parent;
     }
+    // just to be paranoid
+    open_list.clear();
+    closed_list.clear();
+    nearby_pts.clear();
 }
 
 

@@ -160,6 +160,9 @@ int main(int argc, char* argv[])
         //Set the info
         units.front()->set_info(units.front()->get_hp(), &font, 12);
 
+        // set target to current position
+        units.front()->set_target_position(units.front()->get_position());
+
         //units.front()->update_cost();
 
         // Dirty hack for now, TODO
