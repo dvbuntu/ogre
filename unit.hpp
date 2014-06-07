@@ -54,6 +54,7 @@ public:
     // estimated cost to end
     int F;
 
+    PathPt ();
     PathPt (int x, int y);
     PathPt (sf::Vector2i);
     PathPt (const PathPt& old);
@@ -78,10 +79,10 @@ public:
         F = newF;
     }
 
-    int diag_dist(PathPt *target)
+    int diag_dist(PathPt target)
     {
-        int del_x = abs(x - target->x);
-        int del_y = abs(y - target->y);
+        int del_x = abs(x - target.x);
+        int del_y = abs(y - target.y);
         return 4*std::min(del_x, del_y) + 10*std::max(del_x, del_y);
     }
 
@@ -346,9 +347,8 @@ public:
             std::vector<std::vector<int>> terrain,
             std::vector< std::vector<int> > move_cost)
     {
-        PathPt *target = new PathPt(int(p.x/ratio.x), int(p.y/ratio.y));
+        PathPt target = PathPt(int(p.x/ratio.x), int(p.y/ratio.y));
         short_path(terrain, move_cost, target, ratio);
-        delete target;
         // maybe I will allow this, but not right now
         assert(!path->empty());
         set_target_position(path->front()->get_as_position(ratio));
@@ -362,7 +362,7 @@ public:
     }
 
     // shortest path computation prototype
-    void short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *target, sf::Vector2f ratio);
+    void short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt target, sf::Vector2f ratio);
 };
 
 #endif

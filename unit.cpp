@@ -8,9 +8,9 @@ PathPt::PathPt (const PathPt& old) : sf::Vector2i(old.x, old.y){
 }
 
 // Need this as a function for sorting and shouldn't be in helper
-bool compare_F(PathPt *first, PathPt *second)
+bool compare_F(PathPt first, PathPt second)
 {
-    return first->get_F() < second->get_F();
+    return first.get_F() < second.get_F();
 }
 
 OgreUnit::OgreUnit(const sf::Vector2f& p)
@@ -247,14 +247,18 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
 // target and tack on the new target...hmm
 // start and target are positions...sfml vector2i?
 
-void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *target, sf::Vector2f ratio)
+void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt target, sf::Vector2f ratio)
 {
     // first things first, delete old shortest path...
     if (path != nullptr)
         path->clear();
 
     // roll my own special sauce, basically a vector2i plus G and F
-    PathPt *prev_pt, *current;
+    PathPt prev_pt = PathPt(0,0);
+    PathPt current = PathPt(0,0);
+
+    int map_x_size = terrain.size();
+    int map_y_size = terrain[0].size();
 
     // get our current pos, so we can make first open list
     sf::Vector2f pos= get_position();
@@ -262,18 +266,18 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
     // new computed cost
     int newG;
 
-    std::list<PathPt*> open_list;
-    open_list.push_front( new PathPt(int(pos.x/ratio.x),
+    std::list<PathPt> open_list;
+    open_list.push_front(PathPt(int(pos.x/ratio.x),
                                     int(pos.y/ratio.y)));
-    open_list.front()->set_G(0);
-    open_list.front()->set_F(open_list.front()->diag_dist(target));
+    open_list.front().set_G(0);
+    open_list.front().set_F(open_list.front().diag_dist(target));
     current = open_list.front();
 
-    std::list<PathPt*> closed_list;
+    std::list<PathPt> closed_list;
 
     // This will hold the actual adjacent pts, computed from
     // the current pt and the steps
-    std::list<PathPt*> nearby_pts;
+    std::list<PathPt> nearby_pts;
 
     // These are the directions we will step, all 8 diagonals
     // Maybe I don't actually want to do diagonals...
@@ -300,28 +304,30 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
         nearby_pts.clear();
         for (auto step : steps)
         {
-            nearby_pts.push_front(new PathPt( *current + step));
+            nearby_pts.push_front(PathPt( current + step));
         }
 
         for (auto adj : nearby_pts)
         {
+            if (adj.x < 0 or adj.x >= map_x_size or adj.y < 0 or adj.y >= map_y_size)
+                continue;
             if(std::find(closed_list.begin(),
                   closed_list.end(),
                   adj) != closed_list.end())
                 continue;
-            newG = current->G + current->diag_dist(adj) * move_cost[unit_type][terrain[adj->x][adj->y]];
+            newG = current.G + current.diag_dist(adj) * move_cost[unit_type][terrain[adj.x][adj.y]];
             if(std::find(open_list.begin(),
                   open_list.end(),
                   adj) == open_list.end())
             {
                 open_list.push_front(adj);
-                adj->set_G(newG);
+                adj.set_G(newG);
             }
-            if(newG <= adj->get_G())
+            if(newG <= adj.get_G())
             {
-                adj->set_G(newG);
-                adj->set_F(adj->get_G() + adj->diag_dist(target));
-                adj->parent = current; //ptr to current
+                adj.set_G(newG);
+                adj.set_F(adj.get_G() + adj.diag_dist(target));
+                adj.parent = &current; //ptr to current
                 open_list.sort(compare_F); //sort by F values
             }
         }
@@ -330,20 +336,21 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
     // never actually set parent of target, I think
     // so instead, find point in closed_list that has same coord
     // as the target
-    prev_pt = nullptr;
     for(auto point: closed_list)
     {
-        if(point->x == target->x and point->y == target->y)
+        if(point.x == target.x and point.y == target.y)
         {
             prev_pt = point;
             break;
         }
     }
     // save off the path, really want pathpts, not pointers to
-    while(prev_pt != nullptr)
+    while(true)
     {
-        path->push_front(new PathPt(prev_pt->x, prev_pt->y));
-        prev_pt = prev_pt->parent;
+        path->push_front(new PathPt(prev_pt.x, prev_pt.y));
+        if (prev_pt.parent == nullptr)
+            break;
+        prev_pt = *(prev_pt.parent);
     }
     // just to be paranoid
     open_list.clear();
