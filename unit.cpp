@@ -61,16 +61,17 @@ void OgreUnit::move_one(){
 // Figure out the next target position based on path
 void OgreUnit::next_target(sf::Vector2f ratio)
 {
-    // advance to next path point if reached previous
-    if (get_position() == (*(path->front())).get_as_position(ratio))
-    {
-        path->pop_front();
-    }
 
     // get our new target, or sit tight
     if (!path->empty())
     {
-        set_target_position((*(path->front())).get_as_position(ratio));
+        // advance to next path point if reached previous
+        if (get_position() == get_target_position())
+        {
+            path->pop_front();
+            if (!path->empty())
+                set_target_position((*(path->front())).get_as_position(ratio));
+        }
     }
     else
     {
