@@ -97,6 +97,9 @@ class OgreUnit{
     // Where we're headed
     sf::Vector2f target_position;
 
+    // how am I getting there?
+    std::list<PathPt*> *path;
+
     // What's my name (or the leader's name)
     std::string name;
 
@@ -337,7 +340,7 @@ public:
     }
 
     // shortest path computation prototype
-    void short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path);
+    void short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *start, PathPt target);
 };
 
 #endif

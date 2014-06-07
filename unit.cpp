@@ -25,6 +25,8 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     // Apparently you're not allowed to use a method to do this during init
     target_position = p;
 
+    path = nullptr;
+
     // Starting strength...I'll make it random
     //str = 50 + rand() % 50;
 
@@ -220,7 +222,7 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
 // target and tack on the new target...hmm
 // start and target are positions...sfml vector2i?
 
-void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *start, PathPt target, std::list<PathPt *> *path)
+void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *start, PathPt target)
 {
     // roll my own special sauce, basically a vector2i plus G and F
     PathPt *prev_pt, *current;
