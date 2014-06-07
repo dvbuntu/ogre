@@ -25,7 +25,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     // Apparently you're not allowed to use a method to do this during init
     target_position = p;
 
-    path = nullptr;
+    path = new std::list<PathPt*>;
 
     // Starting strength...I'll make it random
     //str = 50 + rand() % 50;
@@ -64,7 +64,6 @@ void OgreUnit::next_target(sf::Vector2f ratio)
     // advance to next path point if reached previous
     if (get_position() == (*(path->front())).get_as_position(ratio))
     {
-        delete path->front();
         path->pop_front();
     }
 
@@ -250,8 +249,8 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
 void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost, PathPt *target, sf::Vector2f ratio)
 {
     // first things first, delete old shortest path...
-    for (auto point: *path)
-        delete point;
+    if (path != nullptr)
+        path->clear();
 
     // roll my own special sauce, basically a vector2i plus G and F
     PathPt *prev_pt, *current;
@@ -329,7 +328,7 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
     // save off the path, really want pathpts, not pointers to
     while(prev_pt != nullptr)
     {
-        path->push_front(new PathPt(*prev_pt));
+        path->push_front(new PathPt(prev_pt->x, prev_pt->y));
         prev_pt = prev_pt->parent;
     }
 }

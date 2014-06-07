@@ -90,7 +90,7 @@ public:
     }
 
     // where did we come from?
-    PathPt *parent;
+    PathPt *parent = nullptr;
 };
 
 
