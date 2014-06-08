@@ -369,6 +369,8 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
             break;
         prev_pt = prev_pt->parent;
     }
+    // pop first off of path to ensure we go to another tile
+    path->pop_front();
     // just to be paranoid
     open_list.clear();
     closed_list.clear();
