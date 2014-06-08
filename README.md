@@ -12,7 +12,7 @@ Send your strong units to towns to keep them from your opponent and collect taxe
 
 Unit strength is listed next to the unit.  Getting close to an enemy unit will cause them to fight, wounding both but sending the loser backwards (this is how you can take over a town with an occupant).
 
-Deploy new units (anywhere!) if you got the extra funds and need more soldiers.  Your enemy will do the same as her units bounce from town to town.
+Deploy new units in your towns if you've got the extra funds and need more soldiers.  Your enemy will do the same as her units bounce from town to town.
 
 Controls
 --------
@@ -21,3 +21,11 @@ Controls
 * Right Click - Deploy unit
 * Esc - Quit
 
+Future Goals
+------------
+* Actual images for things (maybe interpret terrain from image)
+* Truly different hero types (rock paper scissors balanced in combat)
+  ** give them different shapes in combat
+* Actually name the heroes and units!
+* refactoring
+* parallelize where appropriate (shortest path computation)
