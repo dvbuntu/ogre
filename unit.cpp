@@ -83,13 +83,13 @@ void OgreUnit::next_target(sf::Vector2f ratio)
 void OgreUnit::move_speed(sf::Vector2f ratio){
     int i;
 
-    // get next target position based on next tile
-    next_target(ratio);
-
     // step for each level of speed
     for(i = 0; i < speed; i++) {
         move_one();
     }
+
+    // get next target position based on next tile
+    next_target(ratio);
 }
 
 
