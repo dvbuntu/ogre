@@ -7,10 +7,10 @@
 
 // Will need to translate all clicks into map_size chunks
 #ifndef X_MAP_SIZE
-#define X_MAP_SIZE 40
+#define X_MAP_SIZE 20
 #endif
 #ifndef Y_MAP_SIZE
-#define Y_MAP_SIZE 30
+#define Y_MAP_SIZE 15
 #endif
 
 #ifndef NUM_TERRAIN_TYPES
