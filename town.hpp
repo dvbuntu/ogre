@@ -96,6 +96,16 @@ public:
         window.draw(circ);
     }
 
+    // Super simple distance to a point
+    // stupid c++ templates in methods
+    template <class T>
+    float distance(T v)
+    {
+        sf::Vector2f temp;
+        temp = sf::Vector2f(v) - get_position();
+        return sqrt(temp.x * temp.x + temp.y * temp.y);
+    }
+
     // Check if town has been captured and set new owner
     OgrePlayer * check_conquest(std::list<OgreUnit*> units);
 

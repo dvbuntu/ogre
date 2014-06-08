@@ -50,7 +50,8 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
 OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer *enemy);
 void resolve_fights(std::list<OgreUnit*> units, sf::RenderWindow& window);
 void reap_units(std::list<OgreUnit*> *units);
-void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f position, sf::Font *font);
+void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<OgreTown*> towns, sf::Vector2f position, sf::Font *font);
+bool in_my_town(std::list<OgreTown*> towns, OgrePlayer *player, sf::Vector2f position);
 
 int main(int argc, char* argv[])
 {
@@ -128,7 +129,7 @@ int main(int argc, char* argv[])
     // change in town ownership, +1 if player liberates, -1 if enemy, 0 no change
     int town_shift = 0;
 
-    // create some towns to catpure
+    // create some towns to capture
     std::list<OgreTown*> towns;
     for (i = 0; i < NUM_TOWNS; i++)
     {
@@ -265,7 +266,7 @@ int main(int argc, char* argv[])
                 else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
                 {
                     position = sf::Vector2f(sf::Mouse::getPosition(window));
-                    deploy_unit(&units,&player,position,&font);
+                    deploy_unit(&units,&player,towns,position,&font);
                 }
 			}
             else
@@ -353,7 +354,8 @@ int main(int argc, char* argv[])
             // Enemy chance to deploy
             if ((rand() % 500) < ENEMY_DEPLOY_CHANCE ) // more than max req
             {
-                deploy_unit(&units, &enemy, view.getCenter()
+                // change position to random enemy town
+                deploy_unit(&units, &enemy, towns, view.getCenter()
                     + sf::Vector2f(rand()%200 - 100,rand()%200 - 100), &font);
             }
             // Check win condition
@@ -394,6 +396,7 @@ int main(int argc, char* argv[])
 		window.clear(sf::Color::White);
 
         //order of drawing is important, put terrain first
+        // how can I avoid doing this every time?
         for(auto row : tile_display){
             for (auto tile : row) {
                 window.draw(tile);
@@ -418,6 +421,9 @@ int main(int argc, char* argv[])
 		window.display();
 	}
 
+    // clean up memory
+    units.clear();
+    towns.clear();
 	return 0;
 }
 
@@ -540,35 +546,51 @@ void reap_units(std::list<OgreUnit*> *units)
 }
 
 // Add a unit for the given player
-void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, sf::Vector2f position, sf::Font *font)
+void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<OgreTown*> towns, sf::Vector2f position, sf::Font *font)
 {
-    // Cost is some function of current units?  
-    // Really depends on the unit we're planning to deploy
-    if (player->get_gold() >=
-            ((*random_element(units->begin(),units->end()))->get_cost()) * 2)
+    // check if we clicked in one of our towns
+    if (in_my_town(towns, player, position))
     {
-        units->push_front(new OgreUnit(position));
+        // Cost is some function of current units?  
+        // Really depends on the unit we're planning to deploy
+        if (player->get_gold() >=
+                ((*random_element(units->begin(),units->end()))->get_cost()) * 2)
+        {
+            units->push_front(new OgreUnit(position));
 
-        // TODO: store units->front() in a pointer to clean this up
+            // TODO: store units->front() in a pointer to clean this up
 
-        // random speed
-        units->front()->set_speed(rand()%5 + 1);
+            // random speed
+            units->front()->set_speed(rand()%5 + 1);
 
-        //Set the info
-        units->front()->set_info(units->front()->get_hp(), font, 12);
+            //Set the info
+            units->front()->set_info(units->front()->get_hp(), font, 12);
 
-        // Update the labor costs for weakened unit
-        //units->front()->update_cost();
+            // Update the labor costs for weakened unit
+            //units->front()->update_cost();
 
-        // taken care of when we make the unit
-        units->front()->set_owner(player);
+            // taken care of when we make the unit
+            units->front()->set_owner(player);
 
-        units->front()->set_target_position(units->front()->get_target_position());
+            units->front()->set_target_position(units->front()->get_target_position());
 
-        player->set_gold(player->get_gold() - units->front()->get_cost() * 2);
+            player->set_gold(player->get_gold() - units->front()->get_cost() * 2);
+        }
     }
 }
 
+bool in_my_town(std::list<OgreTown*> towns, OgrePlayer *player, sf::Vector2f position)
+{
+    for(auto town : towns){
+        if (town->get_owner() != player)
+            continue;
+        if (town->distance<>(position) < TOWN_SIZE)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 // TODO: put this in a helper .cpp file (or even just a header file
 /*
 template <typename I>
