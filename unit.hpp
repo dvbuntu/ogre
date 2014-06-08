@@ -347,7 +347,7 @@ public:
             std::vector<std::vector<int>> terrain,
             std::vector< std::vector<int> > move_cost)
     {
-        PathPt target = PathPt(int(p.x/ratio.x), int(p.y/ratio.y));
+        PathPt target = PathPt(round(p.x/ratio.x), round(p.y/ratio.y));
         short_path(terrain, move_cost, &target, ratio);
         // maybe I will allow this, but not right now
         assert(!path->empty());

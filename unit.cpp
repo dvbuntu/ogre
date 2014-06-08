@@ -271,8 +271,8 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
     std::list<PathPt> grand_list;
 
     std::list<PathPt*> open_list;
-    grand_list.push_front(*(new PathPt(int(pos.x/ratio.x),
-                                 int(pos.y/ratio.y))));
+    grand_list.push_front(*(new PathPt(round(pos.x/ratio.x),
+                                 round(pos.y/ratio.y))));
     open_list.push_front(&(grand_list.front()));
     open_list.front()->set_G(0);
     open_list.front()->set_F(open_list.front()->diag_dist(target));
@@ -370,7 +370,8 @@ void OgreUnit::short_path(std::vector<std::vector<int>> terrain, std::vector< st
         prev_pt = prev_pt->parent;
     }
     // pop first off of path to ensure we go to another tile
-    path->pop_front();
+    if (path->size() != 1)
+        path->pop_front();
     // just to be paranoid
     open_list.clear();
     closed_list.clear();
