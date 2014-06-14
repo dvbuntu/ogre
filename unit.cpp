@@ -45,6 +45,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 void OgreUnit::move_one(int tile_move_cost){
     sf::Vector2f direction;
 
+    float cost = float(tile_move_cost);
     // How far to go
     // in future, change to next step of shortest path
     // compute that when we set the target position
@@ -52,11 +53,15 @@ void OgreUnit::move_one(int tile_move_cost){
     // Normalized to 1 unit if we're far
     // A little hacky, we add the position because the 
     // distance method will subtract it.  Stupid
-    if (distance<>(direction + get_position()) > 1/tile_move_cost ){
-        direction = direction /( distance<>(direction + get_position()) * tile_move_cost);
+    if (distance<>(direction + get_position()) > 1/cost ){
+        direction = direction /distance<>(direction + get_position());
+        // change to move distance inversely proportional to move_cost
+        circ.move(direction/cost);
     }
-    // change to move distance inversely proportional to move_cost
-    circ.move(direction);
+    else
+    {
+        circ.move(direction);
+    }
 }
 
 // Figure out the next target position based on path
