@@ -39,7 +39,7 @@
 #define FIGHT_THRESH (3*UNIT_SIZE)
 #define HEAL_PERCENT 1
 #define DAY_LENGTH 1000 // length of a 'game day' in time steps
-#define ENEMY_DEPLOY_CHANCE 1
+#define ENEMY_DEPLOY_CHANCE 2
 #define X_VIDEO_SIZE 800
 #define Y_VIDEO_SIZE 600
 
@@ -354,9 +354,13 @@ int main(int argc, char* argv[])
             // Enemy chance to deploy
             if ((rand() % 500) < ENEMY_DEPLOY_CHANCE ) // more than max req
             {
-                // change position to random enemy town
-                deploy_unit(&units, &enemy, towns, view.getCenter()
-                    + sf::Vector2f(rand()%200 - 100,rand()%200 - 100), &font);
+                // change position to random town
+                // Increase ENEMY_DEPLOY_CHANCE b/c
+                // we just select a random town
+                // so they'll deploy more when they have more towns
+                deploy_unit(&units, &enemy, towns,
+                (*random_element(towns.begin(),towns.end()))->get_position()
+                ,&font);
             }
             // Check win condition
             if (check_win(towns,&player,&enemy) != nullptr)
