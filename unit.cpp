@@ -42,7 +42,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 }
 
 // Move this unit one step toward its target
-void OgreUnit::move_one(){
+void OgreUnit::move_one(int tile_move_cost){
     sf::Vector2f direction;
 
     // How far to go
@@ -52,9 +52,10 @@ void OgreUnit::move_one(){
     // Normalized to 1 unit if we're far
     // A little hacky, we add the position because the 
     // distance method will subtract it.  Stupid
-    if (distance<>(direction + get_position()) > 1 ){
-        direction = direction / distance<>(direction + get_position());
+    if (distance<>(direction + get_position()) > 1/tile_move_cost ){
+        direction = direction /( distance<>(direction + get_position()) * tile_move_cost);
     }
+    // change to move distance inversely proportional to move_cost
     circ.move(direction);
 }
 
@@ -80,12 +81,17 @@ void OgreUnit::next_target(sf::Vector2f ratio)
 }
 
 // Move this unit its speed toward its target
-void OgreUnit::move_speed(sf::Vector2f ratio){
+void OgreUnit::move_speed(sf::Vector2f ratio,
+        std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost){
     int i;
 
+    float move_ratio;
+    int tile_move_cost = move_cost[unit_type]
+                            [terrain[int(get_position().x/ratio.x)]
+                                    [int(get_position().y/ratio.y)]];
     // step for each level of speed
     for(i = 0; i < speed; i++) {
-        move_one();
+        move_one(tile_move_cost);
     }
 
     // get next target position based on next tile

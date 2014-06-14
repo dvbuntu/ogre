@@ -302,13 +302,13 @@ public:
 
 
     // Move this unit one step toward its target
-    void move_one();
+    void move_one(int move_tile_cost);
 
     // Get our next position to move to
     void next_target(sf::Vector2f ratio);
 
     // Move this unit its speed toward its target
-    void move_speed(sf::Vector2f ratio);
+    void move_speed(sf::Vector2f ratio,std::vector<std::vector<int>> terrain, std::vector< std::vector<int> > move_cost);
 
     // Fight it out!
     void fight(OgreUnit *enemy);

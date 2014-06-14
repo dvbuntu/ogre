@@ -297,7 +297,7 @@ int main(int argc, char* argv[])
             {
                 // Control unit movement
                 if (unit->get_position() != unit->get_target_position())
-                    unit->move_speed(ratio_vector);
+                    unit->move_speed(ratio_vector, battle_map, move_cost);
                 // give enemy units a new target
                 // But they'll pause for at least one round
                 // TODO: actual AI like moving to player towns
