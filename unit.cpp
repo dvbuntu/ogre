@@ -31,7 +31,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     //str = 50 + rand() % 50;
 
     unit_type = std::rand() % 4;
-    circ.setPointCount(unit_type + 2);
+    circ.setPointCount(unit_type + 3);
 
     // Recruit some fighters
     for (int i = 0; i < HEROES_IN_UNIT; i++)
