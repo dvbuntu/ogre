@@ -91,6 +91,9 @@ class OgreObject{
     // Speed class, how many steps in a round
     int speed;
 
+    // because I use it to move and I'm a horrible person
+    int unit_type;
+
     // Who owns this unit
     OgrePlayer *owner;
 
