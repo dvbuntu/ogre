@@ -17,8 +17,8 @@
 #include "player.hpp"
 #endif
 
-#ifndef UNIT_SIZE
-#define UNIT_SIZE 10
+#ifndef OBJECT_SIZE
+#define OBJECT_SIZE 10
 #endif
 
 // Points on the shortest path, maybe change to grid pt
@@ -160,9 +160,9 @@ public:
     }
 
     // What's my name?
-    inline void set_name(std::string unit_name)
+    inline void set_name(std::string object_name)
     {
-        name = unit_name;
+        name = object_name;
     }
 
     // How big am I?
@@ -177,7 +177,7 @@ public:
         if (select)
         {
             circ.setOutlineColor(sf::Color::Green);
-            circ.setOutlineThickness(UNIT_SIZE/5);
+            circ.setOutlineThickness(OBJECT_SIZE/5);
         }
         else
         {
