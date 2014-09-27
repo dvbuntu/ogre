@@ -2,7 +2,7 @@
 
 // Is there a way to have most of this stuff set already and just do the special stuff?
 OgreUnit::OgreUnit(const sf::Vector2f& p)
-	: circ(UNIT_SIZE) // radius of the circle
+	: OgreObject(p)
 {
     // Fix to center and Set the initial position
     circ.setOrigin(UNIT_SIZE,UNIT_SIZE);

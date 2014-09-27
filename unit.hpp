@@ -45,57 +45,6 @@
 #define NUM_UNIT_TYPES 4
 #endif
 
-// Points on the shortest path, maybe change to grid pt
-class PathPt: public sf::Vector2i{
-public:
-    // cost to this point
-    int G;
-
-    // estimated cost to end
-    int F;
-
-    PathPt ();
-    PathPt (int x, int y);
-    PathPt (sf::Vector2i);
-    PathPt (const PathPt& old);
-
-    inline int get_G()
-    {
-        return G;
-    }
-
-    inline void set_G(int newG)
-    {
-        G = newG;
-    }
-
-    inline int get_F()
-    {
-        return F;
-    }
-
-    inline void set_F(int newF)
-    {
-        F = newF;
-    }
-
-    int diag_dist(PathPt *target)
-    {
-        int del_x = abs(x - target->x);
-        int del_y = abs(y - target->y);
-        return 4*std::min(del_x, del_y) + 10*std::max(del_x, del_y);
-    }
-
-    sf::Vector2f get_as_position(sf::Vector2f ratio)
-    {
-        return sf::Vector2f(x * ratio.x, y * ratio.y);
-    }
-
-    // where did we come from?
-    PathPt *parent = nullptr;
-};
-
-
 class OgreUnit: public OgreObject{
     // This represents the unit for now
     // Who's in this unit?

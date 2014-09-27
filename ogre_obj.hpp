@@ -72,6 +72,7 @@ public:
 };
 
 class OgreObject{
+public:
     // This represents a generic object
     // Maybe future just for radius collision in future
     sf::CircleShape circ;
@@ -97,7 +98,6 @@ class OgreObject{
     // Who owns this unit
     OgrePlayer *owner;
 
-public:
     OgreObject(const sf::Vector2f& p);
 
     // Who is my general?
