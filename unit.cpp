@@ -5,6 +5,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 	: OgreObject(p)
 {
     // Fix to center and Set the initial position
+    circ.setRadius(UNIT_SIZE);
     circ.setOrigin(UNIT_SIZE,UNIT_SIZE);
 	circ.setPosition(p);
 	circ.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));

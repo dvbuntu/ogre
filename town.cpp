@@ -1,9 +1,10 @@
 #include "town.hpp"
 
 OgreTown::OgreTown(const sf::Vector2f& p)
-	: circ(TOWN_SIZE) // radius of the circle
+	: OgreObject(p) // radius of the circle
 {
     // Fix to center and Set the initial position
+    circ.setRadius(TOWN_SIZE);
     circ.setOrigin(TOWN_SIZE,TOWN_SIZE);
 	circ.setPosition(p);
 

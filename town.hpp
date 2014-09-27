@@ -20,35 +20,20 @@
 #endif
 
 #ifndef TOWN_SIZE
-#define TOWN_SIZE 20
+#define TOWN_SIZE 15
 #endif
 
 #ifndef TOWN_TRANS
 #define TOWN_TRANS 160
 #endif
 
-class OgreTown{
+class OgreTown: public OgreObject{
     // This represents the town for now
-    // Maybe future just for radius collision in future
-    sf::CircleShape circ;
-
-    // What's my name (or the leader's name)
-    std::string name;
-
-    // Who owns the town;
-    OgrePlayer *owner;
-
     // How much does this town pay out?
     int payout;
 
 public:
     OgreTown(const sf::Vector2f& p);
-
-    // Who run barter town?
-    inline OgrePlayer *get_owner()
-    {
-        return owner;
-    }
 
     // change owner, as well as color
     inline void set_owner(OgrePlayer *player)
@@ -57,25 +42,6 @@ public:
         sf::Color temp_color = owner->get_color();
         temp_color.a = TOWN_TRANS;
         circ.setFillColor(temp_color);
-    }
-
-    // Get the current position of this town
-    // For now the position of the circle
-    inline sf::Vector2f get_position() const
-    {
-        return circ.getPosition();
-    }
-
-    // Shout my name!
-    inline std::string get_name()
-    {
-        return name;
-    }
-
-    // How big am I?
-    inline float get_size() const
-    {
-        return circ.getRadius();
     }
 
     inline int get_payout() const
@@ -89,21 +55,6 @@ public:
         OgrePlayer *player;
         player = get_owner();
         player->set_gold(player->get_gold() + get_payout());
-    }
-
-    inline void draw_on(sf::RenderWindow& window) const
-    {
-        window.draw(circ);
-    }
-
-    // Super simple distance to a point
-    // stupid c++ templates in methods
-    template <class T>
-    float distance(T v)
-    {
-        sf::Vector2f temp;
-        temp = sf::Vector2f(v) - get_position();
-        return sqrt(temp.x * temp.x + temp.y * temp.y);
     }
 
     // Check if town has been captured and set new owner

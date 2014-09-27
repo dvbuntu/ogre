@@ -24,7 +24,7 @@ hero.o: hero.cpp hero.hpp player.hpp helper.hpp
 unit.o: unit.cpp unit.hpp player.hpp ogre_obj.hpp hero.hpp helper.hpp
 	$(CXX) $(CXXFLAGS) -c unit.cpp
 
-town.o: town.cpp town.hpp player.hpp unit.hpp
+town.o: town.cpp town.hpp player.hpp ogre_obj.hpp unit.hpp
 	$(CXX) $(CXXFLAGS) -c town.cpp
 
 #terrain.o: terrain.cpp terrain.hpp
