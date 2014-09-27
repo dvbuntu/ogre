@@ -140,13 +140,6 @@ public:
     // Picture a battle
     void fight_draw_on(sf::RenderWindow& window);
 
-    inline void draw_on(sf::RenderWindow& window)
-    {
-        window.draw(circ);
-        info_str.setPosition(get_position());
-        window.draw(info_str);
-    }
-
 };
 
 #endif

@@ -77,6 +77,12 @@ public:
     // Maybe future just for radius collision in future
     sf::CircleShape circ;
 
+    // what do I look like?
+    sf::Texture picture;
+
+    // Here's my 5x10 glossy
+    sf::Sprite sprite;
+
     // Where we're headed
     sf::Vector2f target_position;
 
@@ -206,6 +212,7 @@ public:
     inline void draw_on(sf::RenderWindow& window)
     {
         window.draw(circ);
+        window.draw(sprite);
         info_str.setPosition(get_position());
         window.draw(info_str);
     }

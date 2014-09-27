@@ -15,6 +15,14 @@ OgreTown::OgreTown(const sf::Vector2f& p)
     circ.setOutlineColor(sf::Color(127, 127, 127));
     circ.setOutlineThickness(TOWN_SIZE/5);
 
+    if (!picture.loadFromFile("resources/walled_town.jpg"))
+    {
+        std::cout << "Failed to load image!" << std::endl;
+    }
+
+    sprite.setTexture(picture);
+    sprite.setScale(sf::Vector2f(TOWN_SIZE,TOWN_SIZE)/(picture.getSize().x));
+
     // Get a tax_base
     payout = std::rand() % 10;
 }

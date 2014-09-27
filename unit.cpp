@@ -10,6 +10,14 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 	circ.setPosition(p);
 	circ.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
 
+    if (!picture.loadFromFile("resources/walled_town.jpg"))
+    {
+        std::cout << "Failed to load image!" << std::endl;
+    }
+
+    sprite.setTexture(picture);
+    sprite.setScale(sf::Vector2f(UNIT_SIZE,UNIT_SIZE)/(picture.getSize().x));
+
     // Start not moving, so target is our current position
     // Apparently you're not allowed to use a method to do this during init
     target_position = p;
