@@ -253,6 +253,7 @@ public:
     void move_by(T p)
     {
         circ.move(p);
+        sprite.move(p);
     }
 
     // shortest path computation prototype

@@ -9,7 +9,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     circ.setOrigin(UNIT_SIZE,UNIT_SIZE);
 	circ.setPosition(p);
 	circ.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
-    //
+    
     // here's my portrait!
     if (!picture.loadFromFile("resources/walled_town.jpg"))
     {
@@ -17,9 +17,10 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     }
 
     sprite.setTexture(picture);
-    sprite.setScale(sf::Vector2f(2.*OBJECT_SIZE/((float)picture.getSize().x),
-                2.*OBJECT_SIZE/((float)picture.getSize().y)));
+    sprite.setScale(sf::Vector2f(2.*UNIT_SIZE/((float)picture.getSize().x),
+                2.*UNIT_SIZE/((float)picture.getSize().y)));
 	sprite.setPosition(p);
+	sprite.move(sf::Vector2f(-1*circ.getRadius(), -1*circ.getRadius()));
 
     // Start not moving, so target is our current position
     // Apparently you're not allowed to use a method to do this during init
