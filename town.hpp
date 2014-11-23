@@ -20,7 +20,7 @@
 #endif
 
 #ifndef TOWN_SIZE
-#define TOWN_SIZE 15
+#define TOWN_SIZE 30
 #endif
 
 #ifndef TOWN_TRANS

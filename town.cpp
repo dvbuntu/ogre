@@ -23,11 +23,12 @@ OgreTown::OgreTown(const sf::Vector2f& p)
     // put on a pretty face
     sprite.setTexture(picture);
     // scale the face to our size
-    sprite.setScale(sf::Vector2f(2.*TOWN_SIZE/((float)picture.getSize().x),
-                2.*TOWN_SIZE/((float)picture.getSize().y)));
+    sprite.setScale(sf::Vector2f(TOWN_SIZE/((float)picture.getSize().x),
+                TOWN_SIZE/((float)picture.getSize().y)));
     // put it where we are (center on center)
 	sprite.setPosition(p);
-	sprite.move(sf::Vector2f(-1*circ.getRadius(), -1*circ.getRadius()));
+	sprite.move(sf::Vector2f(-0.5*circ.getRadius(), -0.5*circ.getRadius()));
+    sprite.setColor(circ.getFillColor());
 
     // Get a tax_base
     payout = std::rand() % 10;

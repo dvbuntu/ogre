@@ -30,7 +30,7 @@
 #endif
 
 #ifndef UNIT_SIZE
-#define UNIT_SIZE 10
+#define UNIT_SIZE 20
 #endif
 
 #ifndef HEROES_IN_UNIT
@@ -43,6 +43,18 @@
 
 #ifndef NUM_UNIT_TYPES
 #define NUM_UNIT_TYPES 4
+#endif
+
+#ifndef SPRITE_SCALE
+#define SPRITE_SCALE (1.5)
+#endif
+
+#ifndef SPRITE_SIZEX
+#define SPRITE_SIZEX 250
+#endif
+
+#ifndef SPRITE_SIZEY
+#define SPRITE_SIZEY 300
 #endif
 
 class OgreUnit: public OgreObject{

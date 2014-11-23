@@ -11,16 +11,21 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 	circ.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
     
     // here's my portrait!
-    if (!picture.loadFromFile("resources/walled_town.jpg"))
+    if (!picture.loadFromFile("resources/rpg_sprites_10.PNG"))
     {
         std::cout << "Failed to load image!" << std::endl;
     }
 
+    unit_type = std::rand() % 4;
+    circ.setPointCount(unit_type + 3);
+
     sprite.setTexture(picture);
-    sprite.setScale(sf::Vector2f(2.*UNIT_SIZE/((float)picture.getSize().x),
-                2.*UNIT_SIZE/((float)picture.getSize().y)));
+    sprite.setTextureRect(sf::IntRect(SPRITE_SIZEX * unit_type, 0, SPRITE_SIZEX, SPRITE_SIZEY));
+    sprite.setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
+                SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
 	sprite.setPosition(p);
 	sprite.move(sf::Vector2f(-1*circ.getRadius(), -1*circ.getRadius()));
+    sprite.setColor(circ.getFillColor());
 
     // Start not moving, so target is our current position
     // Apparently you're not allowed to use a method to do this during init
@@ -30,9 +35,6 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 
     // Starting strength...I'll make it random
     //str = 50 + rand() % 50;
-
-    unit_type = std::rand() % 4;
-    circ.setPointCount(unit_type + 3);
 
     // Recruit some fighters
     for (int i = 0; i < HEROES_IN_UNIT; i++)

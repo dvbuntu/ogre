@@ -32,6 +32,7 @@ OgreObject::OgreObject(const sf::Vector2f& p)
                 2.*OBJECT_SIZE/((float)picture.getSize().y)));
 	sprite.setPosition(p);
 	sprite.move(sf::Vector2f(-1*circ.getRadius(), -1*circ.getRadius()));
+    sprite.setColor(circ.getFillColor());
 
     // Start not moving, so target is our current position
     // Apparently you're not allowed to use a method to do this during init
