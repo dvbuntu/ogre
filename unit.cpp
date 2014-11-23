@@ -23,8 +23,8 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     sprite.setTextureRect(sf::IntRect(SPRITE_SIZEX * unit_type, 0, SPRITE_SIZEX, SPRITE_SIZEY));
     sprite.setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
                 SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
-	sprite.setPosition(p);
-	sprite.move(sf::Vector2f(-1*circ.getRadius(), -1*circ.getRadius()));
+    sprite.setPosition(p);
+	sprite.move(sf::Vector2f(-0.75*circ.getRadius(), -0.75*circ.getRadius()));
     sprite.setColor(circ.getFillColor());
 
     // Start not moving, so target is our current position

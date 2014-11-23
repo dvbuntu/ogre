@@ -46,7 +46,7 @@
 #endif
 
 #ifndef SPRITE_SCALE
-#define SPRITE_SCALE (1.5)
+#define SPRITE_SCALE (1.3)
 #endif
 
 #ifndef SPRITE_SIZEX
