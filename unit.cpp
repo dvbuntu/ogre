@@ -8,7 +8,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     circ.setRadius(UNIT_SIZE);
     circ.setOrigin(UNIT_SIZE,UNIT_SIZE);
 	circ.setPosition(p);
-	circ.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
+	circ.setFillColor(sf::Color(std::rand() % 128 + 128, std::rand() % 128 + 128, std::rand() % 128 + 128));
     
     // here's my portrait!
     if (!picture.loadFromFile("resources/rpg_sprites_10.PNG"))
