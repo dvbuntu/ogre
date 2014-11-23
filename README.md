@@ -24,8 +24,9 @@ Controls
 Future Goals
 ------------
 * Actual images for things (maybe interpret terrain from image)
+  ** Align the images a little better, and proper transparency
+* Make some health bars (instead of poorly aligned HP text)
 * Truly different hero types (rock paper scissors balanced in combat)
   ** give them different shapes in combat
 * Actually name the heroes and units!
-* refactoring
 * parallelize where appropriate (shortest path computation)

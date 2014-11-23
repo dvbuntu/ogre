@@ -154,6 +154,9 @@ public:
         info_str.setFont(*font);
         info_str.setCharacterSize(size);
         info_str.setColor(sf::Color::Black);
+        //Would like the position to be outside the unit, but this doesn't seem to match...could also do
+        //a health bar
+        //info_str.setPosition(circ.getPosition() + sf::Vector2f(2*circ.getRadius(),2*circ.getRadius()));
     }
 
     // Post battle update
