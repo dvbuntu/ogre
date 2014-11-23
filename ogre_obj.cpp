@@ -28,7 +28,9 @@ OgreObject::OgreObject(const sf::Vector2f& p)
     }
 
     sprite.setTexture(picture);
-    sprite.setScale(sf::Vector2f(OBJECT_SIZE,OBJECT_SIZE)/(picture.getSize().x));
+    sprite.setScale(sf::Vector2f(2.*OBJECT_SIZE/((float)picture.getSize().x),
+                2.*OBJECT_SIZE/((float)picture.getSize().y)));
+	sprite.setPosition(p);
 
     // Start not moving, so target is our current position
     // Apparently you're not allowed to use a method to do this during init
@@ -58,10 +60,12 @@ void OgreObject::move_one(int tile_move_cost){
         direction = direction /distance<>(direction + get_position());
         // change to move distance inversely proportional to move_cost
         circ.move(direction/cost);
+        sprite.move(direction/cost);
     }
     else
     {
         circ.move(direction);
+        sprite.move(direction);
     }
 }
 

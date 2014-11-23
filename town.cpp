@@ -21,7 +21,8 @@ OgreTown::OgreTown(const sf::Vector2f& p)
     }
 
     sprite.setTexture(picture);
-    sprite.setScale(sf::Vector2f(TOWN_SIZE,TOWN_SIZE)/(picture.getSize().x));
+    sprite.setScale(sf::Vector2f(2*OBJECT_SIZE/(picture.getSize().x),2*OBJECT_SIZE/(picture.getSize().y)));
+	sprite.setPosition(p);
 
     // Get a tax_base
     payout = std::rand() % 10;
