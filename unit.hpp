@@ -62,6 +62,13 @@ class OgreUnit: public OgreObject{
     // Who's in this unit?
     std::list<OgreHero*> heroes;
 
+    // what do I look like?
+    sf::Texture health_bar;
+
+    // Here's my 5x10 glossy
+    sf::Sprite health_bar_sprite;
+
+
 public:
     OgreUnit(const sf::Vector2f& p);
 
@@ -123,6 +130,39 @@ public:
         {
             hero->collect_pay(get_owner());
         }
+    }
+
+    // Set some information about the object
+    inline void set_info(int str, sf::Font *font, int size)
+    {
+        info_str.setString(std::to_string(str));
+        info_str.setFont(*font);
+        info_str.setCharacterSize(size);
+        info_str.setColor(sf::Color::Black);
+        //Would like the position to be outside the unit, but this doesn't seem to match...could also do
+        //a health bar
+        //info_str.setPosition(circ.getPosition() + sf::Vector2f(2*circ.getRadius(),2*circ.getRadius()));
+        health_bar_sprite.setScale(str/3, 1);
+        health_bar_sprite.setColor(sf::Color(255-str,255,0));
+    }
+
+    // Post battle update
+    inline void set_info(int str)
+    {
+        info_str.setString(std::to_string(str));
+        health_bar_sprite.setScale(str/3, 1);
+        health_bar_sprite.setColor(sf::Color(255-str,255,0));
+    }
+
+
+    // we use a health bar instead of text to be awesome
+    inline void draw_on(sf::RenderWindow& window)
+    {
+        window.draw(circ);
+        window.draw(sprite);
+        health_bar_sprite.setPosition(get_position() -
+                sf::Vector2f(UNIT_SIZE,-1*UNIT_SIZE));
+        window.draw(health_bar_sprite);
     }
 
     inline void heal()
