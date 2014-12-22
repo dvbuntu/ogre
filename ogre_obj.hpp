@@ -193,7 +193,8 @@ public:
         }
         else
         {
-            circ.setOutlineThickness(0);
+            circ.setOutlineColor(sf::Color::Black);
+            circ.setOutlineThickness(OBJECT_SIZE/10);
         }
     }
 

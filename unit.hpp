@@ -183,7 +183,8 @@ public:
     // remove fight halo
     void done_fighting()
     {
-        circ.setOutlineThickness(0);
+        circ.setOutlineColor(sf::Color(0, 0, 0));
+        circ.setOutlineThickness(OBJECT_SIZE/10);
     }
 
     // Fight it out!

@@ -21,6 +21,10 @@ OgreObject::OgreObject(const sf::Vector2f& p)
 	circ.setPosition(p);
 	circ.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
 
+    // Give the object a nice black outline
+    circ.setOutlineColor(sf::Color(0, 0, 0));
+    circ.setOutlineThickness(OBJECT_SIZE/10);
+
     // here's my portrait!
     if (!picture.loadFromFile("resources/walled_town.jpg"))
     {
