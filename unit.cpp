@@ -37,12 +37,12 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     //str = 50 + rand() % 50;
 
     // Recruit some fighters
-    int max_unit_hp = 0;
+//    int max_unit_hp = 0;
     for (int i = 0; i < HEROES_IN_UNIT; i++)
     {
         heroes.push_front(new OgreHero(rand() % 10));
         heroes.front()->set_position(i);
-        max_unit_hp += heroes.front()->get_hp();
+//        max_unit_hp += heroes.front()->get_hp();
     }
     // here's my portrait!
     if (!health_bar.loadFromFile("resources/no_file_here.PNG"))

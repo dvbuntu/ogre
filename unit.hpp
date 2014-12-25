@@ -68,6 +68,8 @@ class OgreUnit: public OgreObject{
     // Here's my 5x10 glossy
     sf::Sprite health_bar_sprite;
 
+    // How tough can I be?
+    int max_unit_hp;
 
 public:
     OgreUnit(const sf::Vector2f& p);
@@ -91,6 +93,16 @@ public:
             hero->set_owner(owner);
         }
         //info.SetColor(owner->get_color());
+    }
+    
+    // Set my general, Maybe roll this into constructor
+    inline void set_max_hp()
+    {
+        max_unit_hp = 0;
+        for (auto hero:heroes)
+        {
+            max_unit_hp += hero->get_hp();
+        }
     }
 
     // How lively am I?
@@ -143,7 +155,10 @@ public:
         //a health bar
         //info_str.setPosition(circ.getPosition() + sf::Vector2f(2*circ.getRadius(),2*circ.getRadius()));
         health_bar_sprite.setScale(str/3, 1);
-        health_bar_sprite.setColor(sf::Color(255-str,255,0));
+        int red = int(255-255*str/(float)max_unit_hp);
+        int green = int(255*str/(float)max_unit_hp);
+        std::cout << "hp: " << std::to_string(str) << " max_unit_hp: " << std::to_string(max_unit_hp) << " R: " << red << " G: " << green << std::endl;
+        health_bar_sprite.setColor(sf::Color(red,green,0));
     }
 
     // Post battle update
@@ -151,7 +166,10 @@ public:
     {
         info_str.setString(std::to_string(str));
         health_bar_sprite.setScale(str/3, 1);
-        health_bar_sprite.setColor(sf::Color(255-str,255,0));
+        int red = int(255-255*str/(float)max_unit_hp);
+        int green = int(255*str/(float)max_unit_hp);
+        std::cout << "hp: " << std::to_string(str) << " max_unit_hp: " << std::to_string(max_unit_hp) << " R: " << red << " G: " << green << std::endl;
+        health_bar_sprite.setColor(sf::Color(red,green,0));
     }
 
 

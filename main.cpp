@@ -161,6 +161,9 @@ int main(int argc, char* argv[])
         //Set the info
         units.front()->set_info(units.front()->get_hp(), &font, 12);
 
+        //Set max HP
+        units.front()->set_max_hp();
+
         // set target to current position
         units.front()->set_target_position(units.front()->get_position());
 
@@ -566,6 +569,9 @@ void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<Ogre
 
             // random speed
             units->front()->set_speed(rand()%5 + 1);
+
+            // set the hit points
+            units->front()->set_max_hp();
 
             //Set the info
             units->front()->set_info(units->front()->get_hp(), font, 12);
