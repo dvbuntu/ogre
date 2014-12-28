@@ -105,6 +105,11 @@ public:
         }
     }
 
+    inline int get_max_hp()
+    {
+        return max_unit_hp;
+    }
+
     // How lively am I?
     inline int get_hp() const
     {
@@ -147,7 +152,7 @@ public:
     inline sf::Color get_life_color(int str)
     {
         int red, green;
-        float life_fraction = str/(float)max_unit_hp;
+        float life_fraction = str/(float)get_max_hp();
         if (life_fraction > 0.5) {
 
             red = int(2*(255-255*life_fraction));
@@ -157,7 +162,6 @@ public:
             red = 255;
             green = int(255*life_fraction*2);
         }
-        std::cout << "hp: " << std::to_string(str) << " max_unit_hp: " << std::to_string(max_unit_hp) << " R: " << red << " G: " << green << std::endl;
         return sf::Color(red,green,0);
     }
 

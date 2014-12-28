@@ -150,19 +150,22 @@ int main(int argc, char* argv[])
 
 
     // create units to move around
+    // should really just do random deploy_unit() calls
     std::list<OgreUnit*> units;
     for (i = 0; i < NUM_UNITS; i++)
     {
+        // should move unit to position depending on player
+        // or start with no units...
         units.push_front(new OgreUnit(view.getCenter()
                     + sf::Vector2f(rand()%200 - 100,rand()%200 - 100)));
         // random speed
         units.front()->set_speed(rand()%3 + 1);
 
-        //Set the info
-        units.front()->set_info(units.front()->get_hp(), &font, 12);
-
         //Set max HP
         units.front()->set_max_hp();
+
+        //Set the info
+        units.front()->set_info(units.front()->get_hp(), &font, 12);
 
         // set target to current position
         units.front()->set_target_position(units.front()->get_position());
