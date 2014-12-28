@@ -44,17 +44,18 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
         heroes.front()->set_position(i);
 //        max_unit_hp += heroes.front()->get_hp();
     }
-    // here's my portrait!
-    if (!health_bar.loadFromFile("resources/no_file_here.PNG"))
-    {
-        //std::cout << "Failed to load image!" << std::endl;
-    }
-    health_bar_sprite.setTexture(health_bar);
-    health_bar_sprite.setTextureRect(sf::IntRect(0,0,1,10));
-    health_bar_sprite.setScale(1,1);
-    health_bar_sprite.setColor(sf::Color(0,255,0));
-    health_bar_sprite.setPosition(p - sf::Vector2f(0,3*UNIT_SIZE));
-    health_bar_sprite.setScale(max_unit_hp/2,1);
+
+    health_bar_bg.setSize(sf::Vector2f(1,10));
+    health_bar_bg.setScale(1,1);
+    health_bar_bg.setFillColor(sf::Color(0,0,0));
+    health_bar_bg.setPosition(p - sf::Vector2f(0,3*UNIT_SIZE));
+//    health_bar_bg.setOutlineThickness(1);
+//    health_bar_bg.setOutlineColor(sf::Color(255,255,255));
+
+    health_bar_current.setSize(sf::Vector2f(1,10));
+    health_bar_current.setScale(1,1);
+    health_bar_current.setFillColor(sf::Color(0,255,0));
+    health_bar_current.setPosition(p - sf::Vector2f(0,3*UNIT_SIZE));
 }
 
 // Fight it out!

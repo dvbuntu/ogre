@@ -68,6 +68,10 @@ class OgreUnit: public OgreObject{
     // Here's my 5x10 glossy
     sf::Sprite health_bar_sprite;
 
+    // health bar background and current hp
+    sf::RectangleShape health_bar_bg;
+    sf::RectangleShape health_bar_current;
+
     // How tough can I be?
     int max_unit_hp;
 
@@ -175,16 +179,18 @@ public:
         //Would like the position to be outside the unit, but this doesn't seem to match...could also do
         //a health bar
         //info_str.setPosition(circ.getPosition() + sf::Vector2f(2*circ.getRadius(),2*circ.getRadius()));
-        health_bar_sprite.setScale(str/3, 1);
-        health_bar_sprite.setColor(get_life_color(str));
+        health_bar_bg.setScale(get_max_hp()/3.0, 1);
+        health_bar_current.setScale(str/3.0, 1);
+        health_bar_current.setFillColor(get_life_color(str));
     }
 
     // Post battle update
     inline void set_info(int str)
     {
         info_str.setString(std::to_string(str));
-        health_bar_sprite.setScale(str/3, 1);
-        health_bar_sprite.setColor(get_life_color(str));
+        health_bar_bg.setScale(get_max_hp()/3.0, 1);
+        health_bar_current.setScale(str/3.0, 1);
+        health_bar_current.setFillColor(get_life_color(str));
     }
 
 
@@ -193,9 +199,12 @@ public:
     {
         window.draw(circ);
         window.draw(sprite);
-        health_bar_sprite.setPosition(get_position() -
+        health_bar_bg.setPosition(get_position() -
                 sf::Vector2f(UNIT_SIZE,-1*UNIT_SIZE));
-        window.draw(health_bar_sprite);
+        window.draw(health_bar_bg);
+        health_bar_current.setPosition(get_position() -
+                sf::Vector2f(UNIT_SIZE,-1*UNIT_SIZE));
+        window.draw(health_bar_current);
     }
 
     inline void heal()
