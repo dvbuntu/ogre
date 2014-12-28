@@ -144,6 +144,23 @@ public:
         }
     }
 
+    inline sf::Color get_life_color(int str)
+    {
+        int red, green;
+        float life_fraction = str/(float)max_unit_hp;
+        if (life_fraction > 0.5) {
+
+            red = int(2*(255-255*life_fraction));
+            green = 255;
+        }
+        else {
+            red = 255;
+            green = int(255*life_fraction*2);
+        }
+        std::cout << "hp: " << std::to_string(str) << " max_unit_hp: " << std::to_string(max_unit_hp) << " R: " << red << " G: " << green << std::endl;
+        return sf::Color(red,green,0);
+    }
+
     // Set some information about the object
     inline void set_info(int str, sf::Font *font, int size)
     {
@@ -155,10 +172,7 @@ public:
         //a health bar
         //info_str.setPosition(circ.getPosition() + sf::Vector2f(2*circ.getRadius(),2*circ.getRadius()));
         health_bar_sprite.setScale(str/3, 1);
-        int red = int(255-255*str/(float)max_unit_hp);
-        int green = int(255*str/(float)max_unit_hp);
-        std::cout << "hp: " << std::to_string(str) << " max_unit_hp: " << std::to_string(max_unit_hp) << " R: " << red << " G: " << green << std::endl;
-        health_bar_sprite.setColor(sf::Color(red,green,0));
+        health_bar_sprite.setColor(get_life_color(str));
     }
 
     // Post battle update
@@ -166,10 +180,7 @@ public:
     {
         info_str.setString(std::to_string(str));
         health_bar_sprite.setScale(str/3, 1);
-        int red = int(255-255*str/(float)max_unit_hp);
-        int green = int(255*str/(float)max_unit_hp);
-        std::cout << "hp: " << std::to_string(str) << " max_unit_hp: " << std::to_string(max_unit_hp) << " R: " << red << " G: " << green << std::endl;
-        health_bar_sprite.setColor(sf::Color(red,green,0));
+        health_bar_sprite.setColor(get_life_color(str));
     }
 
 
