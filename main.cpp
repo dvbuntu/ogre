@@ -52,6 +52,7 @@ void resolve_fights(std::list<OgreUnit*> units, sf::RenderWindow& window);
 void reap_units(std::list<OgreUnit*> *units);
 void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<OgreTown*> towns, sf::Vector2f position, sf::Font *font);
 bool in_my_town(std::list<OgreTown*> towns, OgrePlayer *player, sf::Vector2f position);
+bool want_to_rest(OgreUnit *unit);
 
 int main(int argc, char* argv[])
 {
@@ -310,11 +311,14 @@ int main(int argc, char* argv[])
                 // TODO: AI controlled by unit itself with helper AI fcns
                 else if (unit->get_owner() == &enemy)
                 {
-                    unit->set_target_tile(
-                    (*random_element(towns.begin(),towns.end()))->get_position(),
-                    ratio_vector,
-                    battle_map,
-                    move_cost);
+                    if (!want_to_rest(unit))
+                    {
+                        unit->set_target_tile(
+                        (*random_element(towns.begin(),towns.end()))->get_position(),
+                        ratio_vector,
+                        battle_map,
+                        move_cost);
+                    }
                 }
 
                 if (unit->get_position() == unit->get_target_position()) {
@@ -604,6 +608,26 @@ bool in_my_town(std::list<OgreTown*> towns, OgrePlayer *player, sf::Vector2f pos
     }
     return false;
 }
+
+// enemy units will stop to rest in town if they're hurting bad, or just sometimes
+bool want_to_rest(OgreUnit *unit)
+{
+    float life_fraction = unit->get_hp() / (float) unit->get_max_hp();
+    float r = rand() / (float) RAND_MAX;
+    if (life_fraction < 0.5)
+    {
+        return true;
+    }
+    else if (life_fraction < r )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 // TODO: put this in a helper .cpp file (or even just a header file
 /*
 template <typename I>
