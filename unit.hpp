@@ -179,7 +179,9 @@ public:
         //Would like the position to be outside the unit, but this doesn't seem to match...could also do
         //a health bar
         //info_str.setPosition(circ.getPosition() + sf::Vector2f(2*circ.getRadius(),2*circ.getRadius()));
-        health_bar_bg.setScale(get_max_hp()/3.0, 1);
+        health_bar_bg.setOutlineThickness(1);
+        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/3.0, 10));
+        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
         health_bar_current.setScale(str/3.0, 1);
         health_bar_current.setFillColor(get_life_color(str));
     }
@@ -188,7 +190,9 @@ public:
     inline void set_info(int str)
     {
         info_str.setString(std::to_string(str));
-        health_bar_bg.setScale(get_max_hp()/3.0, 1);
+        health_bar_bg.setOutlineThickness(1);
+        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/3.0, 10));
+        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
         health_bar_current.setScale(str/3.0, 1);
         health_bar_current.setFillColor(get_life_color(str));
     }

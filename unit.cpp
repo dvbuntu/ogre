@@ -46,11 +46,8 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     }
 
     health_bar_bg.setSize(sf::Vector2f(1,10));
-    health_bar_bg.setScale(1,1);
     health_bar_bg.setFillColor(sf::Color(0,0,0));
     health_bar_bg.setPosition(p - sf::Vector2f(0,3*UNIT_SIZE));
-//    health_bar_bg.setOutlineThickness(1);
-//    health_bar_bg.setOutlineColor(sf::Color(255,255,255));
 
     health_bar_current.setSize(sf::Vector2f(1,10));
     health_bar_current.setScale(1,1);
