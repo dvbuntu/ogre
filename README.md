@@ -18,14 +18,14 @@ Controls
 --------
 * Space Bar - Pause the game
 * Left Click - Select unit/issue move command
-* Right Click - Deploy unit
+* Right Click - Deploy unit (when paused)
+* D - Deploy unit (when paused)
 * Esc - Quit
 
 Future Goals
 ------------
 * Actual images for things (maybe interpret terrain from image)
   ** Align the images a little better, and proper transparency
-* Make some health bars (instead of poorly aligned HP text)
 * Truly different hero types (rock paper scissors balanced in combat)
   ** give them different shapes in combat
 * Actually name the heroes and units!
