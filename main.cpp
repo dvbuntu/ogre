@@ -269,7 +269,7 @@ int main(int argc, char* argv[])
                         paused = false;
                     }
                 }
-                else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
+                else if ((event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::D) )
                 {
                     position = sf::Vector2f(sf::Mouse::getPosition(window));
                     deploy_unit(&units,&player,towns,position,&font);
