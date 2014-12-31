@@ -124,7 +124,9 @@ int main(int argc, char* argv[])
 
     // Create two players, and a pointer to whoever
     OgrePlayer player = OgrePlayer(PLAYER);
+    player.set_home(sf::Vector2f(std::rand() % 400 - 300, std::rand() % 400 - 300));
     OgrePlayer enemy = OgrePlayer(ENEMY);
+    enemy.set_home(sf::Vector2f(std::rand() % 400 - 100, std::rand() % 400 - 100));
     OgrePlayer *owner;
 
     // change in town ownership, +1 if player liberates, -1 if enemy, 0 no change
@@ -134,16 +136,22 @@ int main(int argc, char* argv[])
     std::list<OgreTown*> towns;
     for (i = 0; i < NUM_TOWNS; i++)
     {
-        towns.push_front(new OgreTown(view.getCenter()
-                    + sf::Vector2f(rand()%400 - 200,rand()%400 - 200)));
-        // Dirty hack for now, TODO
+        // somewhat hacky
+        // should define a start position for player and enemy
+        // then build towns out from that (and units too, I guess)
         if (rand()%100 > 50)
         {
+            towns.push_front(new OgreTown(view.getCenter()
+                        + player.get_home()
+                        + sf::Vector2f(std::rand() % 200 - 100, std::rand() % 200 - 100)));
             towns.front()->set_owner(&player);
             player.set_num_towns(player.get_num_towns() + 1);
         }
         else
         {
+            towns.push_front(new OgreTown(view.getCenter()
+                        + enemy.get_home()
+                        + sf::Vector2f(std::rand() % 200 - 100, std::rand() % 200 - 100)));
             towns.front()->set_owner(&enemy);
             enemy.set_num_towns(enemy.get_num_towns() + 1);
         }

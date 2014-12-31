@@ -34,6 +34,7 @@ class OgrePlayer{
     int num_towns;
     int num_units;
     sf::Color color;
+    sf::Vector2f home;
 
 public:
     OgrePlayer(const int new_id);
@@ -99,6 +100,18 @@ public:
     sf::Color get_color() const
     {
         return color;
+    }
+
+    // Where's my home?
+    sf::Vector2f get_home()
+    {
+        return home;
+    }
+
+    // Where's my home?
+    inline void set_home(sf::Vector2f new_home)
+    {
+        home = new_home;
     }
 
     friend bool operator== (const OgrePlayer& A, const OgrePlayer& B);
