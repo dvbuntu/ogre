@@ -124,9 +124,9 @@ int main(int argc, char* argv[])
 
     // Create two players, and a pointer to whoever
     OgrePlayer player = OgrePlayer(PLAYER);
-    player.set_home(sf::Vector2f(std::rand() % 400 - 300, std::rand() % 400 - 300));
+    player.set_home(sf::Vector2f(std::rand() % 200 - 150, std::rand() % 200 - 150));
     OgrePlayer enemy = OgrePlayer(ENEMY);
-    enemy.set_home(sf::Vector2f(std::rand() % 400 - 100, std::rand() % 400 - 100));
+    enemy.set_home(sf::Vector2f(std::rand() % 200 - 50, std::rand() % 200 - 50));
     OgrePlayer *owner;
 
     // change in town ownership, +1 if player liberates, -1 if enemy, 0 no change
@@ -165,8 +165,8 @@ int main(int argc, char* argv[])
     {
         // should move unit to position depending on player
         // or start with no units...
-        units.push_front(new OgreUnit(view.getCenter()
-                    + sf::Vector2f(rand()%200 - 100,rand()%200 - 100)));
+        position = sf::Vector2f(rand()%200 - 100,rand()%200 - 100);
+        units.push_front(new OgreUnit(view.getCenter()));
         // random speed
         units.front()->set_speed(rand()%3 + 1);
 
@@ -176,9 +176,6 @@ int main(int argc, char* argv[])
         //Set the info
         units.front()->set_info(units.front()->get_hp(), &font, 12);
 
-        // set target to current position
-        units.front()->set_target_position(units.front()->get_position());
-
         //units.front()->update_cost();
 
         // Dirty hack for now, TODO
@@ -186,6 +183,11 @@ int main(int argc, char* argv[])
         {
             units.front()->set_owner(&player);
             player.set_num_units(player.get_num_units() + 1);
+            units.front()->move_by(position
+                                +  player.get_home()
+                                );
+            // set target to current position
+            units.front()->set_target_position(units.front()->get_position());
         }
         else
         {
@@ -194,6 +196,9 @@ int main(int argc, char* argv[])
             // They all seem to be walking to the same town...
             // TODO: True AI, walk toward player towns
             enemy.set_num_units(enemy.get_num_units() + 1);
+            units.front()->move_by(position
+                                +  enemy.get_home()
+                                );
             units.front()->set_target_tile(
                     (*random_element(towns.begin(),towns.end()))->get_position(),
                     ratio_vector,
