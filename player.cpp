@@ -19,7 +19,6 @@ OgrePlayer::OgrePlayer(const int new_id)
     num_units = 0;
 
     // Where we start!
-    home = sf::Vector2f(std::rand() % 400 - 200, std::rand() % 400 - 200);
 }
 
 bool operator == (const OgrePlayer& A, const OgrePlayer& B)

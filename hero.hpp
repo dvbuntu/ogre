@@ -77,6 +77,10 @@ class OgreHero{
     // Position within the unit (TODO: make this affect damage and num attacks)
     int position;
 
+    // health bar background and current hp
+    sf::RectangleShape health_bar_bg;
+    sf::RectangleShape health_bar_current;
+
     // How hard did we just get hit?
     int damage_taken;
 
@@ -115,6 +119,23 @@ public:
         position = new_position;
     }
 
+    // TODO: link to unit's get_life_color
+    inline sf::Color get_life_color(int str)
+    {
+        int red, green;
+        float life_fraction = str/(float)get_max_hp();
+        if (life_fraction > 0.5) {
+
+            red = int(2*(255-255*life_fraction));
+            green = 255;
+        }
+        else {
+            red = 255;
+            green = int(255*life_fraction*2);
+        }
+        return sf::Color(red,green,0);
+    }
+
     // Set some information about the hero
     // have to remember to update this after a battle
     inline void set_info(int str, sf::Font *font, int size)
@@ -123,12 +144,22 @@ public:
         info_str.setFont(*font);
         info_str.setCharacterSize(size);
         info_str.setColor(sf::Color::Black);
+        health_bar_bg.setOutlineThickness(1);
+        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/2.0, 10));
+        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
+        health_bar_current.setScale(str/2.0, 1);
+        health_bar_current.setFillColor(get_life_color(str));
     }
 
     // Post battle update
     inline void set_info(int str)
     {
         info_str.setString(std::to_string(str));
+        health_bar_bg.setOutlineThickness(1);
+        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/2.0, 10));
+        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
+        health_bar_current.setScale(str/2.0, 1);
+        health_bar_current.setFillColor(get_life_color(str));
     }
 
     inline void set_damage_str(int str, sf::Font *font, int size)
@@ -333,10 +364,15 @@ public:
         circ.setPosition(x,y);
         window.draw(circ);
         if (get_damage_taken())
-            draw_damage(window, get_damage_taken(), x + HERO_SIZE*3, y);
-        info_str.setPosition(x - HERO_SIZE*3, y);
+            draw_damage(window, get_damage_taken(), x + HERO_SIZE*4, y);
+        info_str.setPosition(x - HERO_SIZE*4, y);
         set_info(get_hp());
-        window.draw(info_str);
+//        window.draw(info_str);
+//        Now with health bars
+        health_bar_bg.setPosition(sf::Vector2f(x - HERO_SIZE*4,y));
+        window.draw(health_bar_bg);
+        health_bar_current.setPosition(sf::Vector2f(x - HERO_SIZE*4,y));
+        window.draw(health_bar_current);
     }
 
     inline void draw_damage(sf::RenderWindow& window, int damage, int x, int y)

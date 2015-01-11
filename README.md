@@ -30,3 +30,5 @@ Future Goals
   ** give them different shapes in combat
 * Actually name the heroes and units!
 * parallelize where appropriate (shortest path computation)
+* Animated sprites (just cycle through frames, pretty easy...)
+* Combine hero and unit basics (health bars, sprites, etc)

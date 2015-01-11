@@ -7,6 +7,7 @@ OgreHero::OgreHero(const int start_level)
     level = start_level;
 
     // Some stats
+    // maybe distribute 'points' to these categories...
     max_hp = BASE_STR*4 + rand() % BASE_STR + level;
     str = BASE_STR + rand() % BASE_STR + level;
     def = BASE_STR/2 + level;
@@ -18,6 +19,16 @@ OgreHero::OgreHero(const int start_level)
 
     // A null value of sorts
     damage_taken = NO_DAMAGE_DISPLAY;
+
+    // setup health bar stuff
+    health_bar_bg.setSize(sf::Vector2f(1,10));
+    health_bar_bg.setFillColor(sf::Color(0,0,0));
+    //health_bar_bg.setPosition(p - sf::Vector2f(0,3*HERO_SIZE));
+
+    health_bar_current.setSize(sf::Vector2f(1,10));
+    health_bar_current.setScale(1,1);
+    health_bar_current.setFillColor(sf::Color(0,255,0));
+    //health_bar_current.setPosition(p - sf::Vector2f(0,3*HERO_SIZE));
 
     // We don't do anything yet
     attacking = false;
