@@ -213,6 +213,14 @@ int main(int argc, char* argv[])
     // size of the circle should be UNIT_SIZE but it can't seem to understand that...
     float unit_size = target_unit->get_size();
 
+    // a boxed area for the match information
+    sf::RectangleShape info_bg;
+    info_bg.setSize(sf::Vector2f(100,100));
+    info_bg.setFillColor(sf::Color(128,128,128,128));
+    info_bg.setOutlineColor(sf::Color::Black);
+    info_bg.setOutlineThickness(2);
+    info_bg.setPosition(sf::Vector2f(2,2));
+
 	// create a stringstream for converting fps to string, and text for displaying it
 	std::stringstream fps;
 	sf::Text fps_text("", font, 12);
@@ -430,6 +438,13 @@ int main(int argc, char* argv[])
             }
         }
 
+        // draw the Match information
+        window.draw(info_bg);
+		window.draw(fps_text);
+		window.draw(time_text);
+		window.draw(player_gold_text);
+		window.draw(enemy_gold_text);
+
         // then features like towns and finally units
         for(auto town : towns)
         {
@@ -440,10 +455,6 @@ int main(int argc, char* argv[])
             unit->draw_on(window); // maybe roll into the movement
         }
 
-		window.draw(fps_text);
-		window.draw(time_text);
-		window.draw(player_gold_text);
-		window.draw(enemy_gold_text);
 		// refresh the window
 		window.display();
 	}
