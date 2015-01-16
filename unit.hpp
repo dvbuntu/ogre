@@ -62,16 +62,6 @@ class OgreUnit: public OgreObject{
     // Who's in this unit?
     std::list<OgreHero*> heroes;
 
-    // what do I look like?
-    sf::Texture health_bar;
-
-    // Here's my 5x10 glossy
-    sf::Sprite health_bar_sprite;
-
-    // health bar background and current hp
-    sf::RectangleShape health_bar_bg;
-    sf::RectangleShape health_bar_current;
-
     // How tough can I be?
     int max_unit_hp;
 
