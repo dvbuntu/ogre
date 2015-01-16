@@ -143,22 +143,6 @@ public:
         }
     }
 
-    inline sf::Color get_life_color(int str)
-    {
-        int red, green;
-        float life_fraction = str/(float)get_max_hp();
-        if (life_fraction > 0.5) {
-
-            red = int(2*(255-255*life_fraction));
-            green = 255;
-        }
-        else {
-            red = 255;
-            green = int(255*life_fraction*2);
-        }
-        return sf::Color(red,green,0);
-    }
-
     // Set some information about the object
     inline void set_info(int str, sf::Font *font, int size)
     {
