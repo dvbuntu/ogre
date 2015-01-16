@@ -1,8 +1,9 @@
 #include "hero.hpp"
 
 OgreHero::OgreHero(const int start_level)
-    : circ(HERO_SIZE)
+    : OgreObject(sf::Vector2f(0,0))
 {
+    circ.setRadius(HERO_SIZE);
     // initialize dummy level
     level = start_level;
 

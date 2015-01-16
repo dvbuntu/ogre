@@ -10,6 +10,10 @@
 #include <algorithm>
 #include <math.h>
 
+#ifndef OGRE_OBJ_HPP
+#include "ogre_obj.hpp"
+#endif
+
 #ifndef HELPER_HPP
 #include "helper.hpp"
 #endif
@@ -34,24 +38,11 @@
 #define NO_DAMAGE_DISPLAY -1
 #endif
 
-class OgreHero{
+class OgreHero: public OgreObject{
     // This represents the hero, an individual within a unit
 
-    // my combat representation
-    sf::CircleShape circ;
-
-    // What's my name
-    std::string name;
-
     // Info about the hero
-    sf::Text info_str;
     sf::Text damage_str;
-
-    // Speed class, how many steps in a round
-    int speed;
-
-    // Max hit points
-    int max_hp;
 
     // current hit points
     int hp;
@@ -77,10 +68,6 @@ class OgreHero{
     // Position within the unit (TODO: make this affect damage and num attacks)
     int position;
 
-    // health bar background and current hp
-    sf::RectangleShape health_bar_bg;
-    sf::RectangleShape health_bar_current;
-
     // How hard did we just get hit?
     int damage_taken;
 
@@ -94,19 +81,6 @@ class OgreHero{
 public:
     OgreHero(const int start_level);
 
-    // Who is my general?
-    inline OgrePlayer *get_owner()
-    {
-        return owner;
-    }
-
-    // Set my general, Maybe roll this into constructor
-    inline void set_owner(OgrePlayer *player)
-    {
-        owner = player;
-        circ.setFillColor(owner->get_color());
-    }
-
     // Get the current position of this hero within the unit
     inline int get_position() const
     {
@@ -117,49 +91,6 @@ public:
     inline void set_position( int new_position)
     {
         position = new_position;
-    }
-
-    // TODO: link to unit's get_life_color
-    inline sf::Color get_life_color(int str)
-    {
-        int red, green;
-        float life_fraction = str/(float)get_max_hp();
-        if (life_fraction > 0.5) {
-
-            red = int(2*(255-255*life_fraction));
-            green = 255;
-        }
-        else {
-            red = 255;
-            green = int(255*life_fraction*2);
-        }
-        return sf::Color(red,green,0);
-    }
-
-    // Set some information about the hero
-    // have to remember to update this after a battle
-    inline void set_info(int str, sf::Font *font, int size)
-    {
-        info_str.setString(std::to_string(str));
-        info_str.setFont(*font);
-        info_str.setCharacterSize(size);
-        info_str.setColor(sf::Color::Black);
-        health_bar_bg.setOutlineThickness(1);
-        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/2.0, 10));
-        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
-        health_bar_current.setScale(str/2.0, 1);
-        health_bar_current.setFillColor(get_life_color(str));
-    }
-
-    // Post battle update
-    inline void set_info(int str)
-    {
-        info_str.setString(std::to_string(str));
-        health_bar_bg.setOutlineThickness(1);
-        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/2.0, 10));
-        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
-        health_bar_current.setScale(str/2.0, 1);
-        health_bar_current.setFillColor(get_life_color(str));
     }
 
     inline void set_damage_str(int str, sf::Font *font, int size)
@@ -174,18 +105,6 @@ public:
     inline void set_damage_str(int str)
     {
         damage_str.setString(std::to_string(str));
-    }
-
-    // Shout my name!
-    inline std::string get_name()
-    {
-        return name;
-    }
-
-    // What's my name?
-    inline void set_name(std::string hero_name)
-    {
-        name = hero_name;
     }
 
     // How strong am I?
@@ -203,12 +122,6 @@ public:
         else
             // TODO: remove the hero...will happen after battles in main though
             str = 0;
-    }
-
-    // How many hit points could I have?
-    inline int get_max_hp() const
-    {
-        return max_hp;
     }
 
     inline void set_max_hp(int new_max_hp)

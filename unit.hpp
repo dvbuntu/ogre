@@ -62,9 +62,6 @@ class OgreUnit: public OgreObject{
     // Who's in this unit?
     std::list<OgreHero*> heroes;
 
-    // How tough can I be?
-    int max_unit_hp;
-
 public:
     OgreUnit(const sf::Vector2f& p);
 
@@ -92,16 +89,11 @@ public:
     // Set my general, Maybe roll this into constructor
     inline void set_max_hp()
     {
-        max_unit_hp = 0;
+        max_hp = 0;
         for (auto hero:heroes)
         {
-            max_unit_hp += hero->get_hp();
+            max_hp += hero->get_hp();
         }
-    }
-
-    inline int get_max_hp()
-    {
-        return max_unit_hp;
     }
 
     // How lively am I?
@@ -142,32 +134,6 @@ public:
             hero->collect_pay(get_owner());
         }
     }
-
-    // Set some information about the object
-    inline void set_info(int str, sf::Font *font, int size)
-    {
-        info_str.setString(std::to_string(str));
-        info_str.setFont(*font);
-        info_str.setCharacterSize(size);
-        info_str.setColor(sf::Color::Black);
-        health_bar_bg.setOutlineThickness(1);
-        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/3.0, 10));
-        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
-        health_bar_current.setScale(str/3.0, 1);
-        health_bar_current.setFillColor(get_life_color(str));
-    }
-
-    // Post battle update
-    inline void set_info(int str)
-    {
-        info_str.setString(std::to_string(str));
-        health_bar_bg.setOutlineThickness(1);
-        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/3.0, 10));
-        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
-        health_bar_current.setScale(str/3.0, 1);
-        health_bar_current.setFillColor(get_life_color(str));
-    }
-
 
     // we use a health bar instead of text to be awesome
     inline void draw_on(sf::RenderWindow& window)

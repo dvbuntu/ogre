@@ -98,6 +98,9 @@ public:
     // Speed class, how many steps in a round
     int speed;
 
+    // How tough can I be?
+    int max_hp;
+
     // because I use it to move and I'm a horrible person
     int unit_type;
 
@@ -157,6 +160,7 @@ public:
         return position - get_position();
     }
 
+/*
     // Set some information about the object
     // have to remember to update this after a battle
     inline void set_info(int str, sf::Font *font, int size)
@@ -175,6 +179,7 @@ public:
     {
         info_str.setString(std::to_string(str));
     }
+*/
 
     // Shout my name!
     inline std::string get_name()
@@ -274,7 +279,7 @@ public:
     // Just a dummy
     inline int get_max_hp()
     {
-        return 0;
+        return max_hp;
     }
 
     inline sf::Color get_life_color(int str)
@@ -291,6 +296,31 @@ public:
             green = int(255*life_fraction*2);
         }
         return sf::Color(red,green,0);
+    }
+
+    // Set some information about the object
+    inline void set_info(int str, sf::Font *font, int size)
+    {
+        info_str.setString(std::to_string(str));
+        info_str.setFont(*font);
+        info_str.setCharacterSize(size);
+        info_str.setColor(sf::Color::Black);
+        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/3.0, 10));
+        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
+        health_bar_bg.setOutlineThickness(1);
+        health_bar_current.setScale(str/3.0, 1);
+        health_bar_current.setFillColor(get_life_color(str));
+    }
+
+    // Post battle update
+    inline void set_info(int str)
+    {
+        info_str.setString(std::to_string(str));
+        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/3.0, 10));
+        health_bar_bg.setOutlineColor(sf::Color(125,125,125));
+        health_bar_bg.setOutlineThickness(1);
+        health_bar_current.setScale(str/3.0, 1);
+        health_bar_current.setFillColor(get_life_color(str));
     }
 
     // shortest path computation prototype
