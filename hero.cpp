@@ -7,6 +7,9 @@ OgreHero::OgreHero(const int start_level)
     // initialize dummy level
     level = start_level;
 
+    // Stronger heroes are more like circles
+    circ.setPointCount(level + 3);
+
     // Some stats
     // maybe distribute 'points' to these categories...
     max_hp = BASE_STR*4 + rand() % BASE_STR + level;
