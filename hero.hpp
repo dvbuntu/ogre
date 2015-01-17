@@ -34,6 +34,10 @@
 #define HERO_SIZE 10
 #endif
 
+#ifndef HERO_HEALTH_SCALE
+#define HERO_HEALTH_SCALE 2.0
+#endif
+
 #ifndef NO_DAMAGE_DISPLAY
 #define NO_DAMAGE_DISPLAY -1
 #endif

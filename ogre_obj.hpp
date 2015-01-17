@@ -117,6 +117,8 @@ public:
     sf::RectangleShape health_bar_bg;
     sf::RectangleShape health_bar_current;
 
+    // health bar scale
+    float scale;
 
     OgreObject(const sf::Vector2f& p);
 
@@ -305,10 +307,10 @@ public:
         info_str.setFont(*font);
         info_str.setCharacterSize(size);
         info_str.setColor(sf::Color::Black);
-        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/3.0, 10));
+        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/scale, 10));
         health_bar_bg.setOutlineColor(sf::Color(125,125,125));
         health_bar_bg.setOutlineThickness(1);
-        health_bar_current.setScale(str/3.0, 1);
+        health_bar_current.setScale(str/scale, 1);
         health_bar_current.setFillColor(get_life_color(str));
     }
 
@@ -316,10 +318,10 @@ public:
     inline void set_info(int str)
     {
         info_str.setString(std::to_string(str));
-        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/3.0, 10));
+        health_bar_bg.setSize(sf::Vector2f(get_max_hp()/scale, 10));
         health_bar_bg.setOutlineColor(sf::Color(125,125,125));
         health_bar_bg.setOutlineThickness(1);
-        health_bar_current.setScale(str/3.0, 1);
+        health_bar_current.setScale(str/scale, 1);
         health_bar_current.setFillColor(get_life_color(str));
     }
 

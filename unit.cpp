@@ -53,6 +53,8 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     health_bar_current.setScale(1,1);
     health_bar_current.setFillColor(sf::Color(0,255,0));
     health_bar_current.setPosition(p - sf::Vector2f(0,3*UNIT_SIZE));
+
+    scale = UNIT_HEALTH_SCALE;
 }
 
 // Fight it out!

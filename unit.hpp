@@ -57,6 +57,10 @@
 #define SPRITE_SIZEY 300
 #endif
 
+#ifndef UNIT_HEALTH_SCALE
+#define UNIT_HEALTH_SCALE 3.0
+#endif
+
 class OgreUnit: public OgreObject{
     // This represents the unit for now
     // Who's in this unit?

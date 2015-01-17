@@ -47,6 +47,7 @@ OgreObject::OgreObject(const sf::Vector2f& p)
     // temporary
     speed = 1;
     unit_type = 0;
+    scale = 0;
 
 }
 

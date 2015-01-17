@@ -31,6 +31,8 @@ OgreHero::OgreHero(const int start_level)
     health_bar_current.setFillColor(sf::Color(0,255,0));
     //health_bar_current.setPosition(p - sf::Vector2f(0,3*HERO_SIZE));
 
+    scale = HERO_HEALTH_SCALE;
+
     // We don't do anything yet
     attacking = false;
     defending = false;
