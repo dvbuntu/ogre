@@ -185,6 +185,30 @@ void OgreUnit::fight(OgreUnit *enemy)
     // Update the health displays
     enemy->set_info(enemy->get_hp());
     set_info(get_hp());
+
+    // Gain XP
+    for (auto hero:*(get_heroes()))
+    {
+        hero->gain_xp(enemy->get_heroes());
+    }
+    for (auto hero:*(enemy->get_heroes()))
+    {
+        hero->gain_xp(get_heroes());
+    }
+
+    // Gain a level
+    for (auto hero:*(get_heroes()))
+    {
+        hero->level_up();
+    }
+    for (auto hero:*(enemy->get_heroes()))
+    {
+        hero->level_up();
+    }
+
+
+
+
 }
 
 void OgreUnit::fight_draw_on(sf::RenderWindow& window)

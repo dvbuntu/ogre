@@ -65,6 +65,7 @@ class OgreHero: public OgreObject{
 
     // What experience level am I?  (TODO: just a placeholder now)
     int level;
+    int xp;
 
     // Hero cost
     int cost;
@@ -275,6 +276,44 @@ public:
 
     // Fight it out!
     OgreHero * attack(std::list<OgreHero*> *enemies);
+
+    inline int get_level()
+    {
+        return level;
+    }
+
+    inline void set_level(int new_level)
+    {
+        level = new_level;
+    }
+
+    // compute XP
+    // Get the average of the differences between my level and the enemies fought
+    inline void gain_xp(std::list<OgreHero*> *enemies)
+    {
+        int gain = 0;
+        for(auto enemy : *enemies)
+        {
+            gain += enemy->get_level();
+        }
+        gain -= enemies->size()*get_level();
+        gain = round((float) gain / (float) enemies->size());
+        if (gain < 1) { gain = 1;}
+        xp += gain;
+    }
+
+    // do I level up?
+    inline void level_up()
+    {
+        if (xp > pow(level+1,2))
+        {
+            level += 1;
+            max_hp += 1 + (rand() % 2);
+            str += 1 + (rand() % 2);
+            def += 1 + (rand() % 2);
+            speed += 1 + (rand() % 2);
+        }
+    }
 
     inline void draw_at(sf::RenderWindow& window, int x, int y)
     {
