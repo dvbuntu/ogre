@@ -38,6 +38,10 @@
 #define HERO_HEALTH_SCALE 2.0
 #endif
 
+#ifndef HERO_XP_SCALE
+#define HERO_XP_SCALE 1.0
+#endif
+
 #ifndef NO_DAMAGE_DISPLAY
 #define NO_DAMAGE_DISPLAY -1
 #endif
@@ -66,6 +70,14 @@ class OgreHero: public OgreObject{
     // What experience level am I?  (TODO: just a placeholder now)
     int level;
     int xp;
+
+    // graphics for XP
+    sf::Sprite xp_bar_sprite;
+
+    // xp bar
+    sf::RectangleShape xp_bar_bg;
+    sf::RectangleShape xp_bar_current;
+    float xp_scale;
 
     // Hero cost
     int cost;
@@ -302,17 +314,36 @@ public:
         xp += gain;
     }
 
+    // how much xp needed for next level?  minimum 10
+    inline double xp_for_next_level()
+    {
+        //return std::max(pow(level+1,2),10.0);
+        return 2 * level;
+    }
+
     // do I level up?
     inline void level_up()
     {
-        if (xp > pow(level+1,2))
+        if (xp > xp_for_next_level())
         {
             level += 1;
             max_hp += 1 + (rand() % 2);
             str += 1 + (rand() % 2);
             def += 1 + (rand() % 2);
             speed += 1 + (rand() % 2);
+            circ.setPointCount(level + 3);
+            xp = 0;
         }
+    }
+
+    // Show how much we've learned
+    inline void set_xp_bar()
+    {
+        xp_bar_bg.setSize(sf::Vector2f(5,xp_for_next_level()/xp_scale));
+        xp_bar_bg.setOutlineColor(sf::Color(125,125,125));
+        xp_bar_bg.setOutlineThickness(1);
+        xp_bar_current.setSize(sf::Vector2f(5,xp/xp_scale));
+//        xp_bar_current.setScale(1, xp/xp_scale);
     }
 
     inline void draw_at(sf::RenderWindow& window, int x, int y)
@@ -329,6 +360,14 @@ public:
         window.draw(health_bar_bg);
         health_bar_current.setPosition(sf::Vector2f(x - HERO_SIZE*4,y));
         window.draw(health_bar_current);
+        // and xp bars! but futz with location
+        set_xp_bar();
+        xp_bar_bg.setPosition(sf::Vector2f(x + 1.5*HERO_SIZE,y + 1*HERO_SIZE -
+                    xp_for_next_level()/xp_scale));
+        window.draw(xp_bar_bg);
+        xp_bar_current.setPosition(sf::Vector2f(x + 1.5*HERO_SIZE,y + 1*HERO_SIZE - 
+                    xp/xp_scale));
+        window.draw(xp_bar_current);
     }
 
     inline void draw_damage(sf::RenderWindow& window, int damage, int x, int y)

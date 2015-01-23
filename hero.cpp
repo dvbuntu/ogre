@@ -7,6 +7,9 @@ OgreHero::OgreHero(const int start_level)
     // initialize dummy level
     level = start_level;
 
+    // we might have a little experience already
+    xp = rand() % (level+1);
+
     // Stronger heroes are more like circles
     circ.setPointCount(level + 3);
 
@@ -34,7 +37,15 @@ OgreHero::OgreHero(const int start_level)
     health_bar_current.setFillColor(sf::Color(0,255,0));
     //health_bar_current.setPosition(p - sf::Vector2f(0,3*HERO_SIZE));
 
+    // setup xp bar
+    xp_bar_bg.setSize(sf::Vector2f(5,HERO_SIZE));
+    xp_bar_bg.setFillColor(sf::Color(0,0,0));
+    xp_bar_current.setSize(sf::Vector2f(5,HERO_SIZE));
+    xp_bar_current.setScale(1,1);
+    xp_bar_current.setFillColor(sf::Color::Yellow);
+
     scale = HERO_HEALTH_SCALE;
+    xp_scale = HERO_XP_SCALE;
 
     // We don't do anything yet
     attacking = false;
