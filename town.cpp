@@ -30,10 +30,6 @@ OgreTown::OgreTown(const sf::Vector2f& p)
 	sprite.move(sf::Vector2f(-0.5*circ.getRadius(), -0.5*circ.getRadius()));
     sprite.setColor(circ.getFillColor());
 
-    // How sturdy is this town?
-    max_hp = std::rand() % TOWN_MAX_HP;
-    hp = max_hp;
-
     // Town's have health bars too!
     health_bar_bg.setSize(sf::Vector2f(1,10));
     health_bar_bg.setFillColor(sf::Color(0,0,0));
@@ -47,7 +43,11 @@ OgreTown::OgreTown(const sf::Vector2f& p)
     scale = TOWN_HEALTH_SCALE;
 
     // Get a tax_base
-    payout = std::rand() % 6;
+    payout = 1 + std::rand() % 6;
+
+    // How sturdy is this town?
+    max_hp = 1 + std::rand() % (TOWN_MAX_HP*payout);
+    hp = max_hp;
 
     // Better town's are more circular, naturally
     circ.setPointCount(payout + 3);

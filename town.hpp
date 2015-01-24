@@ -32,11 +32,11 @@
 #endif
 
 #ifndef TOWN_MAX_HP
-#define TOWN_MAX_HP 100
+#define TOWN_MAX_HP 16
 #endif
 
 #ifndef TOWN_MAX_PILLAGE_DAMAGE
-#define TOWN_MAX_PILLAGE_DAMAGE (TOWN_MAX_HP/5)
+#define TOWN_MAX_PILLAGE_DAMAGE TOWN_MAX_HP
 #endif
 
 #ifndef TOWN_HEAL_PERCENT
