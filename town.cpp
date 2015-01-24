@@ -47,7 +47,7 @@ OgreTown::OgreTown(const sf::Vector2f& p)
     scale = TOWN_HEALTH_SCALE;
 
     // Get a tax_base
-    payout = std::rand() % 10;
+    payout = std::rand() % 6;
 
     // Better town's are more circular, naturally
     circ.setPointCount(payout + 3);

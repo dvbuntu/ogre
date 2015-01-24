@@ -61,6 +61,10 @@
 #define UNIT_HEALTH_SCALE 3.0
 #endif
 
+#ifndef UNIT_HEAL_PERCENT
+#define UNIT_HEAL_PERCENT 1
+#endif
+
 class OgreUnit: public OgreObject{
     // This represents the unit for now
     // Who's in this unit?

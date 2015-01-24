@@ -28,7 +28,7 @@
 #endif
 
 #ifndef TOWN_HEALTH_SCALE
-#define TOWN_HEALTH_SCALE 3.0
+#define TOWN_HEALTH_SCALE 1.0
 #endif
 
 #ifndef TOWN_MAX_HP
@@ -37,6 +37,10 @@
 
 #ifndef TOWN_MAX_PILLAGE_DAMAGE
 #define TOWN_MAX_PILLAGE_DAMAGE (TOWN_MAX_HP/5)
+#endif
+
+#ifndef TOWN_HEAL_PERCENT
+#define TOWN_HEAL_PERCENT 1
 #endif
 
 class OgreTown: public OgreObject{
@@ -63,7 +67,13 @@ public:
         return payout;
     }
 
-    // Pay Caesar what is due to him
+    // current hit points
+    inline int get_hp() const
+    {
+        return hp;
+    }
+
+   // Pay Caesar what is due to him
     inline void pay_taxes()
     {
         OgrePlayer *player;
@@ -76,10 +86,10 @@ public:
         window.draw(circ);
         window.draw(sprite);
         health_bar_bg.setPosition(get_position() -
-                sf::Vector2f(TOWN_SIZE,-1*TOWN_SIZE));
+                sf::Vector2f(TOWN_SIZE,-1.2*TOWN_SIZE));
         window.draw(health_bar_bg);
         health_bar_current.setPosition(get_position() -
-                sf::Vector2f(TOWN_SIZE,-1*TOWN_SIZE));
+                sf::Vector2f(TOWN_SIZE,-1.2*TOWN_SIZE));
         window.draw(health_bar_current);
     }
 
@@ -87,6 +97,12 @@ public:
     {
         hp -= std::rand() % TOWN_MAX_PILLAGE_DAMAGE;
         if (hp < 0) { hp = 0;}
+    }
+
+    inline void heal()
+    {
+        hp += 1;
+        if (hp > max_hp) { hp = max_hp;}
     }
 
     // Check if town has been captured and set new owner

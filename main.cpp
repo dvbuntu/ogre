@@ -37,7 +37,6 @@
 #define NUM_UNITS 5
 #define NUM_TOWNS 6
 #define FIGHT_THRESH (3*UNIT_SIZE)
-#define HEAL_PERCENT 1
 #define DAY_LENGTH 1000 // length of a 'game day' in time steps
 #define ENEMY_DEPLOY_CHANCE 2
 #define X_VIDEO_SIZE 800
@@ -50,6 +49,7 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
 OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer *enemy);
 void resolve_fights(std::list<OgreUnit*> units, sf::RenderWindow& window);
 void reap_units(std::list<OgreUnit*> *units);
+void reap_towns(std::list<OgreTown*> *towns);
 void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<OgreTown*> towns, sf::Vector2f position, sf::Font *font);
 bool in_my_town(std::list<OgreTown*> towns, OgrePlayer *player, sf::Vector2f position);
 bool want_to_rest(OgreUnit *unit);
@@ -320,6 +320,7 @@ int main(int argc, char* argv[])
 
             // Reap the dead!
             reap_units(&units);
+            reap_towns(&towns);
 
             // Move the unit(s)
             for(auto unit : units)
@@ -346,16 +347,18 @@ int main(int argc, char* argv[])
                 if (unit->get_position() == unit->get_target_position()) {
                     // check if we 
                     // Potentially heal if not moving
-                    if (rand() % 100 < HEAL_PERCENT)
+                    if (rand() % 100 < UNIT_HEAL_PERCENT)
                         unit->heal();
                 }
                 unit->set_info(unit->get_hp());
             }
 
-            // Check town ownership
+            // Check town ownership and life
             for(auto town : towns)
             {
                 owner = town->check_conquest(units);
+                if (rand() % 100 < TOWN_HEAL_PERCENT)
+                    town->heal();
 
                 if (owner == &player)
                     town_shift = 1;
@@ -580,6 +583,29 @@ void reap_units(std::list<OgreUnit*> *units)
         else
         {
             ++unit;
+        }
+    }
+}
+
+// Check for ruined towns
+// TODO: make a templated 'reap' function
+void reap_towns(std::list<OgreTown*> *towns)
+{
+    OgrePlayer *owner;
+    std::list<OgreTown*>::iterator town = towns->begin();
+    while(town != towns->end())
+    {
+        if ((*town)->get_hp() == 0)
+        {
+            // Remove this town from the player's rolls
+            owner = (*town)->get_owner();
+            owner->set_num_towns(owner->get_num_towns() - 1);
+            // erase the current guy and move to the next
+            town = towns->erase(town);
+        }
+        else
+        {
+            ++town;
         }
     }
 }
