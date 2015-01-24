@@ -30,8 +30,27 @@ OgreTown::OgreTown(const sf::Vector2f& p)
 	sprite.move(sf::Vector2f(-0.5*circ.getRadius(), -0.5*circ.getRadius()));
     sprite.setColor(circ.getFillColor());
 
+    // How sturdy is this town?
+    max_hp = std::rand() % TOWN_MAX_HP;
+    hp = max_hp;
+
+    // Town's have health bars too!
+    health_bar_bg.setSize(sf::Vector2f(1,10));
+    health_bar_bg.setFillColor(sf::Color(0,0,0));
+    health_bar_bg.setPosition(p - sf::Vector2f(0,3*TOWN_SIZE));
+
+    health_bar_current.setSize(sf::Vector2f(1,10));
+    health_bar_current.setScale(1,1);
+    health_bar_current.setFillColor(sf::Color(0,255,0));
+    health_bar_current.setPosition(p - sf::Vector2f(0,3*TOWN_SIZE));
+
+    scale = TOWN_HEALTH_SCALE;
+
     // Get a tax_base
     payout = std::rand() % 10;
+
+    // Better town's are more circular, naturally
+    circ.setPointCount(payout + 3);
 }
 
 // Check if town has been captured and set new owner
@@ -59,9 +78,12 @@ OgrePlayer *OgreTown::check_conquest(std::list<OgreUnit*> units){
                 break;
         }
     }
+    // set new owner and damage town
     if (!contested && possible_owner != nullptr && possible_owner != get_owner())
     {
         set_owner(possible_owner);
+        pillage();
+        set_info(hp);
         return possible_owner;
     }
     else

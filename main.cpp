@@ -155,6 +155,7 @@ int main(int argc, char* argv[])
             towns.front()->set_owner(&enemy);
             enemy.set_num_towns(enemy.get_num_towns() + 1);
         }
+        towns.front()->set_info(towns.front()->get_max_hp());
     }
 
 

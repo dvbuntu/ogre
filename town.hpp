@@ -27,11 +27,25 @@
 #define TOWN_TRANS 160
 #endif
 
+#ifndef TOWN_HEALTH_SCALE
+#define TOWN_HEALTH_SCALE 3.0
+#endif
+
+#ifndef TOWN_MAX_HP
+#define TOWN_MAX_HP 100
+#endif
+
+#ifndef TOWN_MAX_PILLAGE_DAMAGE
+#define TOWN_MAX_PILLAGE_DAMAGE (TOWN_MAX_HP/5)
+#endif
+
 class OgreTown: public OgreObject{
     // This represents the town for now
     // How much does this town pay out?
     int payout;
 
+    // town hit points
+    int hp;
 public:
     OgreTown(const sf::Vector2f& p);
 
@@ -55,6 +69,24 @@ public:
         OgrePlayer *player;
         player = get_owner();
         player->set_gold(player->get_gold() + get_payout());
+    }
+
+    inline void draw_on(sf::RenderWindow& window)
+    {
+        window.draw(circ);
+        window.draw(sprite);
+        health_bar_bg.setPosition(get_position() -
+                sf::Vector2f(TOWN_SIZE,-1*TOWN_SIZE));
+        window.draw(health_bar_bg);
+        health_bar_current.setPosition(get_position() -
+                sf::Vector2f(TOWN_SIZE,-1*TOWN_SIZE));
+        window.draw(health_bar_current);
+    }
+
+    inline void pillage()
+    {
+        hp -= std::rand() % TOWN_MAX_PILLAGE_DAMAGE;
+        if (hp < 0) { hp = 0;}
     }
 
     // Check if town has been captured and set new owner

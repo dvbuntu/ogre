@@ -140,6 +140,7 @@ public:
     }
 
     // we use a health bar instead of text to be awesome
+    // TODO: integrate this into ogre_obj
     inline void draw_on(sf::RenderWindow& window)
     {
         window.draw(circ);
