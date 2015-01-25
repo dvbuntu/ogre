@@ -108,6 +108,7 @@ public:
     {
         hp += 1;
         if (hp > max_hp) { hp = max_hp;}
+        set_info(hp);
     }
 
     // Check if town has been captured and set new owner
