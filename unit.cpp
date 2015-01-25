@@ -55,6 +55,8 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     health_bar_current.setPosition(p - sf::Vector2f(0,3*UNIT_SIZE));
 
     scale = UNIT_HEALTH_SCALE;
+
+    select_state = false;
 }
 
 // Fight it out!

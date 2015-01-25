@@ -50,6 +50,7 @@ OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer
 void resolve_fights(std::list<OgreUnit*> units, sf::RenderWindow& window);
 void reap_units(std::list<OgreUnit*> *units);
 void reap_towns(std::list<OgreTown*> *towns);
+void build_town(std::list<OgreTown*> *towns, std::list<OgreUnit*> *units, OgrePlayer *player, OgreUnit *target_unit, sf::Vector2f position);
 void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<OgreTown*> towns, sf::Vector2f position, sf::Font *font);
 bool in_my_town(std::list<OgreTown*> towns, OgrePlayer *player, sf::Vector2f position);
 bool want_to_rest(OgreUnit *unit);
@@ -169,7 +170,7 @@ int main(int argc, char* argv[])
         position = sf::Vector2f(rand()%200 - 100,rand()%200 - 100);
         units.push_front(new OgreUnit(view.getCenter()));
         // random speed
-        units.front()->set_speed(rand()%3 + 1);
+        units.front()->set_speed(rand()%4 + 1);
 
         //Set max HP
         units.front()->set_max_hp();
@@ -292,10 +293,19 @@ int main(int argc, char* argv[])
                         paused = false;
                     }
                 }
+                // deploy a unit where the pointer is
                 else if ((event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::D) )
                 {
                     position = sf::Vector2f(sf::Mouse::getPosition(window));
                     deploy_unit(&units,&player,towns,position,&font);
+                }
+                // Build a town on location of selected unit
+                else if (select_unit && (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::T))
+                {
+                    position = target_unit->get_position();
+                    build_town(&towns,&units,&player,target_unit,position);
+                    select_unit = false;
+                    target_unit = units.back();
                 }
 			}
             else
@@ -610,6 +620,32 @@ void reap_towns(std::list<OgreTown*> *towns)
     }
 }
 
+// Build a town here using this unit
+void build_town(std::list<OgreTown*> *towns, std::list<OgreUnit*> *units, OgrePlayer *player, OgreUnit *target_unit, sf::Vector2f position)
+{
+    int town_cost = (*random_element(towns->begin(),towns->end()))->get_payout() * 20;
+    if (player->get_gold() >=
+        (town_cost) && target_unit->get_select_state())
+    {
+        // We built this city!
+        towns->push_front(new OgreTown(position));
+        towns->front()->set_payout(town_cost / 20);
+        towns->front()->set_info(towns->front()->get_max_hp());
+        towns->front()->set_owner(player);
+
+        // On blood and bone...
+        // remove b/c the pointer value is unique, and erase is for iterator object
+        units->remove(target_unit);
+        player->set_num_units(player->get_num_units() - 1);
+
+        // Pay for materials
+        player->set_gold(player->get_gold() - town_cost);
+
+        // Do some accounting
+        player->set_num_towns(player->get_num_towns() + 1);
+    }
+}
+
 // Add a unit for the given player
 void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<OgreTown*> towns, sf::Vector2f position, sf::Font *font)
 {
@@ -626,7 +662,10 @@ void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<Ogre
             // TODO: store units->front() in a pointer to clean this up
 
             // random speed
-            units->front()->set_speed(rand()%5 + 1);
+            // TODO: make a unit.init() method to take care of this stuff
+            // that will standardize the initial speed and whatnot as well
+            // Why not set speed when generate unit?
+            units->front()->set_speed(rand()%4 + 1);
 
             // set the hit points
             units->front()->set_max_hp();
@@ -643,6 +682,7 @@ void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<Ogre
             units->front()->set_target_position(units->front()->get_target_position());
 
             player->set_gold(player->get_gold() - units->front()->get_cost() * 2);
+            player->set_num_units(player->get_num_units() + 1);
         }
     }
 }

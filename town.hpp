@@ -62,6 +62,11 @@ public:
         circ.setFillColor(temp_color);
     }
 
+    inline void set_payout(int new_payout)
+    {
+        payout = new_payout;
+    }
+
     inline int get_payout() const
     {
         return payout;

@@ -120,6 +120,9 @@ public:
     // health bar scale
     float scale;
 
+    // Am I currently selected for duty?
+    bool select_state;
+
     OgreObject(const sf::Vector2f& p);
 
     // Who is my general?
@@ -201,9 +204,15 @@ public:
         return circ.getRadius();
     }
 
+    inline bool get_select_state()
+    {
+        return select_state;
+    }
+
     // Draw a ring around the object to show it's selected
     inline void set_select_state(bool select)
     {
+        select_state = select;
         if (select)
         {
             circ.setOutlineColor(sf::Color::Green);
