@@ -68,11 +68,13 @@ void OgreObject::move_one(int tile_move_cost){
         // change to move distance inversely proportional to move_cost
         circ.move(direction/cost);
         sprite.move(direction/cost);
+        vision_aura.move(direction/cost);
     }
     else
     {
         circ.move(direction);
         sprite.move(direction);
+        vision_aura.move(direction/cost);
     }
 }
 

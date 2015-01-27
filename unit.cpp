@@ -38,12 +38,21 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 
     // Recruit some fighters
 //    int max_unit_hp = 0;
+    vision_aura.setRadius(0);
     for (int i = 0; i < HEROES_IN_UNIT; i++)
     {
         heroes.push_front(new OgreHero(rand() % 10));
         heroes.front()->set_position(i);
 //        max_unit_hp += heroes.front()->get_hp();
+        vision_aura.setRadius(std::max(vision_aura.getRadius(),
+                    (float) heroes.front()->get_vision()));
     }
+    vision_aura.setOrigin(vision_aura.getRadius(), vision_aura.getRadius());
+    vision_aura.setPosition(p);
+    //vision_aura.move(-1*vision_aura.getRadius(), -1*vision_aura.getRadius());
+    vision_aura.setFillColor(sf::Color::Transparent);
+    vision_aura.setOutlineThickness(1);
+    vision_aura.setOutlineColor(sf::Color(127,127,127,127));
 
     health_bar_bg.setSize(sf::Vector2f(1,10));
     health_bar_bg.setFillColor(sf::Color(0,0,0));

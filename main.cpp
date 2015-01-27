@@ -164,8 +164,6 @@ int main(int argc, char* argv[])
     // create units to move around
     // should really just do random deploy_unit() calls
     std::list<OgreUnit*> units;
-    std::list<OgreUnit*> player_units;
-    std::list<OgreUnit*> enemy_units;
     for (i = 0; i < NUM_UNITS; i++)
     {
         // should move unit to position depending on player

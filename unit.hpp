@@ -88,7 +88,9 @@ public:
     inline void set_owner(OgrePlayer *player)
     {
         owner = player;
-        circ.setFillColor(owner->get_color());
+        sf::Color color = owner->get_color();
+        circ.setFillColor(color);
+        vision_aura.setOutlineColor(sf::Color(color.r,color.g,color.b,127));
         for (auto hero:heroes)
         {
             hero->set_owner(owner);
@@ -173,6 +175,7 @@ public:
     {
         window.draw(circ);
         window.draw(sprite);
+        window.draw(vision_aura);
         health_bar_bg.setPosition(get_position() -
                 sf::Vector2f(UNIT_SIZE,-1*UNIT_SIZE));
         window.draw(health_bar_bg);

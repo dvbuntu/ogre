@@ -123,6 +123,9 @@ public:
     // Am I currently selected for duty?
     bool select_state;
 
+    // how far can I see?
+    sf::CircleShape vision_aura;
+
     OgreObject(const sf::Vector2f& p);
 
     // Who is my general?
@@ -285,6 +288,7 @@ public:
     {
         circ.move(p);
         sprite.move(p);
+        vision_aura.move(p);
     }
 
     // Just a dummy
