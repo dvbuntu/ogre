@@ -70,6 +70,8 @@ class OgreUnit: public OgreObject{
     // Who's in this unit?
     std::list<OgreHero*> heroes;
 
+    bool visible;
+
 public:
     OgreUnit(const sf::Vector2f& p);
 
@@ -133,6 +135,28 @@ public:
         for (auto hero:heroes)
             remaining_attacks += hero->get_attacks_left();
         return remaining_attacks;
+    }
+
+    // Have I been noticed?
+    inline void set_visible(bool am_visible)
+    {
+        visible = am_visible;
+    }
+
+    inline bool get_visible() const
+    {
+        return visible;
+    }
+
+    // we can see as far as our best hero
+    inline int get_vision() const
+    {
+        int vision = 0;
+        for (auto hero: heroes)
+        {
+            vision = std::max(vision,hero->get_vision());
+        }
+        return vision;
     }
 
     inline void collect_pay()

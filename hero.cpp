@@ -20,6 +20,7 @@ OgreHero::OgreHero(const int start_level)
     def = BASE_STR/2 + level;
     speed = BASE_STR + rand() % BASE_STR + level;
     hp = max_hp;
+    vision = HERO_SIZE*(level + 1);
 
     // 1 or 2 hits
     total_attacks = 1 + (rand() % 2);

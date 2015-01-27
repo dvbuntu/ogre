@@ -82,6 +82,9 @@ class OgreHero: public OgreObject{
     // Hero cost
     int cost;
 
+    // How far we can see
+    int vision;
+
     // Position within the unit (TODO: make this affect damage and num attacks)
     int position;
 
@@ -299,6 +302,11 @@ public:
         level = new_level;
     }
 
+    inline int get_vision() const
+    {
+        return vision;
+    }
+
     // compute XP
     // Get the average of the differences between my level and the enemies fought
     inline void gain_xp(std::list<OgreHero*> *enemies)
@@ -331,6 +339,7 @@ public:
             str += 1 + (rand() % 2);
             def += 1 + (rand() % 2);
             speed += 1 + (rand() % 2);
+            vision += HERO_SIZE;
             circ.setPointCount(level + 3);
             xp = 0;
         }

@@ -54,6 +54,7 @@ void build_town(std::list<OgreTown*> *towns, std::list<OgreUnit*> *units, OgrePl
 void deploy_unit(std::list<OgreUnit*> *units, OgrePlayer *player, std::list<OgreTown*> towns, sf::Vector2f position, sf::Font *font);
 bool in_my_town(std::list<OgreTown*> towns, OgrePlayer *player, sf::Vector2f position);
 bool want_to_rest(OgreUnit *unit);
+void find_visible(std::list<OgreUnit*> units, OgrePlayer *player);
 
 int main(int argc, char* argv[])
 {
@@ -163,6 +164,8 @@ int main(int argc, char* argv[])
     // create units to move around
     // should really just do random deploy_unit() calls
     std::list<OgreUnit*> units;
+    std::list<OgreUnit*> player_units;
+    std::list<OgreUnit*> enemy_units;
     for (i = 0; i < NUM_UNITS; i++)
     {
         // should move unit to position depending on player
@@ -464,9 +467,11 @@ int main(int argc, char* argv[])
         {
             town->draw_on(window); // maybe roll into the movement
         }
+        find_visible(units, &player);
         for(auto unit : units)
         {
-            unit->draw_on(window); // maybe roll into the movement
+            if (unit->get_visible())
+                unit->draw_on(window); // maybe roll into the movement
         }
 
 		// refresh the window
@@ -718,6 +723,38 @@ bool want_to_rest(OgreUnit *unit)
         return false;
     }
 }
+
+void find_visible(std::list<OgreUnit*> units, OgrePlayer *player)
+{
+    std::list<OgreUnit*> player_units;
+    std::list<OgreUnit*> enemy_units;
+    for (auto unit: units)
+    {
+        if (unit->get_owner() == player)
+        {
+            unit->set_visible(true);
+            player_units.push_front(unit);
+        }
+        else
+            enemy_units.push_front(unit);
+    }
+    for (auto unit: enemy_units)
+    {
+        unit->set_visible(false);
+        for (auto  my_unit:player_units)
+        {
+            if (unit->distance(my_unit->get_position()) < my_unit->get_vision())
+            {
+                unit->set_visible(true);
+                break;
+            }
+        }
+    }
+    // may not have to do this
+    player_units.clear();
+    enemy_units.clear();
+}
+
 
 // TODO: put this in a helper .cpp file (or even just a header file
 /*
