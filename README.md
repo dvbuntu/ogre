@@ -36,15 +36,15 @@ Screenshots
 -----------
 Here is the basic battlefield when you start the game, with some units and towns.  The typical battlefield is larger, this is just scaled down and has trimmed off an information panel in the upper left.
 
-![Ogre Battlefield](resources/limited_vision.jpg?raw=true "Initial Battlefield")
+![Ogre Battlefield](resources/limited_vision.png?raw=true "Initial Battlefield")
 
 This is a fight scene featuring individual heros when units get too close.  No art here yet, but you can see the HP and XP of each hero fighting it out.  As in Flatland, heroes with more sides are of higher status.
 
-![Ogre Fight Scene](resources/fightscene.jpg?raw=true "Core Fight Scene")
+![Ogre Fight Scene](resources/fightscene.png?raw=true "Core Fight Scene")
 
 Take care of your towns!  Just as units can suffer too much damage and die, a town takes damage every time it changes hands.  Weaker hands might be ruined by just one capture.  They'll slowly recover over time, so hold onto them when you can.
 
-![Ogre Town Damage](resources/town_destruction.jpg?raw=true "Town Destruction")
+![Ogre Town Damage](resources/town_destruction.png?raw=true "Town Destruction")
 
 
 Future Goals
