@@ -30,6 +30,10 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     // Start not moving, so target is our current position
     // Apparently you're not allowed to use a method to do this during init
     target_position = p;
+    target_flag.setSize(sf::Vector2f(UNIT_SIZE,UNIT_SIZE));
+    target_flag.setOrigin(UNIT_SIZE/2,UNIT_SIZE/2);
+    target_flag.setOutlineThickness(1);
+    target_flag.setOutlineColor(sf::Color(128,128,128));
 
     path = new std::list<PathPt*>;
 

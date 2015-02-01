@@ -85,6 +85,8 @@ public:
 
     // Where we're headed
     sf::Vector2f target_position;
+    sf::Vector2f final_position;
+    sf::RectangleShape target_flag;
 
     // how am I getting there?
     std::list<PathPt*> *path;
@@ -280,6 +282,7 @@ public:
         // maybe I will allow this, but not right now
         assert(!path->empty());
         set_target_position(path->front()->get_as_position(ratio));
+        final_position = p;
     }
 
     // Magic move after combat or other necessary things

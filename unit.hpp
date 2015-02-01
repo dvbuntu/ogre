@@ -65,6 +65,10 @@
 #define UNIT_HEAL_PERCENT 1
 #endif
 
+#ifndef FLAG_TRANS
+#define FLAG_TRANS 160
+#endif
+
 class OgreUnit: public OgreObject{
     // This represents the unit for now
     // Who's in this unit?
@@ -173,6 +177,16 @@ public:
     // TODO: integrate this into ogre_obj
     inline void draw_on(sf::RenderWindow& window)
     {
+        // Note where unit is going if we have it selected
+        sf::Color temp_color = owner->get_color();
+        if (select_state)
+        {
+            target_flag.setPosition(final_position);
+            temp_color.a = FLAG_TRANS;
+            target_flag.setFillColor(temp_color);
+            window.draw(target_flag);
+        }
+
         window.draw(circ);
         window.draw(sprite);
         window.draw(vision_aura);
@@ -182,6 +196,7 @@ public:
         health_bar_current.setPosition(get_position() -
                 sf::Vector2f(UNIT_SIZE,-1*UNIT_SIZE));
         window.draw(health_bar_current);
+
     }
 
     inline void heal()
