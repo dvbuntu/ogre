@@ -51,6 +51,13 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
         vision_aura.setRadius(std::max(vision_aura.getRadius(),
                     (float) heroes.front()->get_vision()));
     }
+
+    heroes.front()->set_leader(true);
+    heroes.front()->get_sprite()->setTexture(picture);
+    heroes.front()->get_sprite()->setTextureRect(sf::IntRect(SPRITE_SIZEX * unit_type, 0, SPRITE_SIZEX, SPRITE_SIZEY));
+    heroes.front()->get_sprite()->setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
+                                                    SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
+
     vision_aura.setOrigin(vision_aura.getRadius(), vision_aura.getRadius());
     vision_aura.setPosition(p);
     //vision_aura.move(-1*vision_aura.getRadius(), -1*vision_aura.getRadius());
@@ -234,6 +241,9 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
     {
         offset += 200; // TODO: scale
     }
+
+    // draw the leader sprite
+
 
     for (auto hero: *(get_heroes()))
     {

@@ -7,6 +7,9 @@ OgreHero::OgreHero(const int start_level)
     // initialize dummy level
     level = start_level;
 
+    // we're probably not the leader
+    leader = false;
+
     // we might have a little experience already
     xp = rand() % (level+1);
 

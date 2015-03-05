@@ -71,6 +71,12 @@ class OgreHero: public OgreObject{
     int level;
     int xp;
 
+    // profile picture
+    sf::Sprite profile;
+    
+    // who's in charge?
+    bool leader;
+
     // graphics for XP
     sf::Sprite xp_bar_sprite;
 
@@ -100,6 +106,24 @@ class OgreHero: public OgreObject{
 
 public:
     OgreHero(const int start_level);
+
+    // smile!
+    inline sf::Sprite * get_sprite()
+    {
+        return &profile;
+    }
+
+    // Am I the leader?
+    inline bool get_leader() const
+    {
+        return leader;
+    }
+
+    // make myself the leader (or not)
+    inline void set_leader(bool new_leader)
+    {
+        leader = new_leader;
+    }
 
     // Get the current position of this hero within the unit
     inline int get_position() const
@@ -377,6 +401,11 @@ public:
         xp_bar_current.setPosition(sf::Vector2f(x + 1.5*HERO_SIZE,y + 1*HERO_SIZE - 
                     xp/xp_scale));
         window.draw(xp_bar_current);
+        if (leader)
+        {
+            profile.setPosition(sf::Vector2f(x,0));
+            window.draw(profile);
+        }
     }
 
     inline void draw_damage(sf::RenderWindow& window, int damage, int x, int y)
