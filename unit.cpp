@@ -57,6 +57,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     heroes.front()->get_sprite()->setTextureRect(sf::IntRect(SPRITE_SIZEX * unit_type, 0, SPRITE_SIZEX, SPRITE_SIZEY));
     heroes.front()->get_sprite()->setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
                                                     SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
+    heroes.front()->get_sprite()->setColor(circ.getFillColor());
 
     vision_aura.setOrigin(vision_aura.getRadius(), vision_aura.getRadius());
     vision_aura.setPosition(p);
