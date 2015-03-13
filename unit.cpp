@@ -11,7 +11,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 	circ.setFillColor(sf::Color(std::rand() % 128 + 128, std::rand() % 128 + 128, std::rand() % 128 + 128));
     
     // here's my portrait!
-    if (!picture.loadFromFile("resources/rpg_sprites_10.PNG"))
+    if (!picture.loadFromFile("resources/heroes.png"))
     {
         std::cout << "Failed to load image!" << std::endl;
     }
@@ -20,10 +20,10 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     circ.setPointCount(unit_type + 3);
 
     sprite.setTexture(picture);
-    sprite.setTextureRect(sf::IntRect(SPRITE_SIZEX * unit_type, 0, SPRITE_SIZEX, SPRITE_SIZEY));
+    sprite.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
     sprite.setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
                 SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
-    sprite.setPosition(p);
+    sprite.setPosition(p - sf::Vector2f(UNIT_SIZE,UNIT_SIZE*1.5));
 	sprite.move(sf::Vector2f(-0.75*circ.getRadius(), -0.75*circ.getRadius()));
     sprite.setColor(circ.getFillColor());
 

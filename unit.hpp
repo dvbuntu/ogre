@@ -46,15 +46,15 @@
 #endif
 
 #ifndef SPRITE_SCALE
-#define SPRITE_SCALE (1.3)
+#define SPRITE_SCALE (3)
 #endif
 
 #ifndef SPRITE_SIZEX
-#define SPRITE_SIZEX 250
+#define SPRITE_SIZEX 32
 #endif
 
 #ifndef SPRITE_SIZEY
-#define SPRITE_SIZEY 300
+#define SPRITE_SIZEY 32
 #endif
 
 #ifndef UNIT_HEALTH_SCALE
@@ -188,7 +188,6 @@ public:
         }
 
         window.draw(circ);
-        window.draw(sprite);
         window.draw(vision_aura);
         health_bar_bg.setPosition(get_position() -
                 sf::Vector2f(UNIT_SIZE,-1*UNIT_SIZE));
@@ -196,6 +195,8 @@ public:
         health_bar_current.setPosition(get_position() -
                 sf::Vector2f(UNIT_SIZE,-1*UNIT_SIZE));
         window.draw(health_bar_current);
+        // draw the sprite last, it may overshadow some things
+        window.draw(sprite);
 
     }
 
