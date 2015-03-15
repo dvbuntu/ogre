@@ -69,6 +69,10 @@
 #define FLAG_TRANS 160
 #endif
 
+#ifndef ANIMATION_REFRESH
+#define ANIMATION_REFRESH 10
+#endif
+
 class OgreUnit: public OgreObject{
     // This represents the unit for now
     // Who's in this unit?
@@ -227,6 +231,22 @@ public:
 
     // Picture a battle
     void fight_draw_on(sf::RenderWindow& window);
+
+    // Dance it out
+    void animate(uint64_t time_step)
+    {
+        int r = time_step % (2*ANIMATION_REFRESH);
+        // left foot forward
+        if ( r > 0 && r < ANIMATION_REFRESH) {
+            sprite.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
+        }
+        // right foot forward
+        if ( r >= ANIMATION_REFRESH) {
+            sprite.setTextureRect(sf::IntRect(SPRITE_SIZEX, SPRITE_SIZEY * unit_type, SPRITE_SIZEX*2, SPRITE_SIZEY));
+        }
+    }
+
+
 
 };
 
