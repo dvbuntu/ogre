@@ -77,6 +77,7 @@ class OgreUnit: public OgreObject{
     // This represents the unit for now
     // Who's in this unit?
     std::list<OgreHero*> heroes;
+    OgreHero * hero_leader;
 
     bool visible;
 

@@ -53,12 +53,13 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     }
 
     // make one unit a leader, a give him the same picture...bugged out?
-    heroes.front()->set_leader(true);
-    heroes.front()->get_sprite()->setTexture(picture);
-    heroes.front()->get_sprite()->setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
-    heroes.front()->get_sprite()->setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
+    hero_leader = *random_element(heroes.begin(), heroes.end());
+    hero_leader->set_leader(true);
+    hero_leader->get_sprite()->setTexture(picture);
+    hero_leader->get_sprite()->setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
+    hero_leader->get_sprite()->setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
                                                         SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
-    heroes.front()->get_sprite()->setColor(circ.getFillColor());
+    hero_leader->get_sprite()->setColor(circ.getFillColor());
 
     vision_aura.setOrigin(vision_aura.getRadius(), vision_aura.getRadius());
     vision_aura.setPosition(p);

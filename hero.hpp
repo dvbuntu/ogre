@@ -403,7 +403,12 @@ public:
         window.draw(xp_bar_current);
         if (leader)
         {
-            profile.setPosition(sf::Vector2f(x,0));
+            profile.setPosition(sf::Vector2f(x -
+                                int(get_owner()->get_id() == ENEMY)*
+                                9.5*HERO_SIZE + 
+                                int(get_owner()->get_id() == PLAYER)*
+                                3.5*HERO_SIZE,
+                                y + HERO_SIZE));
             window.draw(profile);
         }
     }
