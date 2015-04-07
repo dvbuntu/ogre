@@ -50,9 +50,14 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 //        max_unit_hp += heroes.front()->get_hp();
         vision_aura.setRadius(std::max(vision_aura.getRadius(),
                     (float) heroes.front()->get_vision()));
+        // adjust size of hero picture
+        heroes.front()->get_sprite()->setTextureRect(sf::IntRect(0, 0 , SPRITE_SIZEX, SPRITE_SIZEY));
+        heroes.front()->get_sprite()->setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
+                                                        SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
     }
 
     // make one unit a leader, a give him the same picture...bugged out?
+    // give him a special profile picture
     hero_leader = *random_element(heroes.begin(), heroes.end());
     hero_leader->set_leader(true);
     hero_leader->get_sprite()->setTexture(picture);
@@ -60,6 +65,9 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     hero_leader->get_sprite()->setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
                                                         SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
     hero_leader->get_sprite()->setColor(circ.getFillColor());
+
+    // give the leader a boost
+    hero_leader->level_up();
 
     vision_aura.setOrigin(vision_aura.getRadius(), vision_aura.getRadius());
     vision_aura.setPosition(p);

@@ -31,6 +31,17 @@ OgreHero::OgreHero(const int start_level)
     // A null value of sorts
     damage_taken = NO_DAMAGE_DISPLAY;
 
+    // Give this grunt a picture and a club!
+    // here's my portrait!
+    if (!picture.loadFromFile("resources/grunt.png"))
+    {
+        std::cout << "Failed to load image!" << std::endl;
+    }
+
+    profile.setTexture(picture);
+    profile.setColor(circ.getFillColor());
+
+
     // setup health bar stuff
     health_bar_bg.setSize(sf::Vector2f(1,10));
     health_bar_bg.setFillColor(sf::Color(0,0,0));

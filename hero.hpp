@@ -72,6 +72,7 @@ class OgreHero: public OgreObject{
     int xp;
 
     // profile picture
+    // TODO: just use the OgreObject sprite
     sf::Sprite profile;
     
     // who's in charge?
@@ -401,16 +402,13 @@ public:
         xp_bar_current.setPosition(sf::Vector2f(x + 1.5*HERO_SIZE,y + 1*HERO_SIZE - 
                     xp/xp_scale));
         window.draw(xp_bar_current);
-        if (leader)
-        {
-            profile.setPosition(sf::Vector2f(x -
-                                int(get_owner()->get_id() == ENEMY)*
-                                9.5*HERO_SIZE + 
-                                int(get_owner()->get_id() == PLAYER)*
-                                3.5*HERO_SIZE,
-                                y + HERO_SIZE));
-            window.draw(profile);
-        }
+        profile.setPosition(sf::Vector2f(x -
+                            int(get_owner()->get_id() == ENEMY)*
+                            9.5*HERO_SIZE + 
+                            int(get_owner()->get_id() == PLAYER)*
+                            3.5*HERO_SIZE,
+                            y - 1.5*HERO_SIZE));
+        window.draw(profile);
     }
 
     inline void draw_damage(sf::RenderWindow& window, int damage, int x, int y)
