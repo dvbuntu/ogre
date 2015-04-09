@@ -247,6 +247,8 @@ public:
         }
     }
 
+    // Give some information.
+    void display_info();
 
 
 };

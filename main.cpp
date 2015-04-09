@@ -505,6 +505,8 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
             // select the new unit
             (*target_unit) = unit;
             (*target_unit)->set_select_state(true);
+            // bring up the info window here using fight_draw_on, plus info
+            (*target_unit)->display_info();
             (*paused) = true;
             select_unit = true;
             break;

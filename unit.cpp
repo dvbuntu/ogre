@@ -244,6 +244,9 @@ void OgreUnit::fight(OgreUnit *enemy)
 
 }
 
+// can also use this just to display unit information, or at least get it started
+// have the info window just call this, then add the info
+// should really just mirror everything for the enemy
 void OgreUnit::fight_draw_on(sf::RenderWindow& window)
 {
     int offset = 100; // TODO: scale to size of window
@@ -262,6 +265,32 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
         if (hero->get_hp() != 0)
             hero->draw_at(window, offset, hero->get_position()*5*HERO_SIZE + 5*HERO_SIZE);
     }
+}
+
+void OgreUnit::display_info()
+{
+    sf::RenderWindow window(sf::VideoMode(400, 300), "Fight It Out!");
+    window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(120);
+    sf::View view = window.getDefaultView();
+    sf::Event event;
+
+    // this puts the unit information up at least
+    window.clear(sf::Color::White);
+    fight_draw_on(window);
+    while (window.isOpen())
+    {
+        // clicking the OS's close button or pressing escape
+        while (window.pollEvent(event)){
+            if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+            {
+                window.close();
+            }
+        }
+
+        window.display();
+    }
+
 }
 
 
