@@ -326,7 +326,7 @@ public:
         health_bar_bg.setSize(sf::Vector2f(get_max_hp()/scale, 10));
         health_bar_bg.setOutlineColor(sf::Color(125,125,125));
         health_bar_bg.setOutlineThickness(1);
-        health_bar_current.setScale(str/scale, 1);
+        health_bar_current.setSize(sf::Vector2f(str/scale, 10));
         health_bar_current.setFillColor(get_life_color(str));
     }
 
@@ -337,7 +337,7 @@ public:
         health_bar_bg.setSize(sf::Vector2f(get_max_hp()/scale, 10));
         health_bar_bg.setOutlineColor(sf::Color(125,125,125));
         health_bar_bg.setOutlineThickness(1);
-        health_bar_current.setScale(str/scale, 1);
+        health_bar_current.setSize(sf::Vector2f(str/scale, 10));
         health_bar_current.setFillColor(get_life_color(str));
     }
 

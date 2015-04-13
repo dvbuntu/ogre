@@ -4,6 +4,8 @@ OgreHero::OgreHero(const int start_level)
     : OgreObject(sf::Vector2f(0,0))
 {
     circ.setRadius(HERO_SIZE);
+    circ.setOrigin(HERO_SIZE,HERO_SIZE);
+
     // initialize dummy level
     level = start_level;
 
@@ -45,9 +47,11 @@ OgreHero::OgreHero(const int start_level)
     // setup health bar stuff
     health_bar_bg.setSize(sf::Vector2f(1,10));
     health_bar_bg.setFillColor(sf::Color(0,0,0));
+    health_bar_bg.setOrigin(0.5,5);
     //health_bar_bg.setPosition(p - sf::Vector2f(0,3*HERO_SIZE));
 
     health_bar_current.setSize(sf::Vector2f(1,10));
+    health_bar_current.setOrigin(0.5,5);
     health_bar_current.setScale(1,1);
     health_bar_current.setFillColor(sf::Color(0,255,0));
     //health_bar_current.setPosition(p - sf::Vector2f(0,3*HERO_SIZE));
@@ -55,7 +59,9 @@ OgreHero::OgreHero(const int start_level)
     // setup xp bar
     xp_bar_bg.setSize(sf::Vector2f(5,HERO_SIZE));
     xp_bar_bg.setFillColor(sf::Color(0,0,0));
+    xp_bar_bg.setOrigin(2.5,HERO_SIZE/2);
     xp_bar_current.setSize(sf::Vector2f(5,HERO_SIZE));
+    xp_bar_current.setOrigin(2.5,HERO_SIZE/2);
     xp_bar_current.setScale(1,1);
     xp_bar_current.setFillColor(sf::Color::Yellow);
 

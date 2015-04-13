@@ -249,11 +249,12 @@ void OgreUnit::fight(OgreUnit *enemy)
 // should really just mirror everything for the enemy
 void OgreUnit::fight_draw_on(sf::RenderWindow& window)
 {
+    int base = 200; // Line of reflection
     int offset = 100; // TODO: scale to size of window
 
-    if (get_owner()->get_id() == PLAYER)
+    if (get_owner()->get_id() == ENEMY)
     {
-        offset += 200; // TODO: scale
+        offset *= -1; // TODO: scale
     }
 
     // draw the leader sprite
@@ -263,7 +264,7 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
     {
         // only show up if we're actually there
         if (hero->get_hp() != 0)
-            hero->draw_at(window, offset, hero->get_position()*5*HERO_SIZE + 5*HERO_SIZE);
+            hero->draw_at(window, base + offset, hero->get_position()*5*HERO_SIZE + 5*HERO_SIZE);
     }
 }
 

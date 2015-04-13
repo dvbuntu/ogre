@@ -370,43 +370,56 @@ public:
         }
     }
 
+    // Fix location of hp bars, want them centered
+    inline void align_hp_bars()
+    {
+        health_bar_bg.setOrigin(get_max_hp()/scale/2,5);
+        health_bar_current.setOrigin(get_max_hp()/scale/2,5);
+    }
+
     // Show how much we've learned
     inline void set_xp_bar()
     {
+        xp_bar_bg.setOrigin(2.5, xp_for_next_level()/xp_scale);
         xp_bar_bg.setSize(sf::Vector2f(5,xp_for_next_level()/xp_scale));
         xp_bar_bg.setOutlineColor(sf::Color(125,125,125));
         xp_bar_bg.setOutlineThickness(1);
+        xp_bar_current.setOrigin(2.5, xp_for_next_level()/xp_scale);
         xp_bar_current.setSize(sf::Vector2f(5,xp/xp_scale));
 //        xp_bar_current.setScale(1, xp/xp_scale);
     }
 
     inline void draw_at(sf::RenderWindow& window, int x, int y)
     {
+        int offset = 1;
+        if (get_owner()->get_id() == ENEMY)
+            offset = -1;
+
         circ.setPosition(x,y);
+
+
         window.draw(circ);
         if (get_damage_taken())
-            draw_damage(window, get_damage_taken(), x + HERO_SIZE*4, y);
-        info_str.setPosition(x - HERO_SIZE*4, y);
+            draw_damage(window, get_damage_taken(), x + offset*HERO_SIZE*4, y);
+        info_str.setPosition(x - offset*HERO_SIZE*4, y);
+        align_hp_bars();
         set_info(get_hp());
 //        window.draw(info_str);
 //        Now with health bars
-        health_bar_bg.setPosition(sf::Vector2f(x - HERO_SIZE*4,y));
+        health_bar_bg.setPosition(sf::Vector2f(x - offset*HERO_SIZE*4,y));
         window.draw(health_bar_bg);
-        health_bar_current.setPosition(sf::Vector2f(x - HERO_SIZE*4,y));
+        health_bar_current.setPosition(sf::Vector2f(x - offset*HERO_SIZE*4,y));
         window.draw(health_bar_current);
         // and xp bars! but futz with location
         set_xp_bar();
-        xp_bar_bg.setPosition(sf::Vector2f(x + 1.5*HERO_SIZE,y + 1*HERO_SIZE -
+        xp_bar_bg.setPosition(sf::Vector2f(x + 1.5*offset*HERO_SIZE,y + 1*HERO_SIZE -
                     xp_for_next_level()/xp_scale));
         window.draw(xp_bar_bg);
-        xp_bar_current.setPosition(sf::Vector2f(x + 1.5*HERO_SIZE,y + 1*HERO_SIZE - 
+        xp_bar_current.setPosition(sf::Vector2f(x + 1.5*offset*HERO_SIZE,y + 1*HERO_SIZE - 
                     xp/xp_scale));
         window.draw(xp_bar_current);
-        profile.setPosition(sf::Vector2f(x -
-                            int(get_owner()->get_id() == ENEMY)*
-                            9.5*HERO_SIZE + 
-                            int(get_owner()->get_id() == PLAYER)*
-                            3.5*HERO_SIZE,
+        profile.setPosition(sf::Vector2f(x +
+                            offset*HERO_SIZE,
                             y - 1.5*HERO_SIZE));
         window.draw(profile);
     }
