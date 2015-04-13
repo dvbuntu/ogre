@@ -22,7 +22,7 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     sprite.setTexture(picture);
     sprite.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
     sprite.setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
-                                 SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
+                                 SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEY)));
     sprite.setPosition(p - sf::Vector2f(UNIT_SIZE,UNIT_SIZE*1.5));
 	sprite.move(sf::Vector2f(-0.75*circ.getRadius(), -0.75*circ.getRadius()));
     sprite.setColor(circ.getFillColor());
@@ -50,21 +50,12 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 //        max_unit_hp += heroes.front()->get_hp();
         vision_aura.setRadius(std::max(vision_aura.getRadius(),
                     (float) heroes.front()->get_vision()));
-        // adjust size of hero picture
-        heroes.front()->get_sprite()->setTextureRect(sf::IntRect(0, 0 , SPRITE_SIZEX, SPRITE_SIZEY));
-        heroes.front()->get_sprite()->setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
-                                                        SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
     }
 
     // make one unit a leader, a give him the same picture...bugged out?
     // give him a special profile picture
     hero_leader = *random_element(heroes.begin(), heroes.end());
-    hero_leader->set_leader(true);
-    hero_leader->get_sprite()->setTexture(picture);
-    hero_leader->get_sprite()->setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
-    hero_leader->get_sprite()->setScale(sf::Vector2f(SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX),
-                                                        SPRITE_SCALE*UNIT_SIZE/((float)SPRITE_SIZEX)));
-    hero_leader->get_sprite()->setColor(circ.getFillColor());
+    hero_leader->set_leader(true, unit_type);
 
     // give the leader a boost
     hero_leader->level_up();
@@ -264,7 +255,7 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
     {
         // only show up if we're actually there
         if (hero->get_hp() != 0)
-            hero->draw_at(window, base + offset, hero->get_position()*5*HERO_SIZE + 5*HERO_SIZE);
+            hero->draw_at(window, base + offset, hero->get_position()*8*HERO_SIZE + 5*HERO_SIZE);
     }
 }
 

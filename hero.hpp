@@ -42,6 +42,18 @@
 #define HERO_XP_SCALE 1.0
 #endif
 
+#ifndef SPRITE_SCALE
+#define SPRITE_SCALE (3)
+#endif
+
+#ifndef SPRITE_SIZEX
+#define SPRITE_SIZEX 32
+#endif
+
+#ifndef SPRITE_SIZEY
+#define SPRITE_SIZEY 32
+#endif
+
 #ifndef NO_DAMAGE_DISPLAY
 #define NO_DAMAGE_DISPLAY -1
 #endif
@@ -121,9 +133,19 @@ public:
     }
 
     // make myself the leader (or not)
-    inline void set_leader(bool new_leader)
+    inline void set_leader(bool new_leader, int unit_type)
     {
         leader = new_leader;
+        // here's my new portrait!
+        if (!picture.loadFromFile("resources/heroes.png"))
+        {
+            std::cout << "Failed to load image!" << std::endl;
+        }
+        profile.setTexture(picture);
+        profile.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
+        profile.setScale(sf::Vector2f(SPRITE_SCALE*HERO_SIZE*2/((float)SPRITE_SIZEX),
+                                      SPRITE_SCALE*HERO_SIZE*2/((float)SPRITE_SIZEY)));
+        profile.setColor(circ.getFillColor());
     }
 
     // Get the current position of this hero within the unit
@@ -380,12 +402,12 @@ public:
     // Show how much we've learned
     inline void set_xp_bar()
     {
-        xp_bar_bg.setOrigin(2.5, xp_for_next_level()/xp_scale);
         xp_bar_bg.setSize(sf::Vector2f(5,xp_for_next_level()/xp_scale));
+        xp_bar_bg.setOrigin(2.5, 0);
         xp_bar_bg.setOutlineColor(sf::Color(125,125,125));
         xp_bar_bg.setOutlineThickness(1);
-        xp_bar_current.setOrigin(2.5, xp_for_next_level()/xp_scale);
         xp_bar_current.setSize(sf::Vector2f(5,xp/xp_scale));
+        xp_bar_current.setOrigin(2.5, 0);
 //        xp_bar_current.setScale(1, xp/xp_scale);
     }
 
@@ -400,26 +422,25 @@ public:
 
         window.draw(circ);
         if (get_damage_taken())
-            draw_damage(window, get_damage_taken(), x + offset*HERO_SIZE*4, y);
+            draw_damage(window, get_damage_taken(), x + offset*HERO_SIZE*5, y);
         info_str.setPosition(x - offset*HERO_SIZE*4, y);
         align_hp_bars();
         set_info(get_hp());
 //        window.draw(info_str);
 //        Now with health bars
-        health_bar_bg.setPosition(sf::Vector2f(x - offset*HERO_SIZE*4,y));
+        health_bar_bg.setPosition(sf::Vector2f(x,y + 2*HERO_SIZE));
         window.draw(health_bar_bg);
-        health_bar_current.setPosition(sf::Vector2f(x - offset*HERO_SIZE*4,y));
+        health_bar_current.setPosition(sf::Vector2f(x,y + 2*HERO_SIZE));
         window.draw(health_bar_current);
         // and xp bars! but futz with location
         set_xp_bar();
-        xp_bar_bg.setPosition(sf::Vector2f(x + 1.5*offset*HERO_SIZE,y + 1*HERO_SIZE -
+        xp_bar_bg.setPosition(sf::Vector2f(x + 2*offset*HERO_SIZE,y + 1*HERO_SIZE -
                     xp_for_next_level()/xp_scale));
         window.draw(xp_bar_bg);
-        xp_bar_current.setPosition(sf::Vector2f(x + 1.5*offset*HERO_SIZE,y + 1*HERO_SIZE - 
+        xp_bar_current.setPosition(sf::Vector2f(x + 2*offset*HERO_SIZE,y + 1*HERO_SIZE - 
                     xp/xp_scale));
         window.draw(xp_bar_current);
-        profile.setPosition(sf::Vector2f(x +
-                            offset*HERO_SIZE,
+        profile.setPosition(sf::Vector2f(x,
                             y - 1.5*HERO_SIZE));
         window.draw(profile);
     }

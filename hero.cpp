@@ -42,6 +42,12 @@ OgreHero::OgreHero(const int start_level)
 
     profile.setTexture(picture);
     profile.setColor(circ.getFillColor());
+    // adjust size of hero picture
+    profile.setTextureRect(sf::IntRect(0, 0 , SPRITE_SIZEX, SPRITE_SIZEY));
+    profile.setOrigin(SPRITE_SIZEX/2,
+                      SPRITE_SIZEY/2);
+    profile.setScale(sf::Vector2f(SPRITE_SCALE*HERO_SIZE*2/((float)SPRITE_SIZEX),
+                                  SPRITE_SCALE*HERO_SIZE*2/((float)SPRITE_SIZEY)));
 
 
     // setup health bar stuff

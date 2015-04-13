@@ -45,18 +45,6 @@
 #define NUM_UNIT_TYPES 4
 #endif
 
-#ifndef SPRITE_SCALE
-#define SPRITE_SCALE (3)
-#endif
-
-#ifndef SPRITE_SIZEX
-#define SPRITE_SIZEX 32
-#endif
-
-#ifndef SPRITE_SIZEY
-#define SPRITE_SIZEY 32
-#endif
-
 #ifndef UNIT_HEALTH_SCALE
 #define UNIT_HEALTH_SCALE 3.0
 #endif
