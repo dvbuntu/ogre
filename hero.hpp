@@ -425,7 +425,8 @@ public:
             draw_damage(window, get_damage_taken(), x + offset*HERO_SIZE*5, y);
         info_str.setPosition(x - offset*HERO_SIZE*4, y);
         align_hp_bars();
-        set_info(get_hp());
+        // set_info(get_hp());
+        draw_info(window, get_hp(),x - offset*HERO_SIZE*4, y + 1*HERO_SIZE);
 //        window.draw(info_str);
 //        Now with health bars
         health_bar_bg.setPosition(sf::Vector2f(x,y + 2*HERO_SIZE));
@@ -452,6 +453,14 @@ public:
         if (damage != NO_DAMAGE_DISPLAY)
             window.draw(damage_str);
     }
+
+    inline void draw_info(sf::RenderWindow& window, int info, int x, int y)
+    {
+        info_str.setPosition(x, y);
+        set_info(info);
+        window.draw(info_str);
+    }
+
 
 
 };
