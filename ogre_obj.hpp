@@ -122,6 +122,9 @@ public:
     // health bar scale
     float scale;
 
+    // load font
+    sf::Font font;
+
     // Am I currently selected for duty?
     bool select_state;
 

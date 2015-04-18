@@ -454,6 +454,8 @@ public:
             window.draw(damage_str);
     }
 
+    // this segfaults when just trying to view the hero after a battle...
+    // ah, because I don't properly set the font, surprised it works at all.
     inline void draw_info(sf::RenderWindow& window, int info, int x, int y)
     {
         info_str.setPosition(x, y);

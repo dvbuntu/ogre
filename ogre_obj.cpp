@@ -49,6 +49,13 @@ OgreObject::OgreObject(const sf::Vector2f& p)
     unit_type = 0;
     scale = 0;
 
+    // don't really care about the font
+    if (!font.loadFromFile("./resources/DejaVuSans.ttf"))
+    {
+        std::cerr << "Couldn't find font DejaVuSans.ttf!\n";
+        return;
+    }
+
 }
 
 // Move this unit one step toward its target

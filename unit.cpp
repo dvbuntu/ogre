@@ -36,6 +36,13 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
     target_flag.setOutlineColor(sf::Color(128,128,128));
 
     path = new std::list<PathPt*>;
+    
+    // load our favorite font
+    if (!font.loadFromFile("./resources/DejaVuSans.ttf"))
+    {
+        std::cerr << "Couldn't find font DejaVuSans.ttf!\n";
+        return;
+    }
 
     // Starting strength...I'll make it random
     //str = 50 + rand() % 50;
@@ -50,6 +57,8 @@ OgreUnit::OgreUnit(const sf::Vector2f& p)
 //        max_unit_hp += heroes.front()->get_hp();
         vision_aura.setRadius(std::max(vision_aura.getRadius(),
                     (float) heroes.front()->get_vision()));
+        heroes.front()->set_damage_str(0,&font,12);
+        heroes.front()->set_info(heroes.front()->get_hp(),&font,12);
     }
 
     // make one unit a leader, a give him the same picture...bugged out?
@@ -282,6 +291,7 @@ void OgreUnit::display_info()
 
         window.display();
     }
+    window.close();
 
 }
 
