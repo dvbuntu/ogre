@@ -264,7 +264,11 @@ void OgreUnit::fight_draw_on(sf::RenderWindow& window)
     {
         // only show up if we're actually there
         if (hero->get_hp() != 0)
+        {
+            hero->set_damage_str(0,&font,12);
+            hero->set_info(hero->get_hp(),&font,12);
             hero->draw_at(window, base + offset, hero->get_position()*8*HERO_SIZE + 5*HERO_SIZE);
+        }
     }
 }
 
