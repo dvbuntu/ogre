@@ -89,10 +89,21 @@ int main(int argc, char* argv[])
     // premade terrain shapes
     std::vector< std::vector<int> > move_cost;
     setup_move_cost(&move_cost);
+
     std::vector<sf::Color> terrain_colors;
     setup_terrain_colors(&terrain_colors);
+
+    // map image
+    sf::Image map_image;
+
+    // map texture
+    sf::Texture map_texture;
+
+    // map image for displaying
+    sf::Sprite map_sprite;
+
     std::vector<std::vector<int> > battle_map;
-    setup_battle_map(&battle_map);
+    setup_battle_map(&battle_map, terrain_colors, &map_image, &map_texture, &map_sprite);
 
     std::vector< std::vector<sf::RectangleShape>> tile_display;
     i = 0;

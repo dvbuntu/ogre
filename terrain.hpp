@@ -55,16 +55,55 @@ void setup_terrain_colors(std::vector<sf::Color> *terrain_colors){
         terrain_colors->push_back(*(new sf::Color(
                     WHITE_BIAS + std::rand() % (256-WHITE_BIAS),
                     WHITE_BIAS + std::rand() % (256-WHITE_BIAS),
-                    WHITE_BIAS + std::rand() % (256-WHITE_BIAS))));
+                    WHITE_BIAS + std::rand() % (256-WHITE_BIAS)
+                    )));
     }
 }
 
-// Make some random terrain, yeah, doesn't make sense
-void setup_battle_map(std::vector<std::vector<int> > * battle_map){
+// bogus color distance
+int color_diff(sf::Color c1, sf::Color c2)
+{
+    int rdiff = c1.r - c2.r;
+    int gdiff = c1.g - c2.g;
+    int bdiff = c1.b - c2.b;
+
+    return rdiff*rdiff + gdiff*gdiff + bdiff*bdiff;
+}
+
+int closest_color(sf::Color c1, std::vector<sf::Color> terrain_colors) {
+    
+    int diff;
+
+    // set first color as default winner
+    int min_diff = color_diff(c1, terrain_colors[0]);
+    int winner = 0;
+
+    for (int i = 1; i < terrain_colors.size(); i++)
+    {
+        diff = color_diff(c1,terrain_colors[i]);
+        if (diff < min_diff)
+            winner = i;
+    }
+    return winner;
+}
+
+// Only read the top left rect of image for now, scale later
+void setup_battle_map(std::vector<std::vector<int> > * battle_map,
+                      std::vector<sf::Color> terrain_colors,
+                      sf::Image * image,
+                      sf::Texture * texture,
+                      sf::Sprite * sprite){
+
+    if (!image->loadFromFile("resources/basic_map.png"))
+    {
+        std::cout << "Failed to load image!" << std::endl;
+    }
+
     for (int x = 0; x < X_MAP_SIZE; x++){
         battle_map->push_back(*(new std::vector<int>));
         for (int y = 0; y < Y_MAP_SIZE; y++){
-            battle_map->back().push_back(std::rand() % NUM_TERRAIN_TYPES);
+            //battle_map->back().push_back(std::rand() % NUM_TERRAIN_TYPES);
+            battle_map->back().push_back(closest_color(image->getPixel(x,y),terrain_colors));
         }
     }
 }
