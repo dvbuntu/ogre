@@ -23,34 +23,35 @@
 #endif
 
 
-// terrain is [plains, hills, mtn]
+// terrain is [plains, water, mtn]
 // should probable free/delete this crap at end of game...
 void setup_move_cost(std::vector< std::vector<int> > *move_cost){
     std::vector<int> *fighter_move = new std::vector<int>;
     fighter_move->push_back(2);// Nominally, fighter
-    fighter_move->push_back(10);
     fighter_move->push_back(20);
+    fighter_move->push_back(10);
     move_cost->push_back(*fighter_move);
-    std::vector<int> *amazon_move = new std::vector<int>;
-    amazon_move->push_back(2);// Nominally, amazon
-    amazon_move->push_back(10);
-    amazon_move->push_back(10);
-    move_cost->push_back(*amazon_move);
     std::vector<int> *wizard_move = new std::vector<int>;
     wizard_move->push_back(5);// Nominally, wizard
     wizard_move->push_back(10);
-    wizard_move->push_back(30);
+    wizard_move->push_back(17);
     move_cost->push_back(*wizard_move);
+    std::vector<int> *amazon_move = new std::vector<int>;
+    amazon_move->push_back(13);// Nominally, amazon
+    amazon_move->push_back(14);
+    amazon_move->push_back(5);
+    move_cost->push_back(*amazon_move);
     std::vector<int> *hawkman_move = new std::vector<int>;
-    hawkman_move->push_back(1);// Nominally, hawkman
-    hawkman_move->push_back(1);
-    hawkman_move->push_back(1);
+    hawkman_move->push_back(10);// Nominally, monk...
+    hawkman_move->push_back(10);
+    hawkman_move->push_back(12);
     move_cost->push_back(*hawkman_move);
 }
 
 // should probable free/delete this crap at end of game...
 // make some colors for the land, and bias toward white
 void setup_terrain_colors(std::vector<sf::Color> *terrain_colors){
+    /*
     for (int c = 0; c < NUM_TERRAIN_TYPES; c++){
         terrain_colors->push_back(*(new sf::Color(
                     WHITE_BIAS + std::rand() % (256-WHITE_BIAS),
@@ -58,6 +59,10 @@ void setup_terrain_colors(std::vector<sf::Color> *terrain_colors){
                     WHITE_BIAS + std::rand() % (256-WHITE_BIAS)
                     )));
     }
+    */
+    terrain_colors->push_back(*(new sf::Color(sf::Color::Green)));
+    terrain_colors->push_back(*(new sf::Color(sf::Color::Blue)));
+    terrain_colors->push_back(*(new sf::Color(sf::Color::Black)));
 }
 
 // bogus color distance
@@ -82,7 +87,10 @@ int closest_color(sf::Color c1, std::vector<sf::Color> terrain_colors) {
     {
         diff = color_diff(c1,terrain_colors[i]);
         if (diff < min_diff)
+        {
             winner = i;
+            min_diff = diff;
+        }
     }
     return winner;
 }

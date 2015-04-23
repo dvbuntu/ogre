@@ -24,7 +24,7 @@
 #endif
 
 #ifndef TOWN_TRANS
-#define TOWN_TRANS 160
+#define TOWN_TRANS 200
 #endif
 
 #ifndef TOWN_HEALTH_SCALE
