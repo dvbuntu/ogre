@@ -26,6 +26,10 @@
 #define WHITE_BIAS 64
 #endif
 
+#ifndef TWIDDLE
+#define TWIDDLE 16
+#endif
+
 
 // terrain is [plains, water, mtn]
 // should probable free/delete this crap at end of game...
@@ -65,7 +69,7 @@ void setup_terrain_colors(std::vector<sf::Color> *terrain_colors){
     }
     */
     terrain_colors->push_back(*(new sf::Color(sf::Color::Blue)));
-    terrain_colors->push_back(*(new sf::Color(sf::Color::Green)));
+    terrain_colors->push_back(*(new sf::Color(sf::Color(0,128,0))));
     terrain_colors->push_back(*(new sf::Color(sf::Color(64,64,64))));
 }
 
@@ -297,7 +301,7 @@ void setup_battle_map(std::vector<std::vector<int> > * battle_map,
 }
 
 sf::Color twiddle_color(sf::Color c) {
-    return sf::Color(c.r ^ (std::rand() % 8), c.g ^ (std::rand() % 8), c.b ^ (std::rand() % 8));
+    return sf::Color(c.r ^ (std::rand() % TWIDDLE), c.g ^ (std::rand() % TWIDDLE), c.b ^ (std::rand() % TWIDDLE));
 }
 
 #endif
