@@ -115,7 +115,8 @@ int main(int argc, char* argv[])
                           sf::Vector2f(x_ratio,
                           y_ratio))));
             tile_display[i][j].setPosition( i * x_ratio, j * y_ratio);
-            tile_display[i][j].setFillColor(terrain_colors[battle_map[i][j]]);
+            // twiddle the bottom bits of color
+            tile_display[i][j].setFillColor(twiddle_color(terrain_colors[battle_map[i][j]]));
             j++;
         }
         i++;

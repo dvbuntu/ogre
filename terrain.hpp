@@ -296,4 +296,8 @@ void setup_battle_map(std::vector<std::vector<int> > * battle_map,
     }
 }
 
+sf::Color twiddle_color(sf::Color c) {
+    return sf::Color(c.r ^ (std::rand() % 8), c.g ^ (std::rand() % 8), c.b ^ (std::rand() % 8));
+}
+
 #endif
