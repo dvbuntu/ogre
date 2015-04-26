@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
 #include <time.h>
+#include <math.h>
 
 // General helpful functions
 #ifndef HELPER_HPP
@@ -41,6 +42,7 @@
 #define ENEMY_DEPLOY_CHANCE 2
 #define X_VIDEO_SIZE 800
 #define Y_VIDEO_SIZE 600
+#define MIN_HOME_DIST 400
 
 using std::cerr;
 
@@ -76,6 +78,9 @@ int main(int argc, char* argv[])
 
     // where we click
     sf::Vector2f position;
+
+    // distance vector info
+    sf::Vector2f distance;
 
     // tile that we actually click
     sf::Vector2i tile_coord;
@@ -138,9 +143,19 @@ int main(int argc, char* argv[])
 
     // Create two players, and a pointer to whoever
     OgrePlayer player = OgrePlayer(PLAYER);
-    player.set_home(sf::Vector2f(std::rand() % 200 - 150, std::rand() % 200 - 150));
     OgrePlayer enemy = OgrePlayer(ENEMY);
+
+    // assign the capitol locations, make sure they're far enough apart
+    player.set_home(sf::Vector2f(std::rand() % 200 - 150, std::rand() % 200 - 150));
     enemy.set_home(sf::Vector2f(std::rand() % 200 - 50, std::rand() % 200 - 50));
+    distance = player.get_home() - enemy.get_home();
+    while(sqrt(distance.x * distance.x + distance.y * distance.y) < MIN_HOME_DIST)
+    {
+        player.set_home(sf::Vector2f(std::rand() % 200 - 150, std::rand() % 200 - 150));
+        enemy.set_home(sf::Vector2f(std::rand() % 200 - 50, std::rand() % 200 - 50));
+        distance = player.get_home() - enemy.get_home();
+    }
+
     OgrePlayer *owner;
 
     // change in town ownership, +1 if player liberates, -1 if enemy, 0 no change

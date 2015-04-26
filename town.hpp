@@ -48,6 +48,9 @@ class OgreTown: public OgreObject{
     // How much does this town pay out?
     int payout;
 
+    // check if this is our primary town
+    bool capitol;
+
     // town hit points
     int hp;
 public:
