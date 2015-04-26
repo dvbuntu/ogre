@@ -75,6 +75,16 @@ public:
         return payout;
     }
 
+    inline void set_capitol(bool new_capitol)
+    {
+        capitol = new_capitol;
+    }
+
+    inline bool get_capitol() const
+    {
+        return capitol;
+    }
+
     // current hit points
     inline int get_hp() const
     {

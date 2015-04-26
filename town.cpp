@@ -51,6 +51,8 @@ OgreTown::OgreTown(const sf::Vector2f& p)
 
     // Better town's are more circular, naturally
     circ.setPointCount(payout + 3);
+
+    capitol = false;
 }
 
 // Check if town has been captured and set new owner

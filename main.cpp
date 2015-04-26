@@ -163,7 +163,18 @@ int main(int argc, char* argv[])
 
     // create some towns to capture
     std::list<OgreTown*> towns;
-    for (i = 0; i < NUM_TOWNS; i++)
+    // set the capitols
+    towns.push_front(new OgreTown(view.getCenter()
+                + player.get_home()));
+    towns.front()->set_owner(&player);
+    towns.front()->set_capitol(true);
+    player.set_num_towns(player.get_num_towns() + 1);
+    towns.push_front(new OgreTown(view.getCenter()
+                + enemy.get_home()));
+    towns.front()->set_owner(&enemy);
+    towns.front()->set_capitol(true);
+    enemy.set_num_towns(enemy.get_num_towns() + 1);
+    for (i = 0; i < NUM_TOWNS-2; i++)
     {
         // somewhat hacky
         // should define a start position for player and enemy
@@ -556,20 +567,22 @@ bool check_distances(std::list<OgreUnit*> units, OgreUnit **target_unit, bool *p
 OgrePlayer *check_win(std::list<OgreTown*> towns, OgrePlayer *player, OgrePlayer *enemy)
 {
     OgrePlayer *winner = nullptr;
+    bool player_capitol = false;
+    bool enemy_capitol = false;
 
-    // Check to see if same player owns all towns
+    // Check to see if a player owns 2 capitols (really, if a player lost their capitol
     for (auto town : towns)
     {
-        // First town
-        if (winner == nullptr)
-            winner = town->get_owner();
-        // Multiple players still have towns
-        else if (winner != town->get_owner())
-        {
-            winner = nullptr;
-            break;
-        }
+        if (town->get_owner() == player)
+            player_capitol = town->get_capitol();
+        else if (town->get_owner() == enemy)
+            enemy_capitol = town->get_capitol();
     }
+
+    if (player_capitol == false && enemy_capitol == true)
+        winner = enemy;
+    if (enemy_capitol == false && player_capitol == true)
+        winner = player;
 
     // Check if one player ran out of money
     if (winner == nullptr)
