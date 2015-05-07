@@ -42,7 +42,7 @@ Here is the basic battlefield when you start the game, with some units and towns
 
 You can bring up simple information on your unit.  This displays current HP and gives you an idea of the XP needed to level up as well as the levels of your heroes.
 
-![Ogre Battlefield](http://i.imgur.com/iAJTfw7.png "Unit Information")
+![Ogre Battlefield](http://i.imgur.com/iAJTfW7.png "Unit Information")
 
 This is a fight scene featuring individual heros when units get too close.  No art here yet, but you can see the HP and XP of each hero fighting it out.  As in Flatland, heroes with more sides are of higher status.
 
