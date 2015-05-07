@@ -284,10 +284,18 @@ void setup_battle_map(std::vector<std::vector<int> > * battle_map,
                       sf::Image * image,
                       sf::Texture * texture,
                       sf::Sprite * sprite){
-    for (int x = 0; x < X_MAP_SIZE; x++){
-        battle_map->push_back(*(new std::vector<int>));
-        for (int y = 0; y < Y_MAP_SIZE; y++){
-            battle_map->back().push_back(closest_color(image->getPixel(x,y),terrain_colors));
+
+    if (!image->loadFromFile("resources/basic_map.png"))
+    {
+        std::cout << "Failed to load image!" << std::endl;
+        generate_terrain(battle_map, X_MAP_SIZE, Y_MAP_SIZE);
+    }
+    else{
+        for (int x = 0; x < X_MAP_SIZE; x++){
+            battle_map->push_back(*(new std::vector<int>));
+            for (int y = 0; y < Y_MAP_SIZE; y++){
+                battle_map->back().push_back(closest_color(image->getPixel(x,y),terrain_colors));
+            }
         }
     }
 }
