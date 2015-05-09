@@ -99,6 +99,7 @@ void OgreUnit::fight(OgreUnit *enemy)
     sf::Event event;
     bool paused=false;
     bool skip_battle=false;
+    bool run = false;
 
     int iter = 0;
     int damage = 0;
@@ -154,7 +155,13 @@ void OgreUnit::fight(OgreUnit *enemy)
             }
             else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
                 skip_battle = true;
+            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
+                run = true;
+                //Run away!
         }
+
+        if (run)
+            break;
 
         if (!paused) {
             iter++;
@@ -216,15 +223,15 @@ void OgreUnit::fight(OgreUnit *enemy)
     retreat = get_direction<>(enemy->get_position());
     retreat += retreat; // a little more distance between
 
-    if (damage > 0)// I win
-    {
-        enemy->move_by(retreat);
-        enemy->set_target_position(enemy->get_position());
-    }
-    else if (damage < 0) // I lose
+    if (damage < 0 || run) // I lose
     {
         move_by(-retreat);
         set_target_position(get_position());
+    }
+    else if (damage > 0)// I win
+    {
+        enemy->move_by(retreat);
+        enemy->set_target_position(enemy->get_position());
     }
     else// Draw, both retreat
     {
