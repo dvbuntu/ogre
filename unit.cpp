@@ -96,6 +96,9 @@ void OgreUnit::fight(OgreUnit *enemy)
     // Could just give new target pos and move a bunch there, or magic move to
     // new retreated position
     sf::Vector2f retreat;
+    sf::Event event;
+    bool paused=false;
+    bool skip_battle=false;
 
     int iter = 0;
     int damage = 0;
@@ -143,49 +146,66 @@ void OgreUnit::fight(OgreUnit *enemy)
     // Have a failsafe max_iter for now
     while( get_remaining_attacks() + enemy->get_remaining_attacks() > 0 && iter < 30 && enemy->get_hp() > 0 && get_hp())
     {
-        iter++;
-        if (rand() % 2 + 1 == PLAYER)
-        {
-            attacker = *random_element(heroes.begin(), heroes.end());
-            defending_unit = enemy;
-            damage_coefficient = 1;
-        }
-        else
-        {
-            attacker = *random_element(enemy->heroes.begin(), enemy->heroes.end());
-            defending_unit = this;
-            damage_coefficient = -1;
+        // check for pausing
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+            {
+                paused = !paused;
+            }
+            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
+                skip_battle = true;
         }
 
-        // Can we even attack?
-        if (attacker->get_attacks_left() == 0 || attacker->get_hp() == 0)
-            continue;
+        if (!paused) {
+            iter++;
+            if (rand() % 2 + 1 == PLAYER)
+            {
+                attacker = *random_element(heroes.begin(), heroes.end());
+                defending_unit = enemy;
+                damage_coefficient = 1;
+            }
+            else
+            {
+                attacker = *random_element(enemy->heroes.begin(), enemy->heroes.end());
+                defending_unit = this;
+                damage_coefficient = -1;
+            }
 
-        // Need to return who we attacked...
-        // return that instead, and attach the damage taken to them
-        // reset after this
-        defender = attacker->attack(defending_unit->get_heroes());
-        if (defender != nullptr)
-        {
-            damage += defender->get_damage_taken() * damage_coefficient;
+            // Can we even attack?
+            if (attacker->get_attacks_left() == 0 || attacker->get_hp() == 0)
+                continue;
 
-            // Set the status to be picked up in the drawing
-            attacker->set_attacking(true);
-            defender->set_defending(true);
+            // Need to return who we attacked...
+            // return that instead, and attach the damage taken to them
+            // reset after this
+            defender = attacker->attack(defending_unit->get_heroes());
+            if (defender != nullptr)
+            {
+                damage += defender->get_damage_taken() * damage_coefficient;
 
-            // Draw everything
-            window.clear(sf::Color::White);
-            enemy->fight_draw_on(window);
-            fight_draw_on(window);
-            window.display();
+                // Set the status to be picked up in the drawing
+                attacker->set_attacking(true);
+                defender->set_defending(true);
 
-            // clean up status
-            attacker->set_attacking(false);
-            defender->set_defending(false);
-            defender->set_damage_taken(NO_DAMAGE_DISPLAY);
+                // Draw everything
+                window.clear(sf::Color::White);
+                enemy->fight_draw_on(window);
+                fight_draw_on(window);
+                window.display();
 
-            // Sleep for a second?
-            usleep(BATTLE_DELAY);
+                // clean up status
+                attacker->set_attacking(false);
+                defender->set_defending(false);
+                defender->set_damage_taken(NO_DAMAGE_DISPLAY);
+
+                // reset defender
+                defender = nullptr;
+
+                // Sleep for a second?
+                // This doesn't allow me to catch events...
+                if (!skip_battle)
+                    usleep(BATTLE_DELAY);
+            }
         }
     }
 
