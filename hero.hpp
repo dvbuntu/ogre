@@ -441,7 +441,11 @@ public:
         xp_bar_current.setPosition(sf::Vector2f(x + 2*offset*HERO_SIZE,y + 1*HERO_SIZE - 
                     xp/xp_scale));
         window.draw(xp_bar_current);
-        profile.setPosition(sf::Vector2f(x,
+        if (*get_owner() == ENEMY)
+            profile.setTextureRect(sf::IntRect(SPRITE_SIZEX, SPRITE_SIZEY * unit_type, -1*(SPRITE_SIZEX), SPRITE_SIZEY));
+        else
+            profile.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
+profile.setPosition(sf::Vector2f(x,
                             y - 1.5*HERO_SIZE));
         window.draw(profile);
     }
