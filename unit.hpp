@@ -21,6 +21,10 @@
 #include "hero.hpp"
 #endif
 
+#ifndef PLAYER_HPP
+#include "player.hpp"
+#endif
+
 #ifndef HELPER_HPP
 #include "helper.hpp"
 #endif
@@ -82,7 +86,7 @@ public:
     }
 
     // Set my general, Maybe roll this into constructor
-    inline void set_owner(OgrePlayer *player)
+    void set_owner(OgrePlayer *player)
     {
         owner = player;
         sf::Color color = owner->get_color();
@@ -227,11 +231,17 @@ public:
         int r = time_step % (2*ANIMATION_REFRESH);
         // left foot forward
         if ( r > 0 && r < ANIMATION_REFRESH) {
-            sprite.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
+            if (*get_owner() == ENEMY)
+                sprite.setTextureRect(sf::IntRect(SPRITE_SIZEX, SPRITE_SIZEY * unit_type, -1*(SPRITE_SIZEX), SPRITE_SIZEY));
+            else
+                sprite.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
         }
         // right foot forward
         if ( r >= ANIMATION_REFRESH) {
-            sprite.setTextureRect(sf::IntRect(SPRITE_SIZEX, SPRITE_SIZEY * unit_type, SPRITE_SIZEX*2, SPRITE_SIZEY));
+            if (*get_owner() == ENEMY)
+                sprite.setTextureRect(sf::IntRect(SPRITE_SIZEX*2, SPRITE_SIZEY * unit_type, -1*(SPRITE_SIZEX), SPRITE_SIZEY));
+            else
+                sprite.setTextureRect(sf::IntRect(SPRITE_SIZEX, SPRITE_SIZEY * unit_type, SPRITE_SIZEX*2, SPRITE_SIZEY));
         }
     }
 
