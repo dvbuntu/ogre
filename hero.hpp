@@ -83,6 +83,9 @@ class OgreHero: public OgreObject{
     int level;
     int xp;
 
+    // What kind of unit am I (this defines the leader)
+    int unit_type;
+
     // profile picture
     // TODO: just use the OgreObject sprite
     sf::Sprite profile;
@@ -133,13 +136,14 @@ public:
     }
 
     // make myself the leader (or not)
-    inline void set_leader(bool new_leader, int unit_type)
+    inline void set_leader(bool new_leader, int hero_type)
     {
         leader = new_leader;
+        unit_type = hero_type;
         // here's my new portrait!
         if (!picture.loadFromFile("resources/heroes.png"))
         {
-            std::cout << "Failed to load image!" << std::endl;
+            std::cout << "Failed to load Hero image!" << std::endl;
         }
         profile.setTexture(picture);
         profile.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
@@ -445,7 +449,7 @@ public:
             profile.setTextureRect(sf::IntRect(SPRITE_SIZEX, SPRITE_SIZEY * unit_type, -1*(SPRITE_SIZEX), SPRITE_SIZEY));
         else
             profile.setTextureRect(sf::IntRect(0, SPRITE_SIZEY * unit_type, SPRITE_SIZEX, SPRITE_SIZEY));
-profile.setPosition(sf::Vector2f(x,
+        profile.setPosition(sf::Vector2f(x,
                             y - 1.5*HERO_SIZE));
         window.draw(profile);
     }

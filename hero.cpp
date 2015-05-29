@@ -18,6 +18,9 @@ OgreHero::OgreHero(const int start_level)
     // Stronger heroes are more like circles
     circ.setPointCount(level + 3);
 
+    // What kind of killer am I?  default to grunt
+    unit_type = 0;
+
     // Some stats
     // maybe distribute 'points' to these categories...
     max_hp = BASE_STR*4 + rand() % BASE_STR + level;
