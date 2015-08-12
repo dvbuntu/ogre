@@ -59,5 +59,4 @@ Future Goals
     * give them different shapes in combat
 * Actually name the heroes and units!
 * parallelize where appropriate (shortest path computation)
-* Pause battle
 * Menus and options to turn on/off various features?
