@@ -235,12 +235,11 @@ void generate_terrain(std::vector<std::vector<int> > * battle_map,
     }
 
     // now remove everything that's beyond the bounds we want
-    for(x = X; x < sq_size; x++) {
-        for(y = Y; y < sq_size; y++) {
-            battle_map->back().pop_back();
-        }
-        battle_map->pop_back();
+    //for(auto row : (*battle_map)) {
+    for(int i = 0 ; i < sq_size; i ++){
+        (*battle_map)[i].resize(Y);
     }
+    battle_map->resize(X);
 
     // get bounds of terrain type cut offs
     for(x = 0; x < X; x++){
